@@ -48,9 +48,9 @@ public class VisitedList {
     //REQUIRES: dates are given in mm-yyyy format, date1 comes before date2
     //EFFECTS: returns countries visited within in a given time duration
     public List<VisitedCountry> filterDateWise(String minDate, String maxDate) {
-        for (int i = 0; i < myVisitedList.size(); i++) {
-            if ((myVisitedList.get(i)).isAfter(minDate) && myVisitedList.get(i).isBefore(maxDate)) {
-                filterList.add(myVisitedList.get(i));
+        for (VisitedCountry visitedCountry : myVisitedList) {
+            if (visitedCountry.isAfter(minDate) && visitedCountry.isBefore(maxDate)) {
+                filterList.add(visitedCountry);
             }
         }
         return filterList;

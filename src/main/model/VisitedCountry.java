@@ -52,6 +52,8 @@ public class VisitedCountry {
         this.dateVisited = newDate;
     }
 
+
+    //EFFECT : returns true if this date is after min date
     public boolean isAfter(String minDate) {
         int minMonth = Integer.parseInt(minDate.substring(0, 2));
         int maxMonth = Integer.parseInt(dateVisited.substring(0, 2));
@@ -67,6 +69,7 @@ public class VisitedCountry {
         }
     }
 
+    //EFFECT : returns true if this date is before max date
     public boolean isBefore(String maxDate) {
         int minMonth = Integer.parseInt(dateVisited.substring(0, 2));
         int maxMonth = Integer.parseInt(maxDate.substring(0, 2));
