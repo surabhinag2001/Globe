@@ -37,7 +37,8 @@ public class VisitedList {
             }
         }
         return i;
-    } //use a more efficient searching technique in further phases
+    }
+    //use a more efficient searching technique in further phases
 
     //EFFECTS: returns entire visited list
     public List<VisitedCountry> getMyVisitedList() {
