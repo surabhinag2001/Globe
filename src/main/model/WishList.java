@@ -33,10 +33,10 @@ public class WishList {
         int i;
         for (i = 0; i < myWishList.size(); i++) {
             if (countryToSearch.equalsIgnoreCase(myWishList.get(i).getCountryName())) {
-                break;
+                return i;
             }
         }
-        return i;
+        return -1;
     } //use a more efficient searching technique in further phases
 
     //EFFECTS: returns entire wishlist

@@ -66,6 +66,7 @@ public class VisitedListTest {
         assertEquals(1, myVisitedList.searchCountry("India"));
         assertEquals(2, myVisitedList.searchCountry("United Kingdom"));
         assertEquals(0, myVisitedList.searchCountry("Scotland"));
+        assertEquals(-1, myVisitedList.searchCountry("Japan"));
     }
 
 

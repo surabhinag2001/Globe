@@ -62,5 +62,6 @@ class WishListTest {
         assertEquals(1, myWishList.searchCountry("India"));
         assertEquals(2, myWishList.searchCountry("United Kingdom"));
         assertEquals(0, myWishList.searchCountry("Scotland"));
+        assertEquals(-1, myWishList.searchCountry("Japan"));
     }
 }

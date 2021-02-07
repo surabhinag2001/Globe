@@ -33,10 +33,10 @@ public class VisitedList {
         int i;
         for (i = 0; i < myVisitedList.size(); i++) {
             if (countryToSearch.equalsIgnoreCase(myVisitedList.get(i).getVisitedCountryName())) {
-                break;
+                return i;
             }
         }
-        return i;
+        return -1;
     }
     //use a more efficient searching technique in further phases
 
