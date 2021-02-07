@@ -54,13 +54,13 @@ class WishListTest {
     }
 
     @Test
-    public void testSearchCountry(){
+    public void testSearchCountry() {
         WishList myWishList = new WishList();
         myWishList.addCountry("Scotland", "visit castle");
         myWishList.addCountry("India", "visit forts");
         myWishList.addCountry("United Kingdom", "visit United Kingdom");
-        assertEquals(1,myWishList.searchCountry("India"));
-        assertEquals(2,myWishList.searchCountry("United Kingdom"));
-        assertEquals(0,myWishList.searchCountry("Scotland"));
+        assertEquals(1, myWishList.searchCountry("India"));
+        assertEquals(2, myWishList.searchCountry("United Kingdom"));
+        assertEquals(0, myWishList.searchCountry("Scotland"));
     }
 }
