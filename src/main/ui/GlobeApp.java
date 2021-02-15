@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class GlobeApp {
     private WishList wishCountries;
     private VisitedList visitedCountries;
-    private Scanner input = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
 
     //EFFECTS: runs the globe application
     public GlobeApp() {
@@ -85,8 +85,6 @@ public class GlobeApp {
         System.out.println("Enter upper limit date: ");
         String maxDate = input.next();
         input.nextLine();
-        minDate.trim();
-        maxDate.trim();
         System.out.println("Countries visited between " + minDate + "and" + maxDate + " (inclusive) :");
         int size = visitedCountries.filterDateWise(minDate,maxDate).size();
         for (int j = 0; j < size; j++) {
@@ -113,11 +111,11 @@ public class GlobeApp {
         System.out.print("Enter country name:");
         input.nextLine();
         String country = input.nextLine();
-        input.nextLine();
+//        input.nextLine();
         System.out.print("Enter notes: ");
         String notes = input.nextLine();
-        input.nextLine();
-        System.out.print("Enter date visited: ");
+//        input.nextLine();
+        System.out.print("Enter date visited in mm-yyyy format: ");
         String date = input.nextLine();
         visitedCountries.addCountry(country, notes, date);
         System.out.println(country + " added to the wishlist with notes : " + notes + " date :" + date);
@@ -179,7 +177,7 @@ public class GlobeApp {
         System.out.print("Enter country name:");
         input.nextLine();
         String country = input.nextLine();
-        input.nextLine();
+//        input.nextLine();
         System.out.print("Enter notes: ");
         String notes = input.nextLine();
         wishCountries.addCountry(country, notes);
