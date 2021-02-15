@@ -111,10 +111,8 @@ public class GlobeApp {
         System.out.print("Enter country name:");
         input.nextLine();
         String country = input.nextLine();
-//        input.nextLine();
         System.out.print("Enter notes: ");
         String notes = input.nextLine();
-//        input.nextLine();
         System.out.print("Enter date visited in mm-yyyy format: ");
         String date = input.nextLine();
         visitedCountries.addCountry(country, notes, date);
@@ -177,7 +175,6 @@ public class GlobeApp {
         System.out.print("Enter country name:");
         input.nextLine();
         String country = input.nextLine();
-//        input.nextLine();
         System.out.print("Enter notes: ");
         String notes = input.nextLine();
         wishCountries.addCountry(country, notes);
