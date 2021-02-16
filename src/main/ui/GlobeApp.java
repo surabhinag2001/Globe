@@ -6,6 +6,7 @@ import model.WishList;
 
 import java.util.Scanner;
 
+//class representing user interface
 public class GlobeApp {
     private WishList wishCountries;
     private VisitedList visitedCountries;

@@ -3,6 +3,7 @@ package model;
 import java.util.LinkedList;
 import java.util.List;
 
+//class to represent the list of countries visited
 public class VisitedList {
     private List<VisitedCountry> myVisitedList;
     private List<VisitedCountry> filterList;

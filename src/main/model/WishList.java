@@ -3,6 +3,7 @@ package model;
 import java.util.LinkedList;
 import java.util.List;
 
+//class to represent the list of countries user wishes to visit
 public class WishList {
 
     private List<WishCountry> myWishList;

@@ -7,6 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//class to test functions defined in VisitedList class
 public class VisitedListTest {
 
     @Test

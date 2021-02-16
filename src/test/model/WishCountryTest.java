@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//class to test functions defined in WishCountry class
 public class WishCountryTest {
     @Test
     public void testChangeCountryNotes() {

@@ -1,5 +1,6 @@
 package model;
 
+//class to represent a country that user wishes to visit
 public class WishCountry {
     private String country;
     private String notesCountry;
