@@ -18,22 +18,25 @@ public class VisitedList {
     //EFFECTS: adds a new country to the collection of wishlist countries
     public void addCountry(String countryName, String notes, String date) {
         VisitedCountry newCountry = new VisitedCountry(countryName, notes, date);
-        myVisitedList.add(newCountry);
+        if (!(searchCountry(countryName, date) > -1)) {
+            myVisitedList.add(newCountry);
+        }
     }
 
     //REQUIRES: countryName is present in the visited list
     //MODIFIES: this
     //EFFECTS: removes a country from the collection of visited countries
-    public void removeCountry(String countryToRemove) {
-        myVisitedList.remove(searchCountry(countryToRemove));
+    public void removeCountry(String countryToRemove, String date) {
+        myVisitedList.remove(searchCountry(countryToRemove, date));
     }
 
     //REQUIRES: countryName is present in the wishlist
     //EFFECTS: returns the index of the country to be searched in the wishlist
-    public int searchCountry(String countryToSearch) {
+    public int searchCountry(String countryToSearch, String date) {
         int i;
         for (i = 0; i < myVisitedList.size(); i++) {
-            if (countryToSearch.equalsIgnoreCase(myVisitedList.get(i).getVisitedCountryName())) {
+            if ((countryToSearch.equalsIgnoreCase(myVisitedList.get(i).getCountryName()))
+                    && (date.equals(myVisitedList.get(i).getDateVisited()))) {
                 return i;
             }
         }

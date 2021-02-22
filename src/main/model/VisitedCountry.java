@@ -1,27 +1,14 @@
 package model;
 
 //class to represent a country that has been visited
-public class VisitedCountry {
-    private String country;
-    private String notesCountry;
+public class VisitedCountry extends Country {
     private String dateVisited; //stores date in mm-yyyy format
     //add a way to store images in future phases
 
     //EFFECTS: constructs a country object with associated name
     public VisitedCountry(String countryName, String notes, String date) {
-        this.country = countryName;
-        this.notesCountry = notes;
+        super(countryName, notes);
         this.dateVisited = date;
-    }
-
-    //EFFECTS: returns name of the country
-    public String getVisitedCountryName() {
-        return country;
-    }
-
-    //EFFECTS: returns notes about the country
-    public String getNotesVisitedCountry() {
-        return notesCountry;
     }
 
     //EFFECTS: returns date when country was visited
@@ -41,11 +28,6 @@ public class VisitedCountry {
         return year;
     }
 
-    //MODIFIES: this
-    //EFFECTS: change country notes
-    public void changeVisitedCountryNotes(String newNotes) {
-        this.notesCountry = newNotes;
-    }
 
     //MODIFIES: this
     //EFFECTS: change visit date

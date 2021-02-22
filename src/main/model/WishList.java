@@ -17,7 +17,11 @@ public class WishList {
     //EFFECTS: adds a new country to the collection of wishlist countries
     public void addCountry(String countryName, String notes) {
         WishCountry newCountry = new WishCountry(countryName, notes);
-        myWishList.add(newCountry);
+        //checking if the country has been added to the wishlist before
+        if (!(searchCountry(countryName) > -1)) {
+            myWishList.add(newCountry);
+        }
+        //else throw an exception giving message that the country is already in the list
     }
 
     //REQUIRES: countryName is present in the wishlist

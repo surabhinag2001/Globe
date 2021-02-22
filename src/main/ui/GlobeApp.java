@@ -6,7 +6,7 @@ import model.WishList;
 
 import java.util.Scanner;
 
-//class representing user interface
+//Globe application
 public class GlobeApp {
     private WishList wishCountries;
     private VisitedList visitedCountries;
@@ -87,10 +87,10 @@ public class GlobeApp {
         String maxDate = input.next();
         input.nextLine();
         System.out.println("Countries visited between " + minDate + "and" + maxDate + " (inclusive) :");
-        int size = visitedCountries.filterDateWise(minDate,maxDate).size();
+        int size = visitedCountries.filterDateWise(minDate, maxDate).size();
         for (int j = 0; j < size; j++) {
-            System.out.println(visitedCountries.filterDateWise(minDate,maxDate).get(j).getVisitedCountryName());
-            System.out.println(visitedCountries.filterDateWise(minDate,maxDate).get(j).getDateVisited());
+            System.out.println(visitedCountries.filterDateWise(minDate, maxDate).get(j).getCountryName());
+            System.out.println(visitedCountries.filterDateWise(minDate, maxDate).get(j).getDateVisited());
             System.out.println();
         }
     }
@@ -98,7 +98,7 @@ public class GlobeApp {
     //EFFECTS : displays list of all visited countries
     private void viewVisitedList() {
         for (int i = 0; i < visitedCountries.getMyVisitedList().size(); i++) {
-            System.out.println(visitedCountries.getMyVisitedList().get(i).getVisitedCountryName());
+            System.out.println(visitedCountries.getMyVisitedList().get(i).getCountryName());
             System.out.println(visitedCountries.getMyVisitedList().get(i).getDateVisited());
             System.out.println();
         }
@@ -129,8 +129,11 @@ public class GlobeApp {
         System.out.print("Enter country name:");
         input.nextLine();
         String country = input.nextLine();
-        visitedCountries.removeCountry(country);
-        System.out.println(country + " removed from the visited list");
+        System.out.print("Enter date of visit:");
+//        input.nextLine();
+        String date = input.nextLine();
+        visitedCountries.removeCountry(country, date);
+        System.out.println(country + " visited on " + date + " removed from the visited list");
     }
 
 

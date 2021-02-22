@@ -10,9 +10,9 @@ public class VisitedCountryTest {
     @Test
     public void testChangeVisitedCountryNotes(){
         VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal","09-2017");
-        assertEquals("visited taj mahal",myCountry.getNotesVisitedCountry());
-        myCountry.changeVisitedCountryNotes("visited taj and india gate");
-        assertEquals("visited taj and india gate",myCountry.getNotesVisitedCountry());
+        assertEquals("visited taj mahal",myCountry.getNotesCountry());
+        myCountry.changeCountryNotes("visited taj and india gate");
+        assertEquals("visited taj and india gate",myCountry.getNotesCountry());
     }
     @Test
     public void testChangeDateVisited(){

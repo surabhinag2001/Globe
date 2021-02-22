@@ -1,29 +1,10 @@
 package model;
 
 //class to represent a country that user wishes to visit
-public class WishCountry {
-    private String country;
-    private String notesCountry;
+public class WishCountry extends Country {
 
     //EFFECTS: constructs a country object with associated name
     public WishCountry(String countryName, String notes) {
-        this.country = countryName;
-        this.notesCountry = notes;
-    }
-
-    //EFFECTS: returns name of the country
-    public String getCountryName() {
-        return country;
-    }
-
-    //EFFECTS: returns notes about the country
-    public String getNotesCountry() {
-        return notesCountry;
-    }
-
-    //MODIFIES: this
-    //EFFECTS: change country notes
-    public void changeCountryNotes(String newNotes) {
-        this.notesCountry = newNotes;
+        super(countryName, notes);
     }
 }
