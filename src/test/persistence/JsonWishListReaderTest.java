@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 //class to test functions defined in JsonWishListReader class
-// Citation: code taken and modified from JsonWriterTest class in JsonSerializationDemo
+// Citation: code taken and modified from JsonReaderTest class in JsonSerializationDemo
 public class JsonWishListReaderTest extends WishCountryTest {
 
     @Test

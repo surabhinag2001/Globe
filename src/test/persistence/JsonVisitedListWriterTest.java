@@ -11,6 +11,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+//class to test functions defined in JsonVisitedListWriter class
+// Citation: code taken and modified from JsonWriterTest class in JsonSerializationDemo
 public class JsonVisitedListWriterTest {
 
     @Test
