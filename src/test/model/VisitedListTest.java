@@ -101,4 +101,16 @@ public class VisitedListTest {
         assertEquals("Japan", myVisitedList.filterDateWise("09-2019", "09-2020").get(1).getCountryName());
     }
 
+    @Test
+    public void testAddSameCountryTwice() {
+        VisitedList myWishList = new VisitedList();
+        myWishList.addCountry("India","forts","09-2001");
+        assertEquals(1,myWishList.getMyVisitedList().size());
+        myWishList.addCountry("India","taj","09-2001");
+        assertEquals(1,myWishList.getMyVisitedList().size());
+        assertEquals("India",myWishList.getMyVisitedList().get(0).getCountryName());
+        assertEquals("forts",myWishList.getMyVisitedList().get(0).getNotesCountry());
+        assertEquals("09-2001",myWishList.getMyVisitedList().get(0).getDateVisited());
+    }
+
 }
