@@ -1,7 +1,7 @@
 package persistence;
 
 
-import model.WishList;
+import model.VisitedList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,22 +11,22 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-// Represents a reader that reads wishlist from JSON data stored in file
+// Represents a reader that reads visited list from JSON data stored in file
 // Citation: code taken and modified from JsonReader class in JsonSerializationDemo
-public class JsonWishListReader {
+public class JsonVisitedListReader {
     private String source;
 
     // EFFECTS: constructs reader to read from source file
-    public JsonWishListReader(String source) {
+    public JsonVisitedListReader(String source) {
         this.source = source;
     }
 
     //EFFECTS:reads wishlist from file and returns it;
     //throws IOException if an error occurs reading data from file
-    public WishList read() throws IOException {
+    public VisitedList read() throws IOException {
         String jsonData = readFile(source);
         JSONArray jsonArray = new JSONArray(jsonData);
-        return parseWishList(jsonArray);
+        return parseVisitedList(jsonArray);
     }
 
     // EFFECTS: reads source file as string and returns it
@@ -41,22 +41,23 @@ public class JsonWishListReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses wishlist from JSON array and returns it
-    private WishList parseWishList(JSONArray jsonArray) {
-        WishList wl = new WishList();
+    // EFFECTS: parses visited list from JSON array and returns it
+    private VisitedList parseVisitedList(JSONArray jsonArray) {
+        VisitedList vl = new VisitedList();
         for (Object json : jsonArray) {
             JSONObject nextCountry = (JSONObject) json;
-            addCountry(wl, nextCountry);
+            addCountry(vl, nextCountry);
         }
-        return wl;
+        return vl;
     }
 
-    // MODIFIES: wl
-    // EFFECTS: parses wish country from JSON object and adds it to wishlist
-    private void addCountry(WishList wl, JSONObject jsonObject) {
+    // MODIFIES: vl
+    // EFFECTS: parses wish country from JSON object and adds it to visited list
+    private void addCountry(VisitedList wl, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         String notes = jsonObject.getString("notes");
-        wl.addCountry(name,notes);
+        String date = jsonObject.getString("date");
+        wl.addCountry(name, notes, date);
     }
 }
 

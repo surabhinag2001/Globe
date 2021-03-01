@@ -24,9 +24,9 @@ in this course.
 
 #### Phase 2 :
 - As a user, I want to be able to view a list of all countries of the world.
-- As a user, I want to be able to save my 'visited' list to file.
-- As a user, I want to be able to save my wishlist list to file.
-- As a user, I want to be able to load my 'visited' list from the file.
-- As a user, I want to be able to load my wishlist list from the file.
+- As a user, I want to be able to automatically save my 'visited' list to file.
+- As a user, I want to be able to automatically save my wishlist list to file.
+- As a user, I want to be able to automatically load my 'visited' list from the file.
+- As a user, I want to be able to automatically load my wishlist list from the file.
 - As a user, I want to be able to store pictures when I add it to the 'visited' list.
 - As a user, I want to be able to view my progress in terms of the countries I tick off from my wishlist.

@@ -3,6 +3,8 @@ package ui;
 
 import model.VisitedList;
 import model.WishList;
+import persistence.JsonVisitedListReader;
+import persistence.JsonVisitedListWriter;
 import persistence.JsonWishListReader;
 import persistence.JsonWishListWriter;
 
@@ -13,17 +15,22 @@ import java.util.Scanner;
 //represents the Globe application
 public class GlobeApp {
     private static final String JSON_STORE_WISHLIST = "./data/wishlist.json";
+    private static final String JSON_STORE_VISITED_LIST = "./data/visitedlist.json";
     private WishList wishCountries;
     private VisitedList visitedCountries;
     private final Scanner input = new Scanner(System.in);
     private JsonWishListWriter jsonWishListWriter;
     private JsonWishListReader jsonWishListReader;
+    private JsonVisitedListWriter jsonVisitedListWriter;
+    private JsonVisitedListReader jsonVisitedListReader;
 
 
     //EFFECTS: runs the globe application
     public GlobeApp() {
         jsonWishListWriter = new JsonWishListWriter(JSON_STORE_WISHLIST);
         jsonWishListReader = new JsonWishListReader(JSON_STORE_WISHLIST);
+        jsonVisitedListWriter = new JsonVisitedListWriter(JSON_STORE_VISITED_LIST);
+        jsonVisitedListReader = new JsonVisitedListReader(JSON_STORE_VISITED_LIST);
         runGlobe();
     }
 
@@ -68,13 +75,16 @@ public class GlobeApp {
         while (keepGoing) {
             displayVisitedMenu();
             command = input.next();
+            loadVisitedList();
 
             if (command.equalsIgnoreCase("q")) {
                 keepGoing = false;
             } else if (command.equalsIgnoreCase("a")) {
                 addToVisitedList();
+                saveVisitedList();
             } else if (command.equalsIgnoreCase("r")) {
                 removeFromVisitedList();
+                saveVisitedList();
             } else if (command.equalsIgnoreCase("s")) {
                 viewVisitedList();
             } else if (command.equalsIgnoreCase("f")) {
@@ -83,6 +93,29 @@ public class GlobeApp {
                 System.out.println("Invalid selection");
                 keepGoing = false;
             }
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads the visited list from file
+    private void loadVisitedList() {
+        try {
+            visitedCountries = jsonVisitedListReader.read();
+            System.out.println("Loaded Visited list from " + JSON_STORE_VISITED_LIST);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE_VISITED_LIST);
+        }
+    }
+
+    // EFFECTS: saves the visited list to file
+    private void saveVisitedList() {
+        try {
+            jsonVisitedListWriter.open();
+            jsonVisitedListWriter.write(visitedCountries);
+            jsonVisitedListWriter.close();
+            System.out.println("Saved Visited list to " + JSON_STORE_VISITED_LIST);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE_VISITED_LIST);
         }
     }
 
@@ -126,6 +159,9 @@ public class GlobeApp {
         String notes = input.nextLine();
         System.out.print("Enter date visited in mm-yyyy format: ");
         String date = input.nextLine();
+        country.trim();
+        notes.trim();
+        date.trim();
         visitedCountries.addCountry(country, notes, date);
         System.out.println(country + " added to the wishlist with notes : " + notes + " date :" + date);
     }
@@ -142,6 +178,8 @@ public class GlobeApp {
         System.out.print("Enter date of visit:");
 //        input.nextLine();
         String date = input.nextLine();
+        country.trim();
+        date.trim();
         visitedCountries.removeCountry(country, date);
         System.out.println(country + " visited on " + date + " removed from the visited list");
     }
@@ -156,20 +194,18 @@ public class GlobeApp {
         while (keepGoing) {
             displayWishlistMenu();
             command = input.next();
+            loadWishList();
 
             if (command.equalsIgnoreCase("q")) {
                 keepGoing = false;
             } else if (command.equalsIgnoreCase("a")) {
                 addToWishlist();
+                saveWishList();
             } else if (command.equalsIgnoreCase("r")) {
                 removeFromWishList();
-            } else if (command.equalsIgnoreCase("v")) {
-//                loadWishList();
-                viewWishList();
-            } else if (command.equalsIgnoreCase("s")) {
                 saveWishList();
-            } else if (command.equalsIgnoreCase("l")) {
-                loadWishList();
+            } else if (command.equalsIgnoreCase("v")) {
+                viewWishList();
             } else {
                 System.out.println("Invalid selection");
                 keepGoing = false;
@@ -179,7 +215,7 @@ public class GlobeApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads the workroom from file
+    // EFFECTS: loads the wishlist from file
     private void loadWishList() {
         try {
             wishCountries = jsonWishListReader.read();
@@ -219,6 +255,8 @@ public class GlobeApp {
         String country = input.nextLine();
         System.out.print("Enter notes: ");
         String notes = input.nextLine();
+        country.trim();
+        notes.trim();
         wishCountries.addCountry(country, notes);
         System.out.println(country + " added to the wishlist with notes : " + notes);
     }
@@ -231,6 +269,7 @@ public class GlobeApp {
         System.out.print("Enter country name:");
         input.nextLine();
         String country = input.nextLine();
+        country.trim();
         wishCountries.removeCountry(country);
         System.out.println(country + " removed from the wishlist");
     }
@@ -251,8 +290,6 @@ public class GlobeApp {
         System.out.println("\ta -> Add country to wishlist");
         System.out.println("\tr -> Remove country from a wishlist ");
         System.out.println("\tv -> See names all countries in wishlist");
-        System.out.println("\ts -> Save wishlist to file");
-        System.out.println("\tl -> Load wishlist from file");
         System.out.println("\tq -> Quit Wishlist Menu");
     }
 

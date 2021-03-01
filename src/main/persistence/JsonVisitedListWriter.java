@@ -1,5 +1,6 @@
 package persistence;
 
+import model.VisitedList;
 import model.WishList;
 import org.json.JSONArray;
 
@@ -8,13 +9,13 @@ import java.io.*;
 
 // Represents a writer that writes JSON representation of wishlist to file
 // Citation: code taken and modified from JsonWriter class in JsonSerializationDemo
-public class JsonWishListWriter {
+public class JsonVisitedListWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
     private String destination;
 
     // EFFECTS: constructs writer to write to destination file
-    public JsonWishListWriter(String destination) {
+    public JsonVisitedListWriter(String destination) {
         this.destination = destination;
     }
 
@@ -26,9 +27,9 @@ public class JsonWishListWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of wishlist to file
-    public void write(WishList wl) {
-        JSONArray json = wl.wishlistToJson();
+    // EFFECTS: writes JSON representation of visited list to file
+    public void write(VisitedList vl) {
+        JSONArray json = vl.visitedlistToJson();
         saveToFile(json.toString(TAB));
     }
 

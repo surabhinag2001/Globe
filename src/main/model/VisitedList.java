@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONArray;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,6 +60,17 @@ public class VisitedList {
             }
         }
         return filterList;
+    }
+
+    // EFFECTS: returns wishlist countries as a JSON array
+    public JSONArray visitedlistToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (VisitedCountry v : myVisitedList) {
+            jsonArray.put(v.toJson());
+        }
+
+        return jsonArray;
     }
 
 
