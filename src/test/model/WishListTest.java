@@ -65,4 +65,15 @@ class WishListTest {
         assertEquals(0, myWishList.searchCountry("Scotland"));
         assertEquals(-1, myWishList.searchCountry("Japan"));
     }
+
+    @Test
+    public void testAddSameCountryTwice() {
+        WishList myWishList = new WishList();
+        myWishList.addCountry("India","forts");
+        assertEquals(1,myWishList.getMyWishList().size());
+        myWishList.addCountry("India","taj");
+        assertEquals(1,myWishList.getMyWishList().size());
+        assertEquals("India",myWishList.getMyWishList().get(0).getCountryName());
+        assertEquals("forts",myWishList.getMyWishList().get(0).getNotesCountry());
+    }
 }
