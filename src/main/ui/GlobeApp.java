@@ -3,17 +3,27 @@ package ui;
 
 import model.VisitedList;
 import model.WishList;
+import persistence.JsonWishListReader;
+import persistence.JsonWishListWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
-//Globe application
+//represents the Globe application
 public class GlobeApp {
+    private static final String JSON_STORE_WISHLIST = "./data/wishlist.json";
     private WishList wishCountries;
     private VisitedList visitedCountries;
     private final Scanner input = new Scanner(System.in);
+    private JsonWishListWriter jsonWishListWriter;
+    private JsonWishListReader jsonWishListReader;
+
 
     //EFFECTS: runs the globe application
     public GlobeApp() {
+        jsonWishListWriter = new JsonWishListWriter(JSON_STORE_WISHLIST);
+        jsonWishListReader = new JsonWishListReader(JSON_STORE_WISHLIST);
         runGlobe();
     }
 
@@ -153,14 +163,42 @@ public class GlobeApp {
                 addToWishlist();
             } else if (command.equalsIgnoreCase("r")) {
                 removeFromWishList();
-            } else if (command.equalsIgnoreCase("s")) {
+            } else if (command.equalsIgnoreCase("v")) {
+//                loadWishList();
                 viewWishList();
+            } else if (command.equalsIgnoreCase("s")) {
+                saveWishList();
+            } else if (command.equalsIgnoreCase("l")) {
+                loadWishList();
             } else {
                 System.out.println("Invalid selection");
                 keepGoing = false;
             }
         }
 
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads the workroom from file
+    private void loadWishList() {
+        try {
+            wishCountries = jsonWishListReader.read();
+            System.out.println("Loaded WishList from " + JSON_STORE_WISHLIST);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE_WISHLIST);
+        }
+    }
+
+    // EFFECTS: saves the wishlist to file
+    private void saveWishList() {
+        try {
+            jsonWishListWriter.open();
+            jsonWishListWriter.write(wishCountries);
+            jsonWishListWriter.close();
+            System.out.println("Saved WishList to " + JSON_STORE_WISHLIST);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE_WISHLIST);
+        }
     }
 
     //EFFECTS: displays wishlist
@@ -212,7 +250,9 @@ public class GlobeApp {
         System.out.println("\nSelect from:");
         System.out.println("\ta -> Add country to wishlist");
         System.out.println("\tr -> Remove country from a wishlist ");
-        System.out.println("\ts -> See names all countries in wishlist");
+        System.out.println("\tv -> See names all countries in wishlist");
+        System.out.println("\ts -> Save wishlist to file");
+        System.out.println("\tl -> Load wishlist from file");
         System.out.println("\tq -> Quit Wishlist Menu");
     }
 

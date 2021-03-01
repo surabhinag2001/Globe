@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 //class to represent a country that has been visited
 public class VisitedCountry extends Country {
     private String dateVisited; //stores date in mm-yyyy format
@@ -66,5 +68,14 @@ public class VisitedCountry extends Country {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", super.country);
+        json.put("notes", super.notesCountry);
+        json.put("date",dateVisited);
+        return json;
     }
 }

@@ -1,7 +1,9 @@
 package model;
 
+import persistence.Writable;
+
 //abstract class to represents a country having name and notes
-public abstract class Country {
+public abstract class Country implements Writable {
     protected String country;
     protected String notesCountry;
 

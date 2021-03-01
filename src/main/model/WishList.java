@@ -1,5 +1,9 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,5 +51,16 @@ public class WishList {
     //EFFECTS: returns entire wishlist
     public List<WishCountry> getMyWishList() {
         return myWishList;
+    }
+
+    // EFFECTS: returns wishlist countries as a JSON array
+    public JSONArray wishlistToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (WishCountry w : myWishList) {
+            jsonArray.put(w.toJson());
+        }
+
+        return jsonArray;
     }
 }
