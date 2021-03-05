@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.GregorianCalendar;
 import java.util.stream.Stream;
 
 // Represents a reader that reads visited list from JSON data stored in file
@@ -56,7 +57,8 @@ public class JsonVisitedListReader {
     private void addCountry(VisitedList wl, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         String notes = jsonObject.getString("notes");
-        String date = jsonObject.getString("date");
+//        String date = jsonObject.getString("date");
+        GregorianCalendar date = (GregorianCalendar) jsonObject.get("date");
         wl.addCountry(name, notes, date);
     }
 }

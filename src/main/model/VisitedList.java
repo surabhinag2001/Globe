@@ -2,6 +2,7 @@ package model;
 
 import org.json.JSONArray;
 
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class VisitedList {
 
     //MODIFIES: this
     //EFFECTS: adds a new country to the collection of wishlist countries
-    public void addCountry(String countryName, String notes, String date) {
+    public void addCountry(String countryName, String notes, GregorianCalendar date) {
         VisitedCountry newCountry = new VisitedCountry(countryName, notes, date);
         if (!(searchCountry(countryName, date) > -1)) {
             myVisitedList.add(newCountry);
@@ -28,13 +29,13 @@ public class VisitedList {
     //REQUIRES: countryName is present in the visited list
     //MODIFIES: this
     //EFFECTS: removes a country from the collection of visited countries
-    public void removeCountry(String countryToRemove, String date) {
+    public void removeCountry(String countryToRemove, GregorianCalendar date) {
         myVisitedList.remove(searchCountry(countryToRemove, date));
     }
 
     //REQUIRES: countryName is present in the wishlist
     //EFFECTS: returns the index of the country to be searched in the wishlist
-    public int searchCountry(String countryToSearch, String date) {
+    public int searchCountry(String countryToSearch, GregorianCalendar date) {
         int i;
         for (i = 0; i < myVisitedList.size(); i++) {
             if ((countryToSearch.equalsIgnoreCase(myVisitedList.get(i).getCountryName()))
@@ -53,7 +54,7 @@ public class VisitedList {
 
     //REQUIRES: dates are given in mm-yyyy format, date1 comes before date2
     //EFFECTS: returns countries visited within in a given time duration
-    public List<VisitedCountry> filterDateWise(String minDate, String maxDate) {
+    public List<VisitedCountry> filterDateWise(GregorianCalendar minDate, GregorianCalendar maxDate) {
         for (VisitedCountry visitedCountry : myVisitedList) {
             if (visitedCountry.isAfter(minDate) && visitedCountry.isBefore(maxDate)) {
                 filterList.add(visitedCountry);

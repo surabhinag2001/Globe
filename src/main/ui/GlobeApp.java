@@ -11,6 +11,7 @@ import persistence.JsonWishListWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 //represents the Globe application
@@ -121,12 +122,22 @@ public class GlobeApp {
     //REQUIRES: dates are given in mm-yyyy format
     //EFFECT: displays countries that lie between specified dates
     private void filter() {
-        System.out.println("Enter lower limit date: ");
-        String minDate = input.next();
-        input.nextLine();
-        System.out.println("Enter upper limit date: ");
-        String maxDate = input.next();
-        input.nextLine();
+        System.out.println("Enter lower limit date");
+        System.out.println("Year: ");
+        int ly = input.nextInt();
+        System.out.println("Month: ");
+        int lm = input.nextInt();
+        System.out.println("Day: ");
+        int ld = input.nextInt();
+        GregorianCalendar minDate = new GregorianCalendar(ly,lm,ld);
+        System.out.println("Enter upper limit date");
+        System.out.println("Year: ");
+        int uy = input.nextInt();
+        System.out.println("Month: ");
+        int um = input.nextInt();
+        System.out.println("Day: ");
+        int ud = input.nextInt();
+        GregorianCalendar maxDate = new GregorianCalendar(ly,lm,ld);
         System.out.println("Countries visited between " + minDate + "and" + maxDate + " (inclusive) :");
         int size = visitedCountries.filterDateWise(minDate, maxDate).size();
         for (int j = 0; j < size; j++) {
@@ -153,11 +164,19 @@ public class GlobeApp {
         System.out.print("Enter country name:");
         input.nextLine();
         String country = input.nextLine().trim();
-
         System.out.print("Enter notes: ");
         String notes = input.nextLine().trim();
-        System.out.print("Enter date visited in mm-yyyy format: ");
-        String date = input.nextLine().trim();
+        System.out.println("Enter date visited");
+        System.out.print("Year: ");
+        int y = input.nextInt();
+        System.out.println();
+        System.out.print("Month: ");
+        int m = input.nextInt();
+        System.out.println();
+        System.out.print("Day: ");
+        int d = input.nextInt();
+        System.out.println();
+        GregorianCalendar date = new GregorianCalendar(y,m,d);
         visitedCountries.addCountry(country, notes, date);
         System.out.println(country + " added to the wishlist with notes : " + notes + " date :" + date);
     }
@@ -171,9 +190,14 @@ public class GlobeApp {
         System.out.print("Enter country name:");
         input.nextLine();
         String country = input.nextLine().trim();
-        System.out.print("Enter date of visit:");
-//        input.nextLine();
-        String date = input.nextLine().trim();
+        System.out.print("Enter date visited");
+        System.out.println("Year: ");
+        int y = input.nextInt();
+        System.out.println("Month: ");
+        int m = input.nextInt();
+        System.out.println("Day: ");
+        int d = input.nextInt();
+        GregorianCalendar date = new GregorianCalendar(y,m,d);
         visitedCountries.removeCountry(country, date);
         System.out.println(country + " visited on " + date + " removed from the visited list");
     }

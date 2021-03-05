@@ -2,6 +2,8 @@ package model;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.GregorianCalendar;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 //class to test functions defined in VisitedCountry class
@@ -9,43 +11,48 @@ public class VisitedCountryTest {
 
     @Test
     public void testChangeVisitedCountryNotes(){
-        VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal","09-2017");
+        GregorianCalendar d1 = new GregorianCalendar(2017,9,03);
+        VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal",d1);
         assertEquals("visited taj mahal",myCountry.getNotesCountry());
         myCountry.changeCountryNotes("visited taj and india gate");
         assertEquals("visited taj and india gate",myCountry.getNotesCountry());
     }
     @Test
     public void testChangeDateVisited(){
-        VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal","09-2017");
-        assertEquals("09-2017",myCountry.getDateVisited());
-        myCountry.changeDateVisited("07-2020");
-        assertEquals("07-2020",myCountry.getDateVisited());
+        GregorianCalendar d1 = new GregorianCalendar(2017,9,03);
+        VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal",d1);
+        assertEquals(d1,myCountry.getDateVisited());
+        GregorianCalendar d2 = new GregorianCalendar(2020,7,03);
+        myCountry.changeDateVisited(d2);
+        assertEquals(d2,myCountry.getDateVisited());
     }
 
-    @Test
-    public void testMonthAndYear(){
-        VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal","09-2017");
-        assertEquals(9,myCountry.getMonthVisited());
-        assertEquals(2017,myCountry.getYearVisited());
-    }
+//    @Test
+//    public void testMonthAndYear(){
+//        VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal","09-2017");
+//        assertEquals(9,myCountry.getMonthVisited());
+//        assertEquals(2017,myCountry.getYearVisited());
+//    }
 
     @Test
     public void testIsAfter(){
-        VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal","09-2017");
-        assertTrue(myCountry.isAfter("09-2017"));
-        assertTrue(myCountry.isAfter("09-2016"));
-        assertTrue(myCountry.isAfter("08-2017"));
-        assertFalse(myCountry.isAfter("10-2017"));
-        assertFalse(myCountry.isAfter("10-2020"));
+        GregorianCalendar d1 = new GregorianCalendar(2017,9,03);
+        VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal",d1);
+        assertTrue(myCountry.isAfter(new GregorianCalendar(2017,9,02)));
+        assertTrue(myCountry.isAfter(new GregorianCalendar(2016,9,03)));
+        assertTrue(myCountry.isAfter(new GregorianCalendar(2017,8,03)));
+        assertFalse(myCountry.isAfter(new GregorianCalendar(2017,10,03)));
+        assertTrue(myCountry.isAfter(new GregorianCalendar(2010,9,03)));
     }
 
     @Test
     public void testIsBefore(){
-        VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal","09-2017");
-        assertTrue(myCountry.isBefore("09-2017"));
-        assertTrue(myCountry.isBefore("10-2018"));
-        assertTrue(myCountry.isBefore("12-2017"));
-        assertFalse(myCountry.isBefore("08-2017"));
-        assertFalse(myCountry.isBefore("10-2015"));
+        GregorianCalendar d1 = new GregorianCalendar(2017,9,03);
+        VisitedCountry myCountry = new VisitedCountry("India","visited taj mahal",d1);
+        assertTrue(myCountry.isBefore(new GregorianCalendar(2017,9,04)));
+        assertTrue(myCountry.isBefore(new GregorianCalendar(2018,9,03)));
+        assertTrue(myCountry.isBefore(new GregorianCalendar(2017,12,03)));
+        assertFalse(myCountry.isBefore(new GregorianCalendar(2017,8,03)));
+        assertFalse(myCountry.isBefore(new GregorianCalendar(2015,9,03)));
     }
 }
