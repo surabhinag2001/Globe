@@ -2,85 +2,42 @@ package model;
 
 import org.json.JSONObject;
 
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+
 
 //class to represent a country that has been visited
 public class VisitedCountry extends Country {
-    private GregorianCalendar dateVisited; //stores date in mm-yyyy format
+    private LocalDate dateVisited; //stores date in yyyy-mm-dd format
     //add a way to store images in future phases
 
     //EFFECTS: constructs a country object with associated name
-    public VisitedCountry(String countryName, String notes, GregorianCalendar date) {
+    public VisitedCountry(String countryName, String notes, LocalDate date) {
         super(countryName, notes);
         this.dateVisited = date;
     }
 
     //EFFECTS: returns date when country was visited
-    public GregorianCalendar getDateVisited() {
+    public LocalDate getDateVisited() {
         return dateVisited;
     }
-
-//    //EFFECTS: returns month when country was visited
-//    public int getMonthVisited() {
-//        int month = Integer.parseInt(dateVisited.substring(0, 2));
-//        return month;
-//    }
-//
-//    //EFFECTS: returns year when country was visited
-//    public int getYearVisited() {
-//        int year = Integer.parseInt(dateVisited.substring(3));
-//        return year;
-//    }
 
 
     //MODIFIES: this
     //EFFECTS: change visit date
-    public void changeDateVisited(GregorianCalendar newDate) {
+    public void changeDateVisited(LocalDate newDate) {
         this.dateVisited = newDate;
     }
 
 
-//    //EFFECT : returns true if this date is after min date
-//    public boolean isAfter(String minDate) {
-//        int minMonth = Integer.parseInt(minDate.substring(0, 2));
-//        int maxMonth = Integer.parseInt(dateVisited.substring(0, 2));
-//        int minYear = Integer.parseInt(minDate.substring(3));
-//        int maxYear = Integer.parseInt(dateVisited.substring(3));
-//        if (minYear < maxYear) {
-//            return true;
-//        }
-//        if ((minYear == maxYear) && (minMonth <= maxMonth)) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
     //EFFECT : returns true if this date is after min date
-    public boolean isAfter(GregorianCalendar minDate) {
-        return dateVisited.after(minDate);
+    public boolean isAfter(LocalDate minDate) {
+        return dateVisited.isAfter(minDate);
     }
 
 
-//    //EFFECT : returns true if this date is before max date
-//    public boolean isBefore(String maxDate) {
-//        int minMonth = Integer.parseInt(dateVisited.substring(0, 2));
-//        int maxMonth = Integer.parseInt(maxDate.substring(0, 2));
-//        int minYear = Integer.parseInt(dateVisited.substring(3));
-//        int maxYear = Integer.parseInt(maxDate.substring(3));
-//        if (minYear < maxYear) {
-//            return true;
-//        }
-//        if ((minYear == maxYear) && (minMonth <= maxMonth)) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
     //EFFECT : returns true if this date is before max date
-    public boolean isBefore(GregorianCalendar maxDate) {
-        return dateVisited.before(maxDate);
+    public boolean isBefore(LocalDate maxDate) {
+        return dateVisited.isBefore(maxDate);
     }
 
     @Override

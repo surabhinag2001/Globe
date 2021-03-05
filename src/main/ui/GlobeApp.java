@@ -11,6 +11,7 @@ import persistence.JsonWishListWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -129,7 +130,7 @@ public class GlobeApp {
         int lm = input.nextInt();
         System.out.println("Day: ");
         int ld = input.nextInt();
-        GregorianCalendar minDate = new GregorianCalendar(ly,lm,ld);
+        LocalDate minDate = LocalDate.of(ly,lm,ld);
         System.out.println("Enter upper limit date");
         System.out.println("Year: ");
         int uy = input.nextInt();
@@ -137,7 +138,7 @@ public class GlobeApp {
         int um = input.nextInt();
         System.out.println("Day: ");
         int ud = input.nextInt();
-        GregorianCalendar maxDate = new GregorianCalendar(ly,lm,ld);
+        LocalDate maxDate = LocalDate.of(ly,lm,ld);
         System.out.println("Countries visited between " + minDate + "and" + maxDate + " (inclusive) :");
         int size = visitedCountries.filterDateWise(minDate, maxDate).size();
         for (int j = 0; j < size; j++) {
@@ -169,14 +170,11 @@ public class GlobeApp {
         System.out.println("Enter date visited");
         System.out.print("Year: ");
         int y = input.nextInt();
-        System.out.println();
         System.out.print("Month: ");
         int m = input.nextInt();
-        System.out.println();
         System.out.print("Day: ");
         int d = input.nextInt();
-        System.out.println();
-        GregorianCalendar date = new GregorianCalendar(y,m,d);
+        LocalDate date = LocalDate.of(y,m,d);
         visitedCountries.addCountry(country, notes, date);
         System.out.println(country + " added to the wishlist with notes : " + notes + " date :" + date);
     }
@@ -190,14 +188,14 @@ public class GlobeApp {
         System.out.print("Enter country name:");
         input.nextLine();
         String country = input.nextLine().trim();
-        System.out.print("Enter date visited");
-        System.out.println("Year: ");
+        System.out.println("Enter date visited");
+        System.out.print("Year: ");
         int y = input.nextInt();
-        System.out.println("Month: ");
+        System.out.print("Month: ");
         int m = input.nextInt();
-        System.out.println("Day: ");
+        System.out.print("Day: ");
         int d = input.nextInt();
-        GregorianCalendar date = new GregorianCalendar(y,m,d);
+        LocalDate date = LocalDate.of(y,m,d);
         visitedCountries.removeCountry(country, date);
         System.out.println(country + " visited on " + date + " removed from the visited list");
     }
