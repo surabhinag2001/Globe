@@ -1,6 +1,7 @@
 package ui;
 
 
+import model.AllCountries;
 import model.VisitedList;
 import model.WishList;
 import persistence.JsonVisitedListReader;
@@ -48,19 +49,16 @@ public class GlobeApp {
             command = input.next();
             command = command.toLowerCase();
 
-            switch (command) {
-                case ("q"):
-                    keepGoing = false;
-                    break;
-                case "w":
-                    handleWishlist();
-                    break;
-                case "v":
-                    handleVisitedList();
-                    break;
-                default:
-                    System.out.println("Invalid selection");
-                    break;
+            if ("q".equals(command)) {
+                keepGoing = false;
+            } else if ("a".equals(command)) {
+                displayAllCountries();
+            } else if ("w".equals(command)) {
+                handleWishlist();
+            } else if ("v".equals(command)) {
+                handleVisitedList();
+            } else {
+                System.out.println("Invalid selection");
             }
         }
         System.out.println("\nGoodbye!");
@@ -154,14 +152,12 @@ public class GlobeApp {
         System.out.println("add to visited list accessed");
         System.out.print("Enter country name:");
         input.nextLine();
-        String country = input.nextLine();
+        String country = input.nextLine().trim();
+
         System.out.print("Enter notes: ");
-        String notes = input.nextLine();
+        String notes = input.nextLine().trim();
         System.out.print("Enter date visited in mm-yyyy format: ");
-        String date = input.nextLine();
-        country.trim();
-        notes.trim();
-        date.trim();
+        String date = input.nextLine().trim();
         visitedCountries.addCountry(country, notes, date);
         System.out.println(country + " added to the wishlist with notes : " + notes + " date :" + date);
     }
@@ -174,12 +170,10 @@ public class GlobeApp {
         System.out.println("remove from visited list accessed");
         System.out.print("Enter country name:");
         input.nextLine();
-        String country = input.nextLine();
+        String country = input.nextLine().trim();
         System.out.print("Enter date of visit:");
 //        input.nextLine();
-        String date = input.nextLine();
-        country.trim();
-        date.trim();
+        String date = input.nextLine().trim();
         visitedCountries.removeCountry(country, date);
         System.out.println(country + " visited on " + date + " removed from the visited list");
     }
@@ -252,11 +246,9 @@ public class GlobeApp {
         System.out.println("add to wishlist accessed");
         System.out.print("Enter country name:");
         input.nextLine();
-        String country = input.nextLine();
+        String country = input.nextLine().trim();
         System.out.print("Enter notes: ");
-        String notes = input.nextLine();
-        country.trim();
-        notes.trim();
+        String notes = input.nextLine().trim();
         wishCountries.addCountry(country, notes);
         System.out.println(country + " added to the wishlist with notes : " + notes);
     }
@@ -268,8 +260,7 @@ public class GlobeApp {
         System.out.println("remove from wishlist accessed");
         System.out.print("Enter country name:");
         input.nextLine();
-        String country = input.nextLine();
-        country.trim();
+        String country = input.nextLine().trim();
         wishCountries.removeCountry(country);
         System.out.println(country + " removed from the wishlist");
     }
@@ -307,9 +298,17 @@ public class GlobeApp {
     // EFFECTS: displays menu of options to user
     private void displayMenu() {
         System.out.println("\nSelect from:");
+        System.out.println("\ta -> View all countries of the world");
         System.out.println("\tw -> View wishlist menu");
         System.out.println("\tv -> View visited menu");
         System.out.println("\tq -> Quit main menu");
+    }
+
+    private void displayAllCountries() {
+        AllCountries obj = new AllCountries();
+        for (String country : obj.getAllCountries()) {
+            System.out.println(country);
+        }
     }
 
 }
