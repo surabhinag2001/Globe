@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.InvalidCountryException;
 import model.WishCountryTest;
 import model.WishList;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ public class JsonWishListReaderTest extends WishCountryTest {
         try {
             WishList wl = reader.read();
             fail("IOException expected");
-        } catch (IOException e) {
+        } catch (IOException | InvalidCountryException e) {
             // pass
         }
     }
@@ -32,6 +33,8 @@ public class JsonWishListReaderTest extends WishCountryTest {
             assertEquals(0,wl.getMyWishList().size());
         } catch (IOException e) {
             System.out.println("Couldn't read from file");
+        } catch (InvalidCountryException e) {
+            fail("InvalidCountryException should not have been thrown");
         }
     }
 
@@ -47,6 +50,8 @@ public class JsonWishListReaderTest extends WishCountryTest {
             assertEquals("foosball",wl.getMyWishList().get(1).getNotesCountry());
         } catch (IOException e) {
             System.out.println("Couldn't read from file");
+        } catch (InvalidCountryException e) {
+            fail("InvalidCountryException should not have been thrown");
         }
     }
 

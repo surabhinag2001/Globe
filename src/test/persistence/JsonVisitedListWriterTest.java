@@ -1,5 +1,7 @@
 package persistence;
 
+import exceptions.FutureDateException;
+import exceptions.InvalidCountryException;
 import model.VisitedCountry;
 import model.VisitedList;
 import org.junit.jupiter.api.Test;
@@ -44,6 +46,10 @@ public class JsonVisitedListWriterTest {
             fail("Exception should not have been thrown");
         } catch (IOException e) {
             //pass
+        } catch (InvalidCountryException e) {
+            fail("Invalid Country Exception should not have been thrown");
+        } catch (FutureDateException e) {
+            fail("Future Date Exception Exception should not have been thrown");
         }
     }
 
@@ -52,26 +58,30 @@ public class JsonVisitedListWriterTest {
         try {
             VisitedList vl = new VisitedList();
             vl.addCountry("India", "pretty", LocalDate.of(2001,9,02));
-            vl.addCountry("UK", "bigben",LocalDate.of(2001,9,02));
+            vl.addCountry("United Kingdom", "bigben",LocalDate.of(2001,9,02));
             JsonVisitedListWriter writer = new JsonVisitedListWriter("./data/testWriterGeneralVisitedlist.json");
             writer.open();
             writer.write(vl);
             writer.close();
 
-            JsonVisitedListReader reader = new JsonVisitedListReader("./data/testWriterGeneralVisitedlistjson.json");
+            JsonVisitedListReader reader = new JsonVisitedListReader("./data/testWriterGeneralVisitedlist.json");
             vl = reader.read();
             List<VisitedCountry> countries = vl.getMyVisitedList();
             assertEquals(2, countries.size());
             assertEquals("India", vl.getMyVisitedList().get(0).getCountryName());
             assertEquals("pretty", vl.getMyVisitedList().get(0).getNotesCountry());
             assertEquals(LocalDate.of(2001,9,2), vl.getMyVisitedList().get(0).getDateVisited());
-            assertEquals("UK", vl.getMyVisitedList().get(1).getCountryName());
+            assertEquals("United Kingdom", vl.getMyVisitedList().get(1).getCountryName());
             assertEquals("bigben", vl.getMyVisitedList().get(1).getNotesCountry());
             assertEquals(LocalDate.of(2001,9,2), vl.getMyVisitedList().get(1).getDateVisited());
         } catch (FileNotFoundException e) {
             fail("Exception should not have been thrown");
         } catch (IOException e) {
             //pass
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        } catch (FutureDateException e) {
+            fail("Visit date is not in future");
         }
     }
 }

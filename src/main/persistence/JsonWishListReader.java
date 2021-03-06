@@ -1,6 +1,7 @@
 package persistence;
 
 
+import exceptions.InvalidCountryException;
 import model.WishList;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,7 +15,7 @@ import java.util.stream.Stream;
 // Represents a reader that reads wishlist from JSON data stored in file
 // Citation: code taken and modified from JsonReader class in JsonSerializationDemo
 public class JsonWishListReader {
-    private String source;
+    private final String source;
 
     // EFFECTS: constructs reader to read from source file
     public JsonWishListReader(String source) {
@@ -23,7 +24,7 @@ public class JsonWishListReader {
 
     //EFFECTS:reads wishlist from file and returns it;
     //throws IOException if an error occurs reading data from file
-    public WishList read() throws IOException {
+    public WishList read() throws IOException, InvalidCountryException {
         String jsonData = readFile(source);
         JSONArray jsonArray = new JSONArray(jsonData);
         return parseWishList(jsonArray);
@@ -42,7 +43,7 @@ public class JsonWishListReader {
     }
 
     // EFFECTS: parses wishlist from JSON array and returns it
-    private WishList parseWishList(JSONArray jsonArray) {
+    private WishList parseWishList(JSONArray jsonArray) throws InvalidCountryException {
         WishList wl = new WishList();
         for (Object json : jsonArray) {
             JSONObject nextCountry = (JSONObject) json;
@@ -53,7 +54,7 @@ public class JsonWishListReader {
 
     // MODIFIES: wl
     // EFFECTS: parses wish country from JSON object and adds it to wishlist
-    private void addCountry(WishList wl, JSONObject jsonObject) {
+    private void addCountry(WishList wl, JSONObject jsonObject) throws InvalidCountryException {
         String name = jsonObject.getString("name");
         String notes = jsonObject.getString("notes");
         wl.addCountry(name,notes);

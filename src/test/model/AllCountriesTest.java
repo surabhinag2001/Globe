@@ -10,9 +10,9 @@ public class AllCountriesTest {
     @Test
     public void testCheckExists() {
         AllCountries obj = new AllCountries();
-        assertTrue(obj.getAllCountries().contains("India"));
-        assertTrue(obj.getAllCountries().contains("United Kingdom"));
-        assertFalse(obj.getAllCountries().contains("neverland"));
+        assertTrue(obj.getAllCountries().contains("India".toUpperCase()));
+        assertTrue(obj.getAllCountries().contains("United Kingdom".toUpperCase()));
+        assertFalse(obj.getAllCountries().contains("neverland".toUpperCase()));
     }
 
 }

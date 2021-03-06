@@ -1,16 +1,15 @@
 package model;
 
+import exceptions.CountryNotPresentInListException;
+import exceptions.InvalidCountryException;
 import org.json.JSONArray;
-import org.json.JSONObject;
-import persistence.Writable;
-
 import java.util.LinkedList;
 import java.util.List;
 
 //class to represent the list of countries user wishes to visit
 public class WishList {
 
-    private List<WishCountry> myWishList;
+    private final List<WishCountry> myWishList;
 
     //EFFECTS: constructs an empty collection of countries I wish to visit
     public WishList() {
@@ -19,7 +18,12 @@ public class WishList {
 
     //MODIFIES: this
     //EFFECTS: adds a new country to the collection of wishlist countries
-    public void addCountry(String countryName, String notes) {
+    public void addCountry(String countryName, String notes) throws InvalidCountryException {
+        AllCountries obj = new AllCountries();
+        boolean isCountryValid = obj.getAllCountries().stream().anyMatch(countryName::equalsIgnoreCase);
+        if (!isCountryValid) {
+            throw new InvalidCountryException();
+        }
         WishCountry newCountry = new WishCountry(countryName, notes);
         //checking if the country has been added to the wishlist before
         if (!(searchCountry(countryName) > -1)) {
@@ -28,16 +32,22 @@ public class WishList {
         //else throw an exception giving message that the country is already in the list
     }
 
-    //REQUIRES: countryName is present in the wishlist
+
     //MODIFIES: this
     //EFFECTS: removes a country from the collection of wishlist countries
-    public void removeCountry(String countryToRemove) {
+    //         if countryName and corresponding date is  not present in wishlist countries
+    //         throws CountryNotPresentInListException
+    public void removeCountry(String countryToRemove) throws CountryNotPresentInListException {
+        int n = searchCountry(countryToRemove);
+        if (n < 0) {
+            throw new CountryNotPresentInListException();
+        }
         myWishList.remove(searchCountry(countryToRemove));
     }
 
 
-    //REQUIRES: countryName is present in the wishlist
     //EFFECTS: returns the index of the country to be searched in the wishlist
+    //         if country not present, returns -1
     public int searchCountry(String countryToSearch) {
         int i;
         for (i = 0; i < myWishList.size(); i++) {

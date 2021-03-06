@@ -1,7 +1,6 @@
 package persistence;
 
 import model.VisitedList;
-import model.WishList;
 import org.json.JSONArray;
 
 
@@ -12,7 +11,7 @@ import java.io.*;
 public class JsonVisitedListWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
-    private String destination;
+    private final String destination;
 
     // EFFECTS: constructs writer to write to destination file
     public JsonVisitedListWriter(String destination) {
@@ -29,7 +28,7 @@ public class JsonVisitedListWriter {
     // MODIFIES: this
     // EFFECTS: writes JSON representation of visited list to file
     public void write(VisitedList vl) {
-        JSONArray json = vl.visitedlistToJson();
+        JSONArray json = vl.visitedListToJson();
         saveToFile(json.toString(TAB));
     }
 

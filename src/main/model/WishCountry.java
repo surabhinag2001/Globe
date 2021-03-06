@@ -1,7 +1,6 @@
 package model;
 
 import org.json.JSONObject;
-import persistence.Writable;
 
 //class to represent a country that user wishes to visit
 public class WishCountry extends Country {

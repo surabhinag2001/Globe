@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.InvalidCountryException;
 import model.WishCountry;
 import model.WishList;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,8 @@ public class JsonWishListWriterTest {
             fail("Exception should not have been thrown");
         } catch (IOException e) {
             //pass
+        } catch (InvalidCountryException e) {
+            fail("Invalid Country Exception should not have been thrown");
         }
     }
 
@@ -51,7 +54,7 @@ public class JsonWishListWriterTest {
         try {
             WishList wl = new WishList();
             wl.addCountry("India", "taj");
-            wl.addCountry("UK", "bigben");
+            wl.addCountry("United Kingdom", "bigben");
             JsonWishListWriter writer = new JsonWishListWriter("./data/testWriterGeneralWishlist.json");
             writer.open();
             writer.write(wl);
@@ -63,12 +66,14 @@ public class JsonWishListWriterTest {
             assertEquals(2, countries.size());
             assertEquals("India", wl.getMyWishList().get(0).getCountryName());
             assertEquals("taj", wl.getMyWishList().get(0).getNotesCountry());
-            assertEquals("UK", wl.getMyWishList().get(1).getCountryName());
+            assertEquals("United Kingdom", wl.getMyWishList().get(1).getCountryName());
             assertEquals("bigben", wl.getMyWishList().get(1).getNotesCountry());
         } catch (FileNotFoundException e) {
             fail("Exception should not have been thrown");
         } catch (IOException e) {
            //pass
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
         }
     }
 }

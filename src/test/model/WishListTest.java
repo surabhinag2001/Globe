@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.CountryNotPresentInListException;
+import exceptions.InvalidCountryException;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
@@ -14,64 +16,128 @@ class WishListTest {
     public void testAddCountry() {
         WishList myWishList = new WishList();
         assertEquals(0, myWishList.getMyWishList().size());
-        myWishList.addCountry("India", "visit forts");
+        try {
+            myWishList.addCountry("India", "visit forts");
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        }
         assertEquals(1, myWishList.getMyWishList().size());
         List<WishCountry> res1 = new LinkedList<>();
         WishCountry test1 = new WishCountry("India", "visit forts");
-        WishCountry test2 = new WishCountry("Scotland", "visit castle");
+        WishCountry test2 = new WishCountry("Germany", "visit castle");
         res1.add(test1);
         assertEquals(res1.get(0).getCountryName(), myWishList.getMyWishList().get(0).getCountryName());
         assertEquals(res1.get(0).getNotesCountry(), myWishList.getMyWishList().get(0).getNotesCountry());
-        myWishList.addCountry("Scotland", "visit castle");
+        try {
+            myWishList.addCountry("Germany", "visit castle");
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        }
         res1.add(test2);
         assertEquals(2, myWishList.getMyWishList().size());
         assertEquals(res1.get(1).getCountryName(), myWishList.getMyWishList().get(1).getCountryName());
         assertEquals(res1.get(1).getNotesCountry(), myWishList.getMyWishList().get(1).getNotesCountry());
+
+        //adding an invalid country
+        try {
+            myWishList.addCountry("Bharat", "visit castle");
+        } catch (InvalidCountryException e) {
+            //InvalidCountryException caught
+        }
     }
 
     @Test
     public void testRemoveCountry() {
         WishList myWishList = new WishList();
-        myWishList.addCountry("India", "visit forts");
+        try {
+            myWishList.addCountry("India", "visit forts");
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        }
         assertEquals(1, myWishList.getMyWishList().size());
-        myWishList.removeCountry("India");
+        try {
+            myWishList.removeCountry("India");
+        } catch (CountryNotPresentInListException e) {
+            fail("Country is present in the wishlist");
+        }
         assertEquals(0, myWishList.getMyWishList().size());
-        myWishList.addCountry("Scotland", "visit castle");
-        myWishList.addCountry("India", "visit forts");
-        myWishList.addCountry("United Kingdom", "visit United Kingdom");
+        try {
+            myWishList.addCountry("Germany", "visit castle");
+            myWishList.addCountry("India", "visit forts");
+            myWishList.addCountry("United Kingdom", "visit United Kingdom");
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        }
         assertEquals(3, myWishList.getMyWishList().size());
-        myWishList.removeCountry("India");
+        try {
+            myWishList.removeCountry("India");
+        } catch (CountryNotPresentInListException e) {
+            fail("Country is present in the wishlist");
+        }
         assertEquals(2, myWishList.getMyWishList().size());
-        assertEquals("Scotland", myWishList.getMyWishList().get(0).getCountryName());
+        assertEquals("Germany", myWishList.getMyWishList().get(0).getCountryName());
         assertEquals("visit castle", myWishList.getMyWishList().get(0).getNotesCountry());
         assertEquals("United Kingdom", myWishList.getMyWishList().get(1).getCountryName());
         assertEquals("visit United Kingdom", myWishList.getMyWishList().get(1).getNotesCountry());
-        myWishList.removeCountry("Scotland");
+        try {
+            myWishList.removeCountry("Germany");
+        } catch (CountryNotPresentInListException e) {
+            fail("Country is present in the wishlist");
+        }
         assertEquals(1, myWishList.getMyWishList().size());
         assertEquals("United Kingdom", myWishList.getMyWishList().get(0).getCountryName());
         assertEquals("visit United Kingdom", myWishList.getMyWishList().get(0).getNotesCountry());
-        myWishList.removeCountry("United Kingdom");
+        try {
+            myWishList.removeCountry("United Kingdom");
+        } catch (CountryNotPresentInListException e) {
+            fail("Country is present in the wishlist");
+        }
         assertEquals(0, myWishList.getMyWishList().size());
+
+        //removing country not present in wishlist
+        try {
+            myWishList.addCountry("India", "visit forts");
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        }
+        assertEquals(1, myWishList.getMyWishList().size());
+        try {
+            myWishList.removeCountry("United Kingdom");
+        } catch (CountryNotPresentInListException e) {
+            //CountryNotPresentInListException caught
+        }
     }
 
     @Test
     public void testSearchCountry() {
         WishList myWishList = new WishList();
-        myWishList.addCountry("Scotland", "visit castle");
-        myWishList.addCountry("India", "visit forts");
-        myWishList.addCountry("United Kingdom", "visit United Kingdom");
+        try {
+            myWishList.addCountry("Germany", "visit castle");
+            myWishList.addCountry("India", "visit forts");
+            myWishList.addCountry("United Kingdom", "visit United Kingdom");
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        }
         assertEquals(1, myWishList.searchCountry("India"));
         assertEquals(2, myWishList.searchCountry("United Kingdom"));
-        assertEquals(0, myWishList.searchCountry("Scotland"));
+        assertEquals(0, myWishList.searchCountry("Germany"));
         assertEquals(-1, myWishList.searchCountry("Japan"));
     }
 
     @Test
     public void testAddSameCountryTwice() {
         WishList myWishList = new WishList();
-        myWishList.addCountry("India","forts");
+        try {
+            myWishList.addCountry("India","forts");
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        }
         assertEquals(1,myWishList.getMyWishList().size());
-        myWishList.addCountry("India","taj");
+        try {
+            myWishList.addCountry("India","taj");
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        }
         assertEquals(1,myWishList.getMyWishList().size());
         assertEquals("India",myWishList.getMyWishList().get(0).getCountryName());
         assertEquals("forts",myWishList.getMyWishList().get(0).getNotesCountry());

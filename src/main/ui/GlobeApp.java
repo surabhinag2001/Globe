@@ -1,6 +1,10 @@
 package ui;
 
 
+import exceptions.CountryNotPresentInListException;
+import exceptions.FutureDateException;
+import exceptions.InvalidCountryException;
+import exceptions.MaxDateBeforeMinDateException;
 import model.AllCountries;
 import model.VisitedList;
 import model.WishList;
@@ -11,9 +15,11 @@ import persistence.JsonWishListWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.GregorianCalendar;
 import java.util.Scanner;
+import java.lang.*;
+
 
 //represents the Globe application
 public class GlobeApp {
@@ -22,10 +28,10 @@ public class GlobeApp {
     private WishList wishCountries;
     private VisitedList visitedCountries;
     private final Scanner input = new Scanner(System.in);
-    private JsonWishListWriter jsonWishListWriter;
-    private JsonWishListReader jsonWishListReader;
-    private JsonVisitedListWriter jsonVisitedListWriter;
-    private JsonVisitedListReader jsonVisitedListReader;
+    private final JsonWishListWriter jsonWishListWriter;
+    private final JsonWishListReader jsonWishListReader;
+    private final JsonVisitedListWriter jsonVisitedListWriter;
+    private final JsonVisitedListReader jsonVisitedListReader;
 
 
     //EFFECTS: runs the globe application
@@ -80,19 +86,46 @@ public class GlobeApp {
             if (command.equalsIgnoreCase("q")) {
                 keepGoing = false;
             } else if (command.equalsIgnoreCase("a")) {
-                addToVisitedList();
-                saveVisitedList();
+                handleAddToVisited();
             } else if (command.equalsIgnoreCase("r")) {
-                removeFromVisitedList();
-                saveVisitedList();
-            } else if (command.equalsIgnoreCase("s")) {
+                handleRemoveFromVisited();
+            } else if (command.equalsIgnoreCase("v")) {
                 viewVisitedList();
             } else if (command.equalsIgnoreCase("f")) {
-                filter();
+                filterWithException();
             } else {
                 System.out.println("Invalid selection");
                 keepGoing = false;
             }
+        }
+    }
+
+    //EFFECT: executes addToVisitedList(); handling the DateTimeException
+    private void handleAddToVisited() {
+        try {
+            addToVisitedList();
+            saveVisitedList();
+        } catch (DateTimeException e) {
+            System.out.println("Invalid date");
+        }
+    }
+
+    //EFFECT: executes removeFromVisitedList(); handling the DateTimeException
+    private void handleRemoveFromVisited() {
+        try {
+            removeFromVisitedList();
+            saveVisitedList();
+        } catch (DateTimeException e) {
+            System.out.println("Invalid date");
+        }
+    }
+
+    //EFFECT: executes filter(); handling the DateTimeException
+    private void filterWithException() {
+        try {
+            filter();
+        } catch (DateTimeException e) {
+            System.out.println("Invalid date");
         }
     }
 
@@ -104,6 +137,10 @@ public class GlobeApp {
             System.out.println("Loaded Visited list from " + JSON_STORE_VISITED_LIST);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE_VISITED_LIST);
+        } catch (InvalidCountryException e) {
+            System.out.println("Country entered is invalid");
+        } catch (FutureDateException e) {
+            System.out.println("Date entered cannot be in future");
         }
     }
 
@@ -120,32 +157,41 @@ public class GlobeApp {
     }
 
 
-    //REQUIRES: dates are given in mm-yyyy format
+    //REQUIRES: dates are given in yyyy-mm-dd format and are valid
     //EFFECT: displays countries that lie between specified dates
     private void filter() {
         System.out.println("Enter lower limit date");
-        System.out.println("Year: ");
-        int ly = input.nextInt();
-        System.out.println("Month: ");
-        int lm = input.nextInt();
-        System.out.println("Day: ");
-        int ld = input.nextInt();
-        LocalDate minDate = LocalDate.of(ly,lm,ld);
+        LocalDate minDate = inputDate();
+
         System.out.println("Enter upper limit date");
-        System.out.println("Year: ");
-        int uy = input.nextInt();
-        System.out.println("Month: ");
-        int um = input.nextInt();
-        System.out.println("Day: ");
-        int ud = input.nextInt();
-        LocalDate maxDate = LocalDate.of(ly,lm,ld);
-        System.out.println("Countries visited between " + minDate + "and" + maxDate + " (inclusive) :");
-        int size = visitedCountries.filterDateWise(minDate, maxDate).size();
+        LocalDate maxDate = inputDate();
+        int size = 0;
+        try {
+            size = visitedCountries.filterDateWise(minDate, maxDate).size();
+            System.out.println("Countries visited between " + minDate + "and" + maxDate + " :");
+        } catch (MaxDateBeforeMinDateException e) {
+            System.out.println("Minimum date " + minDate + " lies after maximum date " + maxDate);
+        }
         for (int j = 0; j < size; j++) {
-            System.out.println(visitedCountries.filterDateWise(minDate, maxDate).get(j).getCountryName());
-            System.out.println(visitedCountries.filterDateWise(minDate, maxDate).get(j).getDateVisited());
+            try {
+                System.out.println(visitedCountries.filterDateWise(minDate, maxDate).get(j).getCountryName());
+                System.out.println(visitedCountries.filterDateWise(minDate, maxDate).get(j).getDateVisited());
+            } catch (MaxDateBeforeMinDateException e) {
+                System.out.println("Minimum date " + minDate + " lies after maximum date " + maxDate);
+            }
             System.out.println();
         }
+    }
+
+    //EFFECT: function to input dates
+    private LocalDate inputDate() {
+        System.out.print("Year: ");
+        int y = input.nextInt();
+        System.out.print("Month: ");
+        int m = input.nextInt();
+        System.out.print("Day: ");
+        int d = input.nextInt();
+        return LocalDate.of(y, m, d);
     }
 
     //EFFECTS : displays list of all visited countries
@@ -157,47 +203,44 @@ public class GlobeApp {
         }
     }
 
-    //REQUIRES : date is entered in mm-yyyy format
+    //REQUIRES : date is entered in yyyy-mm-dd format, is valid and is not in future
     //MODIFIES: this
     //EFFECT : adds a country to the visited list
     private void addToVisitedList() {
         System.out.println("add to visited list accessed");
         System.out.print("Enter country name:");
         input.nextLine();
-        String country = input.nextLine().trim();
+        String country = (input.nextLine().trim()).toUpperCase();
         System.out.print("Enter notes: ");
         String notes = input.nextLine().trim();
         System.out.println("Enter date visited");
-        System.out.print("Year: ");
-        int y = input.nextInt();
-        System.out.print("Month: ");
-        int m = input.nextInt();
-        System.out.print("Day: ");
-        int d = input.nextInt();
-        LocalDate date = LocalDate.of(y,m,d);
-        visitedCountries.addCountry(country, notes, date);
-        System.out.println(country + " added to the wishlist with notes : " + notes + " date :" + date);
+        LocalDate date = inputDate();
+        try {
+            visitedCountries.addCountry(country, notes, date);
+            System.out.println(country + " added to the wishlist with notes : " + notes + " date :" + date);
+        } catch (InvalidCountryException e) {
+            System.out.println("Country entered is invalid");
+        } catch (FutureDateException e) {
+            System.out.println("Date of visit cannot be in future");
+        }
     }
 
 
-    //REQUIRES : country being removed is present in the wishlist
     //MODIFIES: this
     //EFFECT : removes country from the visited list
     private void removeFromVisitedList() {
         System.out.println("remove from visited list accessed");
         System.out.print("Enter country name:");
         input.nextLine();
-        String country = input.nextLine().trim();
+        String country = (input.nextLine().trim()).toUpperCase();
         System.out.println("Enter date visited");
-        System.out.print("Year: ");
-        int y = input.nextInt();
-        System.out.print("Month: ");
-        int m = input.nextInt();
-        System.out.print("Day: ");
-        int d = input.nextInt();
-        LocalDate date = LocalDate.of(y,m,d);
-        visitedCountries.removeCountry(country, date);
-        System.out.println(country + " visited on " + date + " removed from the visited list");
+        LocalDate date = inputDate();
+        try {
+            visitedCountries.removeCountry(country, date);
+            System.out.println(country + " visited on " + date + " removed from the visited list");
+        } catch (CountryNotPresentInListException e) {
+            System.out.println(country + " visited on " + date + " is not present in the list of visits");
+        }
     }
 
 
@@ -238,6 +281,8 @@ public class GlobeApp {
             System.out.println("Loaded WishList from " + JSON_STORE_WISHLIST);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE_WISHLIST);
+        } catch (InvalidCountryException e) {
+            System.out.println("Country entered is invalid");
         }
     }
 
@@ -268,11 +313,15 @@ public class GlobeApp {
         System.out.println("add to wishlist accessed");
         System.out.print("Enter country name:");
         input.nextLine();
-        String country = input.nextLine().trim();
+        String country = (input.nextLine().trim()).toUpperCase();
         System.out.print("Enter notes: ");
         String notes = input.nextLine().trim();
-        wishCountries.addCountry(country, notes);
-        System.out.println(country + " added to the wishlist with notes : " + notes);
+        try {
+            wishCountries.addCountry(country, notes);
+            System.out.println(country + " added to the wishlist with notes : " + notes);
+        } catch (InvalidCountryException e) {
+            System.out.println("Country entered is invalid");
+        }
     }
 
     //REQUIRES : country being removes is present in the wishlist
@@ -282,9 +331,13 @@ public class GlobeApp {
         System.out.println("remove from wishlist accessed");
         System.out.print("Enter country name:");
         input.nextLine();
-        String country = input.nextLine().trim();
-        wishCountries.removeCountry(country);
-        System.out.println(country + " removed from the wishlist");
+        String country = (input.nextLine().trim()).toUpperCase();
+        try {
+            wishCountries.removeCountry(country);
+            System.out.println(country + " removed from the wishlist");
+        } catch (CountryNotPresentInListException e) {
+            System.out.println(country + " is not present in the wishlist");
+        }
     }
 
 
@@ -312,7 +365,7 @@ public class GlobeApp {
         System.out.println("\nSelect from:");
         System.out.println("\ta -> Add country to visited menu");
         System.out.println("\tr -> Remove a country from the visited menu");
-        System.out.println("\ts -> See names and date of visit of all countries visited");
+        System.out.println("\tv -> See names and date of visit of all countries visited");
         System.out.println("\tf -> See names and date of visit of countries visited within specified dates");
         System.out.println("\tq -> Quit visited Menu");
     }

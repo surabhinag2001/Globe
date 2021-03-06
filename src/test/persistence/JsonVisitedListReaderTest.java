@@ -1,5 +1,7 @@
 package persistence;
 
+import exceptions.FutureDateException;
+import exceptions.InvalidCountryException;
 import model.VisitedCountryTest;
 import model.VisitedList;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,7 @@ public class JsonVisitedListReaderTest extends VisitedCountryTest {
         try {
             VisitedList vl = reader.read();
             fail("IOException expected");
-        } catch (IOException e) {
+        } catch (IOException | InvalidCountryException | FutureDateException e) {
             // pass
         }
     }
@@ -33,6 +35,10 @@ public class JsonVisitedListReaderTest extends VisitedCountryTest {
             assertEquals(0,vl.getMyVisitedList().size());
         } catch (IOException e) {
             System.out.println("Couldn't read from file");
+        } catch (InvalidCountryException e) {
+            fail("InvalidCountryException should not have been thrown");
+        } catch (FutureDateException e) {
+            fail("FutureDateException should not have been thrown");
         }
     }
 
@@ -45,11 +51,15 @@ public class JsonVisitedListReaderTest extends VisitedCountryTest {
             assertEquals("India",vl.getMyVisitedList().get(0).getCountryName());
             assertEquals("pretty",vl.getMyVisitedList().get(0).getNotesCountry());
             assertEquals(LocalDate.of(2001,9,2),vl.getMyVisitedList().get(0).getDateVisited());
-            assertEquals("UK",vl.getMyVisitedList().get(1).getCountryName());
+            assertEquals("United Kingdom",vl.getMyVisitedList().get(1).getCountryName());
             assertEquals("bigben",vl.getMyVisitedList().get(1).getNotesCountry());
             assertEquals(LocalDate.of(2001,9,2),vl.getMyVisitedList().get(1).getDateVisited());
         } catch (IOException e) {
             System.out.println("Couldn't read from file");
+        } catch (InvalidCountryException e) {
+            fail("InvalidCountryException should not have been thrown");
+        } catch (FutureDateException e) {
+            fail("FutureDateException should not have been thrown");
         }
     }
 
