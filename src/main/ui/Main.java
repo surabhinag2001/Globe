@@ -1,6 +1,5 @@
 package ui;
 
-import exceptions.InvalidCountryException;
 
 //main class that runs the entire application
 public class Main {

@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.CountryAlreadyPresentException;
 import exceptions.FutureDateException;
 import exceptions.InvalidCountryException;
 import model.VisitedCountry;
@@ -50,6 +51,8 @@ public class JsonVisitedListWriterTest {
             fail("Invalid Country Exception should not have been thrown");
         } catch (FutureDateException e) {
             fail("Future Date Exception Exception should not have been thrown");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
     }
 
@@ -82,6 +85,8 @@ public class JsonVisitedListWriterTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
     }
 }

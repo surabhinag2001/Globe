@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.CountryAlreadyPresentException;
 import exceptions.FutureDateException;
 import exceptions.InvalidCountryException;
 import model.VisitedCountryTest;
@@ -22,7 +23,7 @@ public class JsonVisitedListReaderTest extends VisitedCountryTest {
         try {
             VisitedList vl = reader.read();
             fail("IOException expected");
-        } catch (IOException | InvalidCountryException | FutureDateException e) {
+        } catch (IOException | InvalidCountryException | FutureDateException | CountryAlreadyPresentException e) {
             // pass
         }
     }
@@ -39,6 +40,8 @@ public class JsonVisitedListReaderTest extends VisitedCountryTest {
             fail("InvalidCountryException should not have been thrown");
         } catch (FutureDateException e) {
             fail("FutureDateException should not have been thrown");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
     }
 
@@ -60,6 +63,8 @@ public class JsonVisitedListReaderTest extends VisitedCountryTest {
             fail("InvalidCountryException should not have been thrown");
         } catch (FutureDateException e) {
             fail("FutureDateException should not have been thrown");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
     }
 

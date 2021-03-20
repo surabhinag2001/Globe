@@ -1,8 +1,10 @@
 package model;
 
+import exceptions.CountryAlreadyPresentException;
 import exceptions.CountryNotPresentInListException;
 import exceptions.InvalidCountryException;
 import org.json.JSONArray;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +20,8 @@ public class WishList {
 
     //MODIFIES: this
     //EFFECTS: adds a new country to the collection of wishlist countries
-    public void addCountry(String countryName, String notes) throws InvalidCountryException {
+    public void addCountry(String countryName, String notes) throws InvalidCountryException,
+            CountryAlreadyPresentException {
         AllCountries obj = new AllCountries();
         boolean isCountryValid = obj.getAllCountries().stream().anyMatch(countryName::equalsIgnoreCase);
         if (!isCountryValid) {
@@ -28,8 +31,9 @@ public class WishList {
         //checking if the country has been added to the wishlist before
         if (!(searchCountry(countryName) > -1)) {
             myWishList.add(newCountry);
+        } else {
+            throw new CountryAlreadyPresentException();
         }
-        //else throw an exception giving message that the country is already in the list
     }
 
 

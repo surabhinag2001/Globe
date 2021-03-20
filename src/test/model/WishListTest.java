@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.CountryAlreadyPresentException;
 import exceptions.CountryNotPresentInListException;
 import exceptions.InvalidCountryException;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,8 @@ class WishListTest {
             myWishList.addCountry("India", "visit forts");
         } catch (InvalidCountryException e) {
             fail("Country is not invalid");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not been thrown");
         }
         assertEquals(1, myWishList.getMyWishList().size());
         List<WishCountry> res1 = new LinkedList<>();
@@ -32,6 +35,8 @@ class WishListTest {
             myWishList.addCountry("Germany", "visit castle");
         } catch (InvalidCountryException e) {
             fail("Country is not invalid");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not been thrown");
         }
         res1.add(test2);
         assertEquals(2, myWishList.getMyWishList().size());
@@ -43,6 +48,8 @@ class WishListTest {
             myWishList.addCountry("Bharat", "visit castle");
         } catch (InvalidCountryException e) {
             //InvalidCountryException caught
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not been thrown");
         }
     }
 
@@ -53,6 +60,8 @@ class WishListTest {
             myWishList.addCountry("India", "visit forts");
         } catch (InvalidCountryException e) {
             fail("Country is not invalid");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not been thrown");
         }
         assertEquals(1, myWishList.getMyWishList().size());
         try {
@@ -67,6 +76,8 @@ class WishListTest {
             myWishList.addCountry("United Kingdom", "visit United Kingdom");
         } catch (InvalidCountryException e) {
             fail("Country is not invalid");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not been thrown");
         }
         assertEquals(3, myWishList.getMyWishList().size());
         try {
@@ -99,6 +110,8 @@ class WishListTest {
             myWishList.addCountry("India", "visit forts");
         } catch (InvalidCountryException e) {
             fail("Country is not invalid");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not been thrown");
         }
         assertEquals(1, myWishList.getMyWishList().size());
         try {
@@ -117,6 +130,8 @@ class WishListTest {
             myWishList.addCountry("United Kingdom", "visit United Kingdom");
         } catch (InvalidCountryException e) {
             fail("Country is not invalid");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not been thrown");
         }
         assertEquals(1, myWishList.searchCountry("India"));
         assertEquals(2, myWishList.searchCountry("United Kingdom"));
@@ -131,12 +146,16 @@ class WishListTest {
             myWishList.addCountry("India","forts");
         } catch (InvalidCountryException e) {
             fail("Country is not invalid");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not been thrown");
         }
         assertEquals(1,myWishList.getMyWishList().size());
         try {
             myWishList.addCountry("India","taj");
         } catch (InvalidCountryException e) {
             fail("Country is not invalid");
+        } catch (CountryAlreadyPresentException e) {
+            //CountryAlreadyPresentException caught
         }
         assertEquals(1,myWishList.getMyWishList().size());
         assertEquals("India",myWishList.getMyWishList().get(0).getCountryName());

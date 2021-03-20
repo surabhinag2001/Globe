@@ -1,6 +1,7 @@
 package persistence;
 
 
+import exceptions.CountryAlreadyPresentException;
 import exceptions.InvalidCountryException;
 import model.WishList;
 import org.json.JSONArray;
@@ -24,7 +25,7 @@ public class JsonWishListReader {
 
     //EFFECTS:reads wishlist from file and returns it;
     //throws IOException if an error occurs reading data from file
-    public WishList read() throws IOException, InvalidCountryException {
+    public WishList read() throws IOException, InvalidCountryException, CountryAlreadyPresentException {
         String jsonData = readFile(source);
         JSONArray jsonArray = new JSONArray(jsonData);
         return parseWishList(jsonArray);
@@ -43,7 +44,8 @@ public class JsonWishListReader {
     }
 
     // EFFECTS: parses wishlist from JSON array and returns it
-    private WishList parseWishList(JSONArray jsonArray) throws InvalidCountryException {
+    private WishList parseWishList(JSONArray jsonArray) throws InvalidCountryException,
+            CountryAlreadyPresentException {
         WishList wl = new WishList();
         for (Object json : jsonArray) {
             JSONObject nextCountry = (JSONObject) json;
@@ -54,7 +56,8 @@ public class JsonWishListReader {
 
     // MODIFIES: wl
     // EFFECTS: parses wish country from JSON object and adds it to wishlist
-    private void addCountry(WishList wl, JSONObject jsonObject) throws InvalidCountryException {
+    private void addCountry(WishList wl, JSONObject jsonObject) throws InvalidCountryException,
+            CountryAlreadyPresentException {
         String name = jsonObject.getString("name");
         String notes = jsonObject.getString("notes");
         wl.addCountry(name,notes);

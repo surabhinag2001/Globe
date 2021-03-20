@@ -1,10 +1,7 @@
 package ui;
 
 
-import exceptions.CountryNotPresentInListException;
-import exceptions.FutureDateException;
-import exceptions.InvalidCountryException;
-import exceptions.MaxDateBeforeMinDateException;
+import exceptions.*;
 import model.AllCountries;
 import model.VisitedList;
 import model.WishList;
@@ -141,6 +138,8 @@ public class GlobeApp {
             System.out.println("Country entered is invalid");
         } catch (FutureDateException e) {
             System.out.println("Date entered cannot be in future");
+        } catch (CountryAlreadyPresentException e) {
+            System.out.println("Same visit cannot be added more than once");
         }
     }
 
@@ -217,11 +216,13 @@ public class GlobeApp {
         LocalDate date = inputDate();
         try {
             visitedCountries.addCountry(country, notes, date);
-            System.out.println(country + " added to the wishlist with notes : " + notes + " date :" + date);
+            System.out.println(country + " added to the visited with notes : " + notes + " date :" + date);
         } catch (InvalidCountryException e) {
             System.out.println("Country entered is invalid");
         } catch (FutureDateException e) {
             System.out.println("Date of visit cannot be in future");
+        } catch (CountryAlreadyPresentException e) {
+            System.out.println(country + " is already present in the list of visits");
         }
     }
 
@@ -283,6 +284,8 @@ public class GlobeApp {
             System.out.println("Unable to read from file: " + JSON_STORE_WISHLIST);
         } catch (InvalidCountryException e) {
             System.out.println("Country entered is invalid");
+        } catch (CountryAlreadyPresentException e) {
+            System.out.println("Country entered is already present in the wishlist");
         }
     }
 
@@ -321,6 +324,8 @@ public class GlobeApp {
             System.out.println(country + " added to the wishlist with notes : " + notes);
         } catch (InvalidCountryException e) {
             System.out.println("Country entered is invalid");
+        } catch (CountryAlreadyPresentException e) {
+            System.out.println(country + " is already present in the wishlist");
         }
     }
 

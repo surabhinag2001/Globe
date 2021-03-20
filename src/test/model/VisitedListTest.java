@@ -1,9 +1,6 @@
 package model;
 
-import exceptions.CountryNotPresentInListException;
-import exceptions.FutureDateException;
-import exceptions.InvalidCountryException;
-import exceptions.MaxDateBeforeMinDateException;
+import exceptions.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -26,6 +23,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         assertEquals(1, myVisitedList.getMyVisitedList().size());
         List<VisitedCountry> res1 = new LinkedList<>();
@@ -43,6 +42,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         res1.add(test2);
         assertEquals(2, myVisitedList.getMyVisitedList().size());
@@ -58,6 +59,8 @@ public class VisitedListTest {
             //exception caught
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
 
         try {
@@ -66,6 +69,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             //FutureDateException caught!
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
     }
 
@@ -78,6 +83,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         assertEquals(1, myVisitedList.getMyVisitedList().size());
         try {
@@ -92,6 +99,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         try {
             myVisitedList.addCountry("India", "visit forts", LocalDate.of(2019,9,2));
@@ -99,6 +108,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         try {
             myVisitedList.addCountry("United Kingdom", "visit United Kingdom", LocalDate.of(2020,10,2));
@@ -106,6 +117,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         assertEquals(3, myVisitedList.getMyVisitedList().size());
         try {
@@ -143,6 +156,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         assertEquals(1, myVisitedList.getMyVisitedList().size());
         try {
@@ -151,6 +166,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         assertEquals(2, myVisitedList.getMyVisitedList().size());
         try {
@@ -173,6 +190,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         assertEquals(1, myVisitedList.searchCountry("India",LocalDate.of(2019,9,02)));
         assertEquals(2, myVisitedList.searchCountry("United Kingdom",LocalDate.of(2020,10,02)));
@@ -195,6 +214,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         VisitedList filterList = new VisitedList();
         try {
@@ -204,6 +225,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         try {
             assertEquals(0, myVisitedList.filterDateWise(LocalDate.of(2002,2,02), LocalDate.of(2003,2,02)).size());
@@ -230,6 +253,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         assertEquals(1,myVisitedList.getMyVisitedList().size());
         try {
@@ -238,6 +263,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            //CountryAlreadyPresentException caught
         }
         assertEquals(1,myVisitedList.getMyVisitedList().size());
         assertEquals("India",myVisitedList.getMyVisitedList().get(0).getCountryName());
@@ -254,6 +281,8 @@ public class VisitedListTest {
             fail("Country is not invalid");
         } catch (FutureDateException e) {
             fail("Visit date is not in future");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
         try {
             myVisitedList.removeCountry("Germany",LocalDate.of(2019,9,02));

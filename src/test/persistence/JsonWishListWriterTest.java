@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.CountryAlreadyPresentException;
 import exceptions.InvalidCountryException;
 import model.WishCountry;
 import model.WishList;
@@ -46,6 +47,8 @@ public class JsonWishListWriterTest {
             //pass
         } catch (InvalidCountryException e) {
             fail("Invalid Country Exception should not have been thrown");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
     }
 
@@ -74,6 +77,8 @@ public class JsonWishListWriterTest {
            //pass
         } catch (InvalidCountryException e) {
             fail("Country is not invalid");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
     }
 }

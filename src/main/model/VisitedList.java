@@ -1,9 +1,6 @@
 package model;
 
-import exceptions.CountryNotPresentInListException;
-import exceptions.FutureDateException;
-import exceptions.InvalidCountryException;
-import exceptions.MaxDateBeforeMinDateException;
+import exceptions.*;
 import org.json.JSONArray;
 
 import java.time.LocalDate;
@@ -24,7 +21,7 @@ public class VisitedList {
     //MODIFIES: this
     //EFFECTS: adds a new country to the collection of wishlist countries
     public void addCountry(String countryName, String notes, LocalDate date) throws InvalidCountryException,
-            FutureDateException {
+            FutureDateException,CountryAlreadyPresentException {
         AllCountries obj = new AllCountries();
         boolean isCountryValid = obj.getAllCountries().stream().anyMatch(countryName::equalsIgnoreCase);
         if (!isCountryValid) {
@@ -38,6 +35,8 @@ public class VisitedList {
         VisitedCountry newCountry = new VisitedCountry(countryName, notes, date);
         if (!(searchCountry(countryName, date) > -1)) {
             myVisitedList.add(newCountry);
+        } else {
+            throw new CountryAlreadyPresentException();
         }
     }
 

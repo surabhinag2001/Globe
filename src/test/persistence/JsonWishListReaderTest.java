@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.CountryAlreadyPresentException;
 import exceptions.InvalidCountryException;
 import model.WishCountryTest;
 import model.WishList;
@@ -20,7 +21,7 @@ public class JsonWishListReaderTest extends WishCountryTest {
         try {
             WishList wl = reader.read();
             fail("IOException expected");
-        } catch (IOException | InvalidCountryException e) {
+        } catch (IOException | InvalidCountryException | CountryAlreadyPresentException e) {
             // pass
         }
     }
@@ -35,6 +36,8 @@ public class JsonWishListReaderTest extends WishCountryTest {
             System.out.println("Couldn't read from file");
         } catch (InvalidCountryException e) {
             fail("InvalidCountryException should not have been thrown");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
     }
 
@@ -52,6 +55,8 @@ public class JsonWishListReaderTest extends WishCountryTest {
             System.out.println("Couldn't read from file");
         } catch (InvalidCountryException e) {
             fail("InvalidCountryException should not have been thrown");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
         }
     }
 

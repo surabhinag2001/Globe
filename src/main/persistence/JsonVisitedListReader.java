@@ -1,6 +1,7 @@
 package persistence;
 
 
+import exceptions.CountryAlreadyPresentException;
 import exceptions.FutureDateException;
 import exceptions.InvalidCountryException;
 import model.VisitedList;
@@ -26,7 +27,8 @@ public class JsonVisitedListReader {
 
     //EFFECTS:reads wishlist from file and returns it;
     //throws IOException if an error occurs reading data from file
-    public VisitedList read() throws IOException, InvalidCountryException, FutureDateException {
+    public VisitedList read() throws IOException, InvalidCountryException, FutureDateException,
+            CountryAlreadyPresentException {
         String jsonData = readFile(source);
         JSONArray jsonArray = new JSONArray(jsonData);
         return parseVisitedList(jsonArray);
@@ -45,7 +47,8 @@ public class JsonVisitedListReader {
     }
 
     // EFFECTS: parses visited list from JSON array and returns it
-    private VisitedList parseVisitedList(JSONArray jsonArray) throws InvalidCountryException, FutureDateException {
+    private VisitedList parseVisitedList(JSONArray jsonArray) throws InvalidCountryException, FutureDateException,
+            CountryAlreadyPresentException {
         VisitedList vl = new VisitedList();
         for (Object json : jsonArray) {
             JSONObject nextCountry = (JSONObject) json;
@@ -56,7 +59,8 @@ public class JsonVisitedListReader {
 
     // MODIFIES: vl
     // EFFECTS: parses wish country from JSON object and adds it to visited list
-    private void addCountry(VisitedList wl, JSONObject jsonObject) throws InvalidCountryException, FutureDateException {
+    private void addCountry(VisitedList wl, JSONObject jsonObject) throws InvalidCountryException, FutureDateException,
+            CountryAlreadyPresentException {
         String name = jsonObject.getString("name");
         String notes = jsonObject.getString("notes");
         String d = jsonObject.getString("date");
