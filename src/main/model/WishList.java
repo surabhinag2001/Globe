@@ -49,6 +49,15 @@ public class WishList {
         myWishList.remove(searchCountry(countryToRemove));
     }
 
+    //TODO: add test for this method
+    //MODIFIES: this
+    //EFFECTS: removes a country from the collection of wishlist countries at index n if present
+    public void removeCountryByIndex(int n) {
+        if (n >= 0 && n <= myWishList.size()) {
+            myWishList.remove(n);
+        }
+    }
+
 
     //EFFECTS: returns the index of the country to be searched in the wishlist
     //         if country not present, returns -1

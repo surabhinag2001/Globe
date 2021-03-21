@@ -21,7 +21,7 @@ public class VisitedList {
     //MODIFIES: this
     //EFFECTS: adds a new country to the collection of wishlist countries
     public void addCountry(String countryName, String notes, LocalDate date) throws InvalidCountryException,
-            FutureDateException,CountryAlreadyPresentException {
+            FutureDateException, CountryAlreadyPresentException {
         AllCountries obj = new AllCountries();
         boolean isCountryValid = obj.getAllCountries().stream().anyMatch(countryName::equalsIgnoreCase);
         if (!isCountryValid) {
@@ -52,6 +52,16 @@ public class VisitedList {
         }
         myVisitedList.remove(n);
     }
+
+    //TODO: add test for this method
+    //MODIFIES: this
+    //EFFECTS: removes a country from the collection of visited countries at index n if within bounds
+    public void removeVisitByIndex(int n) {
+        if (n >= 0 && n <= myVisitedList.size()) {
+            myVisitedList.remove(n);
+        }
+    }
+
 
 
     //EFFECTS: returns the index of the country to be searched in the wishlist
