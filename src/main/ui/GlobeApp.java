@@ -10,6 +10,16 @@ import persistence.JsonVisitedListWriter;
 import persistence.JsonWishListReader;
 import persistence.JsonWishListWriter;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.DateTimeException;
@@ -30,6 +40,22 @@ public class GlobeApp {
     private final JsonVisitedListWriter jsonVisitedListWriter;
     private final JsonVisitedListReader jsonVisitedListReader;
 
+    private JButton bt1; //all button
+    private JButton bt2; //wishlist button
+    private JButton bt3; //visited button
+    private JPanel tbPanel1; //all panel
+    private JPanel tbPanel2; //wishlist panel
+    private JPanel tbPanel3; //visited panel
+    private JTable table3; //visit table
+    private DefaultTableModel tableModel3; //visit table model
+    private JTable table2; //wishlist table
+    private DefaultTableModel tableModel2; //wishlist table model
+    private JTable table1; //all table
+    private DefaultTableModel tableModel1; //all table model
+    private JScrollPane sp1;
+    private JScrollPane sp2;
+    private JScrollPane sp3;
+
 
     //EFFECTS: runs the globe application
     public GlobeApp() {
@@ -37,9 +63,470 @@ public class GlobeApp {
         jsonWishListReader = new JsonWishListReader(JSON_STORE_WISHLIST);
         jsonVisitedListWriter = new JsonVisitedListWriter(JSON_STORE_VISITED_LIST);
         jsonVisitedListReader = new JsonVisitedListReader(JSON_STORE_VISITED_LIST);
-        runGlobe();
+//        runGlobe();
+        setUI();
     }
 
+    public void setUI() {
+
+        JFrame frame = new JFrame(("World"));
+        frame.getContentPane().setBackground(new Color(229, 229, 229));
+        frame.setLayout(new BorderLayout());
+
+        JPanel mainLayout = new JPanel();
+        mainLayout.setLayout(new BoxLayout(mainLayout, BoxLayout.Y_AXIS));
+        mainLayout.setBackground(null);
+
+        JPanel topbar = new JPanel();
+        topbar.setBackground(Color.WHITE);
+        topbar.add(Box.createHorizontalStrut(10));
+
+        JLabel logo = new JLabel();
+        logo.setText("Globe");
+        ImageIcon ic = new ImageIcon("images/globeicon.png");
+        Image glbimage = ic.getImage(); // transform it
+        Image newimgGlb = glbimage.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        ic = new ImageIcon(newimgGlb);
+        logo.setFont(new Font("Nunito", Font.BOLD, 26));
+        logo.setIcon(ic);
+        logo.setIconTextGap(8);
+
+        topbar.add(logo);
+
+        topbar.add(Box.createHorizontalStrut(10));
+
+        JLabel searchIco = new JLabel();
+        ImageIcon ic2 = new ImageIcon("images/searchico.png");
+        searchIco.setIcon(ic2);
+        topbar.add(searchIco);
+
+        topbar.add(Box.createHorizontalStrut(10));
+
+        JTextField searchVisit = new JTextFieldHintUI("Search");
+        searchVisit.setBorder(null);
+        searchVisit.setMargin(new Insets(5, 50, 5, 10));
+        searchVisit.setPreferredSize(new Dimension(500, 30));
+        topbar.add(searchVisit);
+
+        mainLayout.add(topbar);
+
+        JPanel mid = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        mid.setBackground(null);
+        mid.add(Box.createHorizontalStrut(10));
+        JPanel opts = new JPanel();
+        opts.setBackground(null);
+        opts.setLayout(new BoxLayout(opts, BoxLayout.Y_AXIS));
+        bt1 = new JButton("World");
+        bt2 = new JButton("Wishlist");
+        bt3 = new JButton("Visits List");
+
+        bt1.setBorderPainted(false);
+        bt1.setContentAreaFilled(false);
+        bt1.setFocusPainted(false);
+        bt1.setFont(new Font("Nunito", Font.PLAIN, 14));
+        bt1.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        bt2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bt2.setBorderPainted(false);
+        bt2.setContentAreaFilled(false);
+        bt2.setFocusPainted(false);
+        bt2.setFont(new Font("Nunito", Font.PLAIN, 14));
+
+        bt3.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bt3.setBorderPainted(false);
+        bt3.setContentAreaFilled(false);
+        bt3.setFocusPainted(false);
+        bt3.setForeground(new Color(247, 37, 133));
+        bt3.setFont(new Font("Nunito", Font.PLAIN, 14));
+
+        bt1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bt1.setForeground(new Color(247, 37, 133));
+                bt2.setForeground(Color.BLACK);
+                bt3.setForeground(Color.BLACK);
+                if (mid.getComponent(3).getName().equals("2")) {
+                    mid.remove(tbPanel2);
+                    createtbpanel1();
+                    mid.add(tbPanel1);
+
+
+                }
+
+                if (mid.getComponent(3).getName().equals("3")) {
+                    mid.remove(tbPanel3);
+                    createtbpanel1();
+                    mid.add(tbPanel1);
+
+                }
+                mid.revalidate();
+                mid.repaint();
+            }
+        });
+        bt2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bt2.setForeground(new Color(247, 37, 133));
+                bt1.setForeground(Color.BLACK);
+                bt3.setForeground(Color.BLACK);
+
+                if (mid.getComponent(3).getName().equals("1")) {
+                    mid.remove(tbPanel1);
+                    createtbpanel2();
+                    mid.add(tbPanel2);
+                }
+
+                if (mid.getComponent(3).getName().equals("3")) {
+                    mid.remove(tbPanel3);
+                    createtbpanel2();
+                    mid.add(tbPanel2);
+                }
+
+
+                mid.revalidate();
+                mid.repaint();
+            }
+        });
+        bt3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bt3.setForeground(new Color(247, 37, 133));
+                bt2.setForeground(Color.BLACK);
+                bt1.setForeground(Color.BLACK);
+
+                if (mid.getComponent(3).getName().equals("2")) {
+                    mid.remove(tbPanel2);
+                    createtbPanel3();
+                    mid.add(tbPanel3);
+                }
+
+                if (mid.getComponent(3).getName().equals("1")) {
+                    mid.remove(tbPanel1);
+                    createtbPanel3();
+                    mid.add(tbPanel3);
+                }
+
+
+                mid.revalidate();
+                mid.repaint();
+            }
+        });
+
+        opts.add(Box.createRigidArea(new Dimension(0, 50)));
+        opts.add(bt1);
+        opts.add(bt2);
+        opts.add(bt3);
+        opts.add(Box.createRigidArea(new Dimension(0, 80)));
+
+        mid.add(opts);
+        mid.add(Box.createHorizontalStrut(13));
+
+        createtbPanel3();
+        mid.add(tbPanel3);
+
+
+        mainLayout.add(mid);
+
+
+        frame.add(mainLayout, BorderLayout.NORTH);
+
+
+        frame.setTitle("Globe");
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        frame.requestFocusInWindow();
+
+    }
+
+    public void createtbPanel3() {
+        tbPanel3 = new JPanel();
+        tbPanel3.setName("3");
+        tbPanel3.setBackground(Color.WHITE);
+        tbPanel3.setLayout(new BoxLayout(tbPanel3, BoxLayout.Y_AXIS));
+        JPanel tbOptions = new JPanel();
+        tbOptions.setBackground(null);
+        tbOptions.add(Box.createHorizontalStrut(5));
+
+        JPanel emptyPanel = new JPanel();
+        emptyPanel.setBackground(new Color(229, 229, 229));
+        tbPanel3.add(emptyPanel);
+        tbPanel3.add(Box.createVerticalStrut(5));
+
+        JLabel visitList = new JLabel();
+        visitList.setText("Visited Places");
+        visitList.setFont(new Font("Nunito", Font.BOLD, 24));
+        visitList.setForeground(new Color(247, 37, 133));
+        tbOptions.add(visitList);
+
+        JLabel add = new JLabel();
+        ImageIcon addIc = new ImageIcon("images/addicon.png");
+        Image image = addIc.getImage(); // transform it
+        Image newimg = image.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        addIc = new ImageIcon(newimg);
+        add.setIcon(addIc);
+        tbOptions.add(Box.createHorizontalStrut(10));
+        tbOptions.add(add);
+
+        JLabel sub = new JLabel();
+        ImageIcon subIc = new ImageIcon("images/removeicon.png");
+        Image remimage = subIc.getImage(); // transform it
+        Image newimgRem = remimage.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        subIc = new ImageIcon(newimgRem);
+        sub.setIcon(subIc);
+        tbOptions.add(Box.createHorizontalStrut(1));
+        tbOptions.add(sub);
+
+        JLabel filter = new JLabel();
+        ImageIcon filterIc = new ImageIcon("images/filtericon.png");
+        Image filimg = filterIc.getImage(); // transform it
+        Image newfilimg = filimg.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        filterIc = new ImageIcon(newfilimg);
+        filter.setIcon(filterIc);
+        tbOptions.add(Box.createHorizontalStrut(1));
+        tbOptions.add(filter);
+        tbOptions.add(Box.createHorizontalStrut(233));
+        tbPanel3.add(tbOptions);
+        tbPanel3.add(Box.createVerticalStrut(5));
+        //add table
+        createVisitTable();
+        tbPanel3.add(sp3);
+
+        add.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                JOptionPane.showMessageDialog(null, "Add visit");
+            }
+        });
+        sub.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                JOptionPane.showMessageDialog(null, "Remove visit");
+                deleteSelectedRow(table3, tableModel3, 'v');
+            }
+        });
+        filter.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                JOptionPane.showMessageDialog(null, "Filter visit");
+            }
+        });
+    }
+
+    public void createtbpanel2() {
+        tbPanel2 = new JPanel();
+        tbPanel2.setName("2");
+        tbPanel2.setBackground(Color.WHITE);
+        tbPanel2.setLayout(new BoxLayout(tbPanel2, BoxLayout.Y_AXIS));
+        JPanel tbOptions = new JPanel();
+        tbOptions.setBackground(null);
+        tbOptions.add(Box.createHorizontalStrut(5));
+
+
+        JPanel emptyPanel = new JPanel();
+        emptyPanel.setBackground(new Color(229, 229, 229));
+        tbPanel2.add(emptyPanel);
+        tbPanel2.add(Box.createVerticalStrut(5));
+
+        JLabel wishList = new JLabel();
+        wishList.setText("Wishlist");
+        wishList.setFont(new Font("Nunito", Font.BOLD, 24));
+        wishList.setForeground(new Color(247, 37, 133));
+        tbOptions.add(wishList);
+
+        JLabel add = new JLabel();
+        ImageIcon addIc = new ImageIcon("images/addicon.png");
+        Image image = addIc.getImage(); // transform it
+        Image newimg = image.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        addIc = new ImageIcon(newimg);
+        add.setIcon(addIc);
+        tbOptions.add(Box.createHorizontalStrut(10));
+        tbOptions.add(add);
+
+        JLabel sub = new JLabel();
+        ImageIcon subIc = new ImageIcon("images/removeicon.png");
+        Image remimage = subIc.getImage(); // transform it
+        Image newimgRem = remimage.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        subIc = new ImageIcon(newimgRem);
+        sub.setIcon(subIc);
+        tbOptions.add(Box.createHorizontalStrut(1));
+        tbOptions.add(sub);
+
+        tbOptions.add(Box.createHorizontalStrut(295));
+
+        tbPanel2.add(tbOptions);
+        //add table
+        createWishlistTable();
+        tbPanel2.add(sp2);
+        add.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                JOptionPane.showMessageDialog(null, "Add to wishlist");
+            }
+        });
+        sub.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                JOptionPane.showMessageDialog(null, "Remove from wishlist");
+                deleteSelectedRow(table2, tableModel2, 'w');
+            }
+        });
+
+    }
+
+    public void createtbpanel1() {
+        tbPanel1 = new JPanel();
+        tbPanel1.setName("1");
+        tbPanel1.setBackground(Color.WHITE);
+        tbPanel1.setLayout(new BoxLayout(tbPanel1, BoxLayout.Y_AXIS));
+        JPanel tbOptions = new JPanel();
+        tbOptions.setBackground(null);
+        tbOptions.add(Box.createHorizontalStrut(5));
+
+        JPanel emptyPanel = new JPanel();
+        emptyPanel.setBackground(new Color(229, 229, 229));
+        tbPanel1.add(emptyPanel);
+        tbPanel1.add(Box.createVerticalStrut(5));
+
+        JLabel allCountries = new JLabel();
+        allCountries.setText("All Countries");
+        allCountries.setFont(new Font("Nunito", Font.BOLD, 24));
+        allCountries.setForeground(new Color(247, 37, 133));
+        tbOptions.add(allCountries);
+
+        tbOptions.add(Box.createHorizontalStrut(320));
+        tbPanel1.add(tbOptions);
+
+        tbPanel1.add(Box.createVerticalStrut(5));
+//        add table
+        createWorldList();
+        tbPanel1.add(sp1);
+    }
+
+
+    private void createVisitTable() {
+        loadVisitedList();
+        String[] column = {"Country", "Date", "Notes"};
+        String[][] data = new String[visitedCountries.getMyVisitedList().size()][3];
+        for (int i = 0; i < visitedCountries.getMyVisitedList().size(); i++) {
+            data[i][0] = visitedCountries.getMyVisitedList().get(i).getCountryName();
+            data[i][1] = visitedCountries.getMyVisitedList().get(i).getDateVisited().toString();
+            data[i][2] = visitedCountries.getMyVisitedList().get(i).getNotesCountry();
+        }
+        tableModel3 = new DefaultTableModel(data, column) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table3 = new JTable(tableModel3);
+        setTableDisplay(table3);
+//        table3.setBounds(30, 40, 200, 300);
+//        table3.setFont(new Font("Nunito", Font.PLAIN, 12));
+//        table3.setForeground(new Color(106, 102, 102));
+//        table3.setRowHeight(35);
+//        table3.setBorder(BorderFactory.createEmptyBorder());
+//        table3.setSelectionBackground(new Color(240,240,243));
+//        table3.setSelectionForeground(new Color(106, 102, 102));
+//        setCellAlignment(table3);
+//        table3.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+        sp3 = new JScrollPane(table3);
+        sp3.setBorder(BorderFactory.createEmptyBorder());
+
+    }
+
+    private void createWishlistTable() {
+        loadWishList();
+        String[] column = {"Country", "Notes"};
+        String[][] data = new String[wishCountries.getMyWishList().size()][3];
+        for (int i = 0; i < wishCountries.getMyWishList().size(); i++) {
+            data[i][0] = wishCountries.getMyWishList().get(i).getCountryName();
+            data[i][1] = wishCountries.getMyWishList().get(i).getNotesCountry();
+        }
+        tableModel2 = new DefaultTableModel(data, column) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table2 = new JTable(tableModel2);
+        setTableDisplay(table2);
+//        table2.setBounds(30, 40, 200, 300);
+//        table2.setFont(new Font("Nunito", Font.PLAIN, 12));
+//        table2.setForeground(new Color(106, 102, 102));
+//        table2.setRowHeight(35);
+//        table2.setBorder(BorderFactory.createEmptyBorder());
+//        table2.setSelectionBackground(new Color(240,240,243));
+//        table2.setSelectionForeground(new Color(106, 102, 102));
+//        table2.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+//        setCellAlignment(table2);
+        sp2 = new JScrollPane(table2);
+        sp2.setBorder(BorderFactory.createEmptyBorder());
+    }
+
+    private void createWorldList() {
+        String[] column = {"Country"};
+        AllCountries obj = new AllCountries();
+        String[][] data = new String[obj.getAllCountries().size()][1];
+        for (int i = 0; i < obj.getAllCountries().size(); i++) {
+            data[i][0] = obj.getAllCountries().get(i);
+        }
+        tableModel1 = new DefaultTableModel(data, column) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table1 = new JTable(tableModel1);
+        setTableDisplay(table1);
+//        table1.setBounds(30, 40, 200, 300);
+//        table1.setFont(new Font("Nunito", Font.PLAIN, 12));
+//        table1.setForeground(new Color(106, 102, 102));
+//        table1.setRowHeight(35);
+//        table1.setBorder(BorderFactory.createEmptyBorder());
+//        table1.setSelectionBackground(new Color(240,240,243));
+//        table1.setSelectionForeground(new Color(106, 102, 102));
+//        table1.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+//        setCellAlignment(table1);
+        sp1 = new JScrollPane(table1);
+        sp1.setBorder(BorderFactory.createEmptyBorder());
+    }
+
+    public void setTableDisplay(JTable table) {
+        table.setBounds(30, 40, 200, 300);
+        table.setFont(new Font("Nunito", Font.PLAIN, 12));
+        table.setForeground(new Color(106, 102, 102));
+        table.setRowHeight(35);
+        table.setBorder(BorderFactory.createEmptyBorder());
+        table.setSelectionBackground(new Color(240,240,243));
+        table.setSelectionForeground(new Color(106, 102, 102));
+        table.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+        setCellAlignment(table);
+    }
+
+    private void setCellAlignment(JTable table) {
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+        }
+    }
+
+
+    public void deleteSelectedRow(JTable table, DefaultTableModel model, char c) {
+        int index = table.getSelectedRow();
+        if (index != -1) {
+            model.removeRow(table.getSelectedRow());
+//            if(c == 'v') {}
+//            String[][] visitArray =
+        }
+    }
 
     // MODIFIES: this
     // EFFECTS: processes user input
@@ -198,6 +685,7 @@ public class GlobeApp {
         for (int i = 0; i < visitedCountries.getMyVisitedList().size(); i++) {
             System.out.println(visitedCountries.getMyVisitedList().get(i).getCountryName());
             System.out.println(visitedCountries.getMyVisitedList().get(i).getDateVisited());
+            System.out.println(visitedCountries.getMyVisitedList().get(i).getNotesCountry());
             System.out.println();
         }
     }
