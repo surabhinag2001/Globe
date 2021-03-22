@@ -4,14 +4,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public abstract class DeleteDialogBox extends JDialog implements ActionListener {
+//abstract class representing deletion dialog box
+public abstract class DeleteDialogBox implements ActionListener {
 
     private JButton yes;
     private JButton no;
+    private JDialog dialog;
 
+    //EFFECTS: constructor for DeleteDialogBox that also sets UI for dialog
     public DeleteDialogBox(Frame parent,GlobeApp gb) {
         Point loc = parent.getLocation();
-        setLocation(loc.x + 80, loc.y + 80);
+        dialog = new JDialog(parent);
+        dialog.setLocation(loc.x + 80, loc.y + 80);
         JPanel panel = new JPanel();
         panel.setBackground(new Color(248, 248, 251));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -31,12 +35,12 @@ public abstract class DeleteDialogBox extends JDialog implements ActionListener 
         no = new JButton("No");
         no.addActionListener(this);
 
-        yes.setBorderPainted(false);
+//        yes.setBorderPainted(false);
         yes.setContentAreaFilled(false);
         yes.setFocusPainted(false);
         yes.setFont(new Font("Nunito", Font.PLAIN, 14));
 
-        no.setBorderPainted(false);
+//        no.setBorderPainted(false);
         no.setContentAreaFilled(false);
         no.setFocusPainted(false);
         no.setFont(new Font("Nunito", Font.PLAIN, 14));
@@ -47,15 +51,20 @@ public abstract class DeleteDialogBox extends JDialog implements ActionListener 
         panel.add(options);
         panel.add(Box.createVerticalStrut(20));
 
-        getContentPane().add(panel);
-        pack();
+        dialog.getContentPane().add(panel);
+        dialog.pack();
     }
 
     public JButton getYes() {
         return yes;
     }
 
+    public JDialog getDialog() {
+        return dialog;
+    }
+
+    //EFFECTS: displays deletion dialog
     public void display() {
-        this.setVisible(true);
+        dialog.setVisible(true);
     }
 }

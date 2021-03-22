@@ -54,6 +54,7 @@ public class GlobeApp {
     private JScrollPane sp2;
     private JScrollPane sp3;
     private JFrame frame;
+    private JPanel mid;
 
 
     //EFFECTS: runs the globe application
@@ -62,7 +63,7 @@ public class GlobeApp {
         jsonWishListReader = new JsonWishListReader(JSON_STORE_WISHLIST);
         jsonVisitedListWriter = new JsonVisitedListWriter(JSON_STORE_VISITED_LIST);
         jsonVisitedListReader = new JsonVisitedListReader(JSON_STORE_VISITED_LIST);
-        runGlobe();
+//        runGlobe();
         setUI();
     }
 
@@ -97,7 +98,6 @@ public class GlobeApp {
         ImageIcon ic2 = new ImageIcon("images/searchico.png");
         searchIco.setIcon(ic2);
         topbar.add(searchIco);
-
         topbar.add(Box.createHorizontalStrut(10));
 
         JTextField searchVisit = new JTextFieldHintUI("Search");
@@ -108,7 +108,7 @@ public class GlobeApp {
 
         mainLayout.add(topbar);
 
-        JPanel mid = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        mid = new JPanel(new FlowLayout(FlowLayout.LEFT));
         mid.setBackground(null);
         mid.add(Box.createHorizontalStrut(10));
         JPanel opts = new JPanel();
@@ -179,7 +179,6 @@ public class GlobeApp {
                     createtbpanel2();
                     mid.add(tbPanel2);
                 }
-
 
                 mid.revalidate();
                 mid.repaint();
@@ -291,14 +290,15 @@ public class GlobeApp {
         createVisitTable();
         tbPanel3.add(sp3);
 
+        GlobeApp gb = this;
         add.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                JOptionPane.showMessageDialog(null, "Add visit");
+                AddToVisitsDialogBox av = new AddToVisitsDialogBox(frame, gb);
+                av.display();
             }
         });
-        GlobeApp gb = this;
         sub.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -364,15 +364,16 @@ public class GlobeApp {
         //add table
         createWishlistTable();
         tbPanel2.add(sp2);
+
+        GlobeApp gb = this;
         add.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                JOptionPane.showMessageDialog(null, "Add to wishlist");
+                AddToWishlistDialogBox wl = new AddToWishlistDialogBox(frame, gb);
+                wl.display();
             }
         });
-
-        GlobeApp gb = this;
         sub.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -440,7 +441,7 @@ public class GlobeApp {
 
     }
 
-    private void createWishlistTable() {
+    public void createWishlistTable() {
         loadWishList();
         String[] column = {"Country", "Notes"};
         String[][] data = new String[wishCountries.getMyWishList().size()][3];
@@ -535,6 +536,108 @@ public class GlobeApp {
         } else {
             return -1;
         }
+    }
+
+    //MODIFIES: this
+    //EFFECT : adds a country to the wishlist,saves and loads wishlist
+    public void addToWishlist(String name, String notes) throws CountryAlreadyPresentException,
+            InvalidCountryException {
+        wishCountries.addCountry(name, notes);
+        saveWishList();
+        loadWishList();
+    }
+
+    //MODIFIES: this
+    //EFFECT : adds a country to the wishlist
+    private void addToWishlist() {
+        System.out.println("add to wishlist accessed");
+        System.out.print("Enter country name:");
+        input.nextLine();
+        String country = (input.nextLine().trim()).toUpperCase();
+        System.out.print("Enter notes: ");
+        String notes = input.nextLine().trim();
+        try {
+            wishCountries.addCountry(country, notes);
+            System.out.println(country + " added to the wishlist with notes : " + notes);
+        } catch (InvalidCountryException e) {
+            System.out.println("Country entered does not exist");
+        } catch (CountryAlreadyPresentException e) {
+            System.out.println(country + " is already present in the wishlist");
+        }
+    }
+
+    //REQUIRES : date is entered in yyyy-mm-dd format, is valid and is not in future
+    //MODIFIES: this
+    //EFFECT : adds a country to the visited list
+    public void addToVisitedList(String name, String dateString, String notes) throws CountryAlreadyPresentException,
+            InvalidCountryException, FutureDateException {
+        int y = Integer.parseInt(dateString.substring(0, 4));
+        int m = Integer.parseInt(dateString.substring(5, 7));
+        int d = Integer.parseInt(dateString.substring(8));
+        LocalDate date = inputDate(y, m, d);
+        visitedCountries.addCountry(name, notes, date);
+        saveVisitedList();
+        loadVisitedList();
+    }
+
+    //REQUIRES : date is entered in yyyy-mm-dd format, is valid and is not in future
+    //MODIFIES: this
+    //EFFECT : adds a country to the visited list
+    private void addToVisitedList() {
+        System.out.println("add to visited list accessed");
+        System.out.print("Enter country name:");
+        input.nextLine();
+        String country = (input.nextLine().trim()).toUpperCase();
+        System.out.print("Enter notes: ");
+        String notes = input.nextLine().trim();
+        System.out.println("Enter date visited");
+        LocalDate date = inputDate();
+        try {
+            visitedCountries.addCountry(country, notes, date);
+            System.out.println(country + " added to the visited with notes : " + notes + " date :" + date);
+        } catch (InvalidCountryException e) {
+            System.out.println("Country entered is invalid");
+        } catch (FutureDateException e) {
+            System.out.println("Date of visit cannot be in future");
+        } catch (CountryAlreadyPresentException e) {
+            System.out.println(country + " is already present in the list of visits");
+        }
+    }
+
+    //EFFECT: function to input dates
+    private LocalDate inputDate() {
+        System.out.print("Year: ");
+        int y = input.nextInt();
+        System.out.print("Month: ");
+        int m = input.nextInt();
+        System.out.print("Day: ");
+        int d = input.nextInt();
+        return LocalDate.of(y, m, d);
+    }
+
+    //EFFECT: function to input dates
+    private LocalDate inputDate(int y, int m, int d) {
+        return LocalDate.of(y, m, d);
+    }
+
+    public JPanel getMid() {
+        return mid;
+    }
+
+    public JPanel getTbPanel2() {
+        return tbPanel2;
+    }
+
+    public JTable getTable2() {
+        return table2;
+    }
+
+    public DefaultTableModel getTableModel2() {
+        return tableModel2;
+    }
+
+    public DefaultTableModel getTableModel3() {
+        return tableModel3;
     }
 
 
@@ -679,16 +782,6 @@ public class GlobeApp {
         }
     }
 
-    //EFFECT: function to input dates
-    private LocalDate inputDate() {
-        System.out.print("Year: ");
-        int y = input.nextInt();
-        System.out.print("Month: ");
-        int m = input.nextInt();
-        System.out.print("Day: ");
-        int d = input.nextInt();
-        return LocalDate.of(y, m, d);
-    }
 
     //EFFECTS : displays list of all visited countries
     private void viewVisitedList() {
@@ -697,30 +790,6 @@ public class GlobeApp {
             System.out.println(visitedCountries.getMyVisitedList().get(i).getDateVisited());
             System.out.println(visitedCountries.getMyVisitedList().get(i).getNotesCountry());
             System.out.println();
-        }
-    }
-
-    //REQUIRES : date is entered in yyyy-mm-dd format, is valid and is not in future
-    //MODIFIES: this
-    //EFFECT : adds a country to the visited list
-    private void addToVisitedList() {
-        System.out.println("add to visited list accessed");
-        System.out.print("Enter country name:");
-        input.nextLine();
-        String country = (input.nextLine().trim()).toUpperCase();
-        System.out.print("Enter notes: ");
-        String notes = input.nextLine().trim();
-        System.out.println("Enter date visited");
-        LocalDate date = inputDate();
-        try {
-            visitedCountries.addCountry(country, notes, date);
-            System.out.println(country + " added to the visited with notes : " + notes + " date :" + date);
-        } catch (InvalidCountryException e) {
-            System.out.println("Country entered is invalid");
-        } catch (FutureDateException e) {
-            System.out.println("Date of visit cannot be in future");
-        } catch (CountryAlreadyPresentException e) {
-            System.out.println(country + " is already present in the list of visits");
         }
     }
 
@@ -807,25 +876,6 @@ public class GlobeApp {
         }
     }
 
-
-    //MODIFIES: this
-    //EFFECT : adds a country to the wishlist
-    private void addToWishlist() {
-        System.out.println("add to wishlist accessed");
-        System.out.print("Enter country name:");
-        input.nextLine();
-        String country = (input.nextLine().trim()).toUpperCase();
-        System.out.print("Enter notes: ");
-        String notes = input.nextLine().trim();
-        try {
-            wishCountries.addCountry(country, notes);
-            System.out.println(country + " added to the wishlist with notes : " + notes);
-        } catch (InvalidCountryException e) {
-            System.out.println("Country entered is invalid");
-        } catch (CountryAlreadyPresentException e) {
-            System.out.println(country + " is already present in the wishlist");
-        }
-    }
 
     //REQUIRES : country being removes is present in the wishlist
     //MODIFIES: this

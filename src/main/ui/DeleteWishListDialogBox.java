@@ -4,14 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+// class representing deletion dialog box for wishlist
 public class DeleteWishListDialogBox extends DeleteDialogBox {
     private GlobeApp globe;
     private JButton yes;
+    private JDialog dialog;
 
     public DeleteWishListDialogBox(Frame parent, GlobeApp gb) {
         super(parent, gb);
         globe = gb;
         yes = super.getYes();
+        dialog = super.getDialog();
     }
 
     @Override
@@ -20,6 +23,6 @@ public class DeleteWishListDialogBox extends DeleteDialogBox {
         if (source == yes) {
             globe.deleteSelectedRow('w');
         }
-        dispose();
+        dialog.dispose();
     }
 }
