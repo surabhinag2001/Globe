@@ -54,11 +54,6 @@ public class GlobeApp {
     private JScrollPane sp2;
     private JScrollPane sp3;
     private JFrame frame;
-    private JButton yes;
-    private JButton no;
-    private JDialog dialog;
-
-
 
 
     //EFFECTS: runs the globe application
@@ -303,11 +298,16 @@ public class GlobeApp {
                 JOptionPane.showMessageDialog(null, "Add visit");
             }
         });
+        GlobeApp gb = this;
         sub.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                deleteSelectedRow(table3, tableModel3, 'v');
+                int index = getSeletedRowFromTable('v');
+                if (index != -1) {
+                    DeleteVisitedListDialogBox db = new DeleteVisitedListDialogBox(frame, gb);
+                    db.display();
+                }
             }
         });
         filter.addMouseListener(new MouseAdapter() {
@@ -372,15 +372,18 @@ public class GlobeApp {
             }
         });
 
+        GlobeApp gb = this;
         sub.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                deleteSelectedRow(table2, tableModel2, 'w');
+                int index = getSeletedRowFromTable('w');
+                if (index != -1) {
+                    DeleteWishListDialogBox db = new DeleteWishListDialogBox(frame, gb);
+                    db.display();
+                }
             }
         });
-
-
     }
 
     public void createtbpanel1() {
@@ -430,15 +433,7 @@ public class GlobeApp {
         };
         table3 = new JTable(tableModel3);
         setTableDisplay(table3);
-//        table3.setBounds(30, 40, 200, 300);
-//        table3.setFont(new Font("Nunito", Font.PLAIN, 12));
-//        table3.setForeground(new Color(106, 102, 102));
-//        table3.setRowHeight(35);
-//        table3.setBorder(BorderFactory.createEmptyBorder());
-//        table3.setSelectionBackground(new Color(240,240,243));
-//        table3.setSelectionForeground(new Color(106, 102, 102));
-//        setCellAlignment(table3);
-//        table3.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+
         sp3 = new JScrollPane(table3);
         sp3.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 10, Color.white));
         sp3.setBackground(new Color(229, 229, 229));
@@ -461,15 +456,7 @@ public class GlobeApp {
         };
         table2 = new JTable(tableModel2);
         setTableDisplay(table2);
-//        table2.setBounds(30, 40, 200, 300);
-//        table2.setFont(new Font("Nunito", Font.PLAIN, 12));
-//        table2.setForeground(new Color(106, 102, 102));
-//        table2.setRowHeight(35);
-//        table2.setBorder(BorderFactory.createEmptyBorder());
-//        table2.setSelectionBackground(new Color(240,240,243));
-//        table2.setSelectionForeground(new Color(106, 102, 102));
-//        table2.getTableHeader().setDefaultRenderer(new HeaderRenderer());
-//        setCellAlignment(table2);
+
         sp2 = new JScrollPane(table2);
         sp2.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 10, Color.white));
         sp2.setBackground(new Color(229, 229, 229));
@@ -518,83 +505,36 @@ public class GlobeApp {
     }
 
 
-    public void deleteSelectedRow(JTable table, DefaultTableModel model, char c) {
-        int index = table.getSelectedRow();
-        if (index != -1) {
-            createDeleteDialogBox(c);
-            if (yes.getActionCommand().equals("Yes")) {
-                if (c == 'v') {
-                    model.removeRow(table.getSelectedRow());
-                    loadVisitedList();
-                    visitedCountries.removeVisitByIndex(index);
-                    saveVisitedList();
-                }
-                if (c == 'w') {
-                    model.removeRow(table.getSelectedRow());
-                    loadVisitedList();
-                    wishCountries.removeCountryByIndex(index);
-                    saveWishList();
-                }
+    public void deleteSelectedRow(char c) {
+        int index;
+        if (c == 'v') {
+            index = table3.getSelectedRow();
+            if (index != -1) {
+                tableModel3.removeRow(table3.getSelectedRow());
+                loadVisitedList();
+                visitedCountries.removeVisitByIndex(index);
+                saveVisitedList();
+            }
+        }
+        if (c == 'w') {
+            index = table2.getSelectedRow();
+            if (index != -1) {
+                tableModel2.removeRow(table2.getSelectedRow());
+                loadWishList();
+                wishCountries.removeCountryByIndex(index);
+                saveWishList();
             }
         }
     }
 
-
-    public void createDeleteDialogBox(char p) {
-        dialog = new JDialog(frame, null, true);
-        JPanel panel = new JPanel();
-        panel.setBackground(new Color(248, 248, 251));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(Box.createVerticalStrut(20));
-        JLabel text = new JLabel("Are you sure you want to delete the selected item?");
-        text.setBorder(BorderFactory.createMatteBorder(0, 15, 0, 15, new Color(248, 248, 251)));
-        text.setFont(new Font("Nunito", Font.PLAIN, 14));
-        text.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(text);
-        panel.add(Box.createVerticalStrut(20));
-        JPanel options = new JPanel();
-        options.setBackground(null);
-        yes = new JButton("Yes");
-        yes.setForeground(new Color(247, 37, 133));
-        no = new JButton("No");
-
-        yes.setBorderPainted(false);
-        yes.setContentAreaFilled(false);
-        yes.setFocusPainted(false);
-        yes.setFont(new Font("Nunito", Font.PLAIN, 14));
-
-        no.setBorderPainted(false);
-        no.setContentAreaFilled(false);
-        no.setFocusPainted(false);
-        no.setFont(new Font("Nunito", Font.PLAIN, 14));
-
-        options.add(no);
-        options.add(yes);
-
-        panel.add(options);
-        panel.add(Box.createVerticalStrut(20));
-
-        dialog.getContentPane().add(panel);
-        dialog.pack();
-        dialog.setVisible(true);
-
-        yes.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                yes.setActionCommand("Yes");
-                dialog.setVisible(false);
-                dialog.dispose();
-            }
-        });
-
-        no.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                no.setActionCommand("No");
-                dialog.setVisible(false);
-                dialog.dispose();
-            }
-        });
+    public int getSeletedRowFromTable(char c) {
+        if (c == 'v') {
+            return table3.getSelectedRow();
+        } else if (c == 'w') {
+            return table2.getSelectedRow();
+        } else {
+            return -1;
+        }
     }
 
 
