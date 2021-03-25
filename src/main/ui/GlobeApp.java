@@ -57,6 +57,8 @@ public class GlobeApp {
     private JPanel mid;
     private JPanel mainLayout;
     private JPanel topbar;
+    private JPanel opts;
+    private JTextField searchVisit;
 
 
     //EFFECTS: runs the globe application
@@ -79,111 +81,64 @@ public class GlobeApp {
         mainLayout.setLayout(new BoxLayout(mainLayout, BoxLayout.Y_AXIS));
         mainLayout.setBackground(null);
 
-        topbar = new JPanel();
-        topbar.setBackground(Color.WHITE);
-        topbar.add(Box.createHorizontalStrut(10));
-
-        JLabel logo = new JLabel();
-        logo.setText("Globe");
-        ImageIcon ic = new ImageIcon("images/globeicon.png");
-        Image glbimage = ic.getImage(); // transform it
-        Image newimgGlb = glbimage.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        ic = new ImageIcon(newimgGlb);
-        logo.setFont(new Font("Nunito", Font.BOLD, 26));
-        logo.setIcon(ic);
-        logo.setIconTextGap(8);
-
-        topbar.add(logo);
-
-        topbar.add(Box.createHorizontalStrut(10));
-
-        JLabel searchIco = new JLabel();
-        ImageIcon ic2 = new ImageIcon("images/searchico.png");
-        searchIco.setIcon(ic2);
-        topbar.add(searchIco);
-        topbar.add(Box.createHorizontalStrut(10));
-
-        JTextField searchVisit = new JTextFieldHintUI("Search");
-        searchVisit.setBorder(null);
-        searchVisit.setMargin(new Insets(5, 50, 5, 10));
-        searchVisit.setPreferredSize(new Dimension(500, 30));
-        topbar.add(searchVisit);
+        setTopbar();
 
         mainLayout.add(topbar);
 
+        setMidPanel();
+
+        setOptionsPanel();
+
+        mid.add(opts);
+        mid.add(Box.createHorizontalStrut(13));
+
+        createtbPanel3();
+        mid.add(tbPanel3);
+
+
+        mainLayout.add(mid);
+
+
+        frame.add(mainLayout, BorderLayout.NORTH);
+        frame.setTitle("Globe");
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        frame.requestFocusInWindow();
+
+    }
+
+    private void setOptionsPanel() {
+        opts = new JPanel();
+        opts.setBackground(null);
+        opts.setLayout(new BoxLayout(opts, BoxLayout.Y_AXIS));
+
+        bt1 = new JButton("World List");
+        bt2 = new JButton("Wishlist");
+        bt3 = new JButton("Visits List");
+        setButton(bt1);
+        setButton(bt2);
+        setButton(bt3);
+        bt3.setForeground(new Color(247, 37, 133));
+        performBt1Clicked();
+        performBt2Clicked();
+        performBt3Clicked();
+
+        opts.add(Box.createRigidArea(new Dimension(0, 50)));
+        opts.add(bt1);
+        opts.add(bt2);
+        opts.add(bt3);
+        opts.add(Box.createRigidArea(new Dimension(0, 80)));
+    }
+
+    private void setMidPanel() {
         mid = new JPanel(new FlowLayout(FlowLayout.LEFT));
         mid.setBackground(null);
         mid.add(Box.createHorizontalStrut(10));
-        JPanel opts = new JPanel();
-        opts.setBackground(null);
-        opts.setLayout(new BoxLayout(opts, BoxLayout.Y_AXIS));
-        bt1 = new JButton("World");
-        bt2 = new JButton("Wishlist");
-        bt3 = new JButton("Visits List");
+    }
 
-        bt1.setBorderPainted(false);
-        bt1.setContentAreaFilled(false);
-        bt1.setFocusPainted(false);
-        bt1.setFont(new Font("Nunito", Font.PLAIN, 14));
-        bt1.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        bt2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        bt2.setBorderPainted(false);
-        bt2.setContentAreaFilled(false);
-        bt2.setFocusPainted(false);
-        bt2.setFont(new Font("Nunito", Font.PLAIN, 14));
-
-        bt3.setAlignmentX(Component.CENTER_ALIGNMENT);
-        bt3.setBorderPainted(false);
-        bt3.setContentAreaFilled(false);
-        bt3.setFocusPainted(false);
-        bt3.setForeground(new Color(247, 37, 133));
-        bt3.setFont(new Font("Nunito", Font.PLAIN, 14));
-
-        bt1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                bt1.setForeground(new Color(247, 37, 133));
-                bt2.setForeground(Color.BLACK);
-                bt3.setForeground(Color.BLACK);
-                if (mid.getComponent(3).getName().equals("2")) {
-                    mid.remove(tbPanel2);
-                    createtbpanel1();
-                    mid.add(tbPanel1);
-                }
-
-                if (mid.getComponent(3).getName().equals("3")) {
-                    mid.remove(tbPanel3);
-                    createtbpanel1();
-                    mid.add(tbPanel1);
-                }
-                mid.revalidate();
-                mid.repaint();
-            }
-        });
-        bt2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                bt2.setForeground(new Color(247, 37, 133));
-                bt1.setForeground(Color.BLACK);
-                bt3.setForeground(Color.BLACK);
-
-                if (mid.getComponent(3).getName().equals("1")) {
-                    mid.remove(tbPanel1);
-                    createtbpanel2();
-                    mid.add(tbPanel2);
-                }
-
-                if (mid.getComponent(3).getName().equals("3")) {
-                    mid.remove(tbPanel3);
-                    createtbpanel2();
-                    mid.add(tbPanel2);
-                }
-
-                mid.revalidate();
-                mid.repaint();
-            }
-        });
+    private void performBt3Clicked() {
         bt3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -208,33 +163,100 @@ public class GlobeApp {
                 mid.repaint();
             }
         });
+    }
 
-        opts.add(Box.createRigidArea(new Dimension(0, 50)));
-        opts.add(bt1);
-        opts.add(bt2);
-        opts.add(bt3);
-        opts.add(Box.createRigidArea(new Dimension(0, 80)));
+    private void performBt2Clicked() {
+        bt2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bt2.setForeground(new Color(247, 37, 133));
+                bt1.setForeground(Color.BLACK);
+                bt3.setForeground(Color.BLACK);
 
-        mid.add(opts);
-        mid.add(Box.createHorizontalStrut(13));
+                if (mid.getComponent(3).getName().equals("1")) {
+                    mid.remove(tbPanel1);
+                    createtbpanel2();
+                    mid.add(tbPanel2);
+                }
 
-        createtbPanel3();
-        mid.add(tbPanel3);
+                if (mid.getComponent(3).getName().equals("3")) {
+                    mid.remove(tbPanel3);
+                    createtbpanel2();
+                    mid.add(tbPanel2);
+                }
 
+                mid.revalidate();
+                mid.repaint();
+            }
+        });
+    }
 
-        mainLayout.add(mid);
+    private void performBt1Clicked() {
+        bt1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bt1.setForeground(new Color(247, 37, 133));
+                bt2.setForeground(Color.BLACK);
+                bt3.setForeground(Color.BLACK);
+                if (mid.getComponent(3).getName().equals("2")) {
+                    mid.remove(tbPanel2);
+                    createtbpanel1();
+                    mid.add(tbPanel1);
+                }
 
+                if (mid.getComponent(3).getName().equals("3")) {
+                    mid.remove(tbPanel3);
+                    createtbpanel1();
+                    mid.add(tbPanel1);
+                }
+                mid.revalidate();
+                mid.repaint();
+            }
+        });
+    }
 
-        frame.add(mainLayout, BorderLayout.NORTH);
+    private void setButton(JButton button) {
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setFont(new Font("Nunito", Font.PLAIN, 14));
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
 
+    private void setTopbar() {
+        topbar = new JPanel();
+        topbar.setBackground(Color.WHITE);
+        topbar.add(Box.createHorizontalStrut(10));
 
-        frame.setTitle("Globe");
+        JLabel logo = new JLabel();
+        logo.setText("Globe");
+        ImageIcon ic = new ImageIcon("images/globeicon.png");
+        Image glbimage = ic.getImage(); // transform it
+        Image newimgGlb = glbimage.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        ic = new ImageIcon(newimgGlb);
+        logo.setFont(new Font("Nunito", Font.BOLD, 26));
+        logo.setIcon(ic);
+        logo.setIconTextGap(8);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.requestFocusInWindow();
+        topbar.add(logo);
 
+        topbar.add(Box.createHorizontalStrut(10));
+
+        JLabel searchIco = new JLabel();
+        ImageIcon ic2 = new ImageIcon("images/searchico.png");
+        searchIco.setIcon(ic2);
+        topbar.add(searchIco);
+        topbar.add(Box.createHorizontalStrut(10));
+
+        setSearchBar();
+        topbar.add(searchVisit);
+    }
+
+    private void setSearchBar() {
+        searchVisit = new JTextFieldHintUI("Search");
+        searchVisit.setBorder(null);
+        searchVisit.setMargin(new Insets(5, 50, 5, 10));
+        searchVisit.setPreferredSize(new Dimension(500, 30));
     }
 
     public void createtbPanel3() {
@@ -242,6 +264,7 @@ public class GlobeApp {
         tbPanel3.setName("3");
         tbPanel3.setBackground(Color.WHITE);
         tbPanel3.setLayout(new BoxLayout(tbPanel3, BoxLayout.Y_AXIS));
+
         JPanel tbOptions = new JPanel();
         tbOptions.setBackground(null);
         tbOptions.add(Box.createHorizontalStrut(5));

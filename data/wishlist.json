@@ -8,10 +8,6 @@
         "name": "IRAQ"
     },
     {
-        "notes": "bhj",
-        "name": "AUSTRIA"
-    },
-    {
         "notes": "vhgjv",
         "name": "ARMENIA"
     },
@@ -30,5 +26,9 @@
     {
         "notes": "french",
         "name": "FRANCE"
+    },
+    {
+        "notes": "go",
+        "name": "JAPAN"
     }
 ]
