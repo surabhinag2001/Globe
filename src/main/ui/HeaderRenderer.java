@@ -10,9 +10,13 @@ public class HeaderRenderer extends JLabel implements TableCellRenderer {
         setFont(new Font("Nunito", Font.PLAIN,13));
         setOpaque(true);
         setForeground(Color.BLACK);
-        setBackground(new Color(229, 229, 229));
+//        setBackground(new Color(229, 229, 229));
+          setBackground(new Color(248, 248, 251));
+
         setHorizontalAlignment(JLabel.CENTER);
-        setBorder(BorderFactory.createLineBorder(new Color(229, 229, 229)));
+//        setBorder(BorderFactory.createLineBorder(new Color(229, 229, 229)));
+        setBorder(BorderFactory.createLineBorder(new Color(248, 248, 251)));
+
 
     }
 

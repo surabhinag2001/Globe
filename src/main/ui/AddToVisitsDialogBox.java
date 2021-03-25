@@ -33,9 +33,9 @@ public class AddToVisitsDialogBox implements ActionListener {
         panel.add(Box.createVerticalStrut(20));
         JPanel message = new JPanel();
         JLabel text = new JLabel("Add visit");
-//        text.setBorder(BorderFactory.createMatteBorder(0, 15, 0, 15, new Color(248, 248, 251)));
+
         text.setFont(new Font("Nunito", Font.PLAIN, 14));
-//        text.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+
         message.setBackground(null);
         message.add(text);
         panel.add(message);
@@ -61,12 +61,12 @@ public class AddToVisitsDialogBox implements ActionListener {
         panel.add(namePanel);
         panel.add(Box.createVerticalStrut(10));
 
-        //add date stuff here
+
         JPanel datePanel = new JPanel();
         JLabel date = new JLabel();
         date.setText("Date :    ");
         date.setFont(new Font("Nunito", Font.PLAIN, 14));
-//        date.setForeground(new Color(247, 37, 133));
+
 
         dateField = new JTextFieldHintUI("yyyy-mm-dd");
         dateField.setBorder(null);
@@ -107,7 +107,6 @@ public class AddToVisitsDialogBox implements ActionListener {
         addButton = new JButton("Add");
         addButton.setForeground(new Color(247, 37, 133));
         addButton.addActionListener(this);
-//        addButton.setBorderPainted(false);
         addButton.setContentAreaFilled(false);
         addButton.setFocusPainted(false);
         addButton.setFont(new Font("Nunito", Font.PLAIN, 14));

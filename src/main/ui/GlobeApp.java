@@ -55,6 +55,8 @@ public class GlobeApp {
     private JScrollPane sp3;
     private JFrame frame;
     private JPanel mid;
+    private JPanel mainLayout;
+    private JPanel topbar;
 
 
     //EFFECTS: runs the globe application
@@ -69,14 +71,15 @@ public class GlobeApp {
 
     public void setUI() {
         frame = new JFrame(("World"));
-        frame.getContentPane().setBackground(new Color(229, 229, 229));
+//        frame.getContentPane().setBackground(new Color(229, 229, 229));
+        frame.getContentPane().setBackground(new Color(248, 248, 251));
         frame.setLayout(new BorderLayout());
 
-        JPanel mainLayout = new JPanel();
+        mainLayout = new JPanel();
         mainLayout.setLayout(new BoxLayout(mainLayout, BoxLayout.Y_AXIS));
         mainLayout.setBackground(null);
 
-        JPanel topbar = new JPanel();
+        topbar = new JPanel();
         topbar.setBackground(Color.WHITE);
         topbar.add(Box.createHorizontalStrut(10));
 
@@ -147,15 +150,12 @@ public class GlobeApp {
                     mid.remove(tbPanel2);
                     createtbpanel1();
                     mid.add(tbPanel1);
-
-
                 }
 
                 if (mid.getComponent(3).getName().equals("3")) {
                     mid.remove(tbPanel3);
                     createtbpanel1();
                     mid.add(tbPanel1);
-
                 }
                 mid.revalidate();
                 mid.repaint();
@@ -247,7 +247,8 @@ public class GlobeApp {
         tbOptions.add(Box.createHorizontalStrut(5));
 
         JPanel emptyPanel = new JPanel();
-        emptyPanel.setBackground(new Color(229, 229, 229));
+//        emptyPanel.setBackground(new Color(229, 229, 229));
+        emptyPanel.setBackground(new Color(248, 248, 251));
         tbPanel3.add(emptyPanel);
         tbPanel3.add(Box.createVerticalStrut(5));
 
@@ -330,7 +331,8 @@ public class GlobeApp {
 
 
         JPanel emptyPanel = new JPanel();
-        emptyPanel.setBackground(new Color(229, 229, 229));
+//        emptyPanel.setBackground(new Color(229, 229, 229));
+        emptyPanel.setBackground(new Color(248, 248, 251));
         tbPanel2.add(emptyPanel);
         tbPanel2.add(Box.createVerticalStrut(5));
 
@@ -397,7 +399,9 @@ public class GlobeApp {
         tbOptions.add(Box.createHorizontalStrut(5));
 
         JPanel emptyPanel = new JPanel();
-        emptyPanel.setBackground(new Color(229, 229, 229));
+//        emptyPanel.setBackground(new Color(229, 229, 229));
+        emptyPanel.setBackground(new Color(248, 248, 251));
+
         tbPanel1.add(emptyPanel);
         tbPanel1.add(Box.createVerticalStrut(5));
 
@@ -437,8 +441,8 @@ public class GlobeApp {
 
         sp3 = new JScrollPane(table3);
         sp3.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 10, Color.white));
-        sp3.setBackground(new Color(229, 229, 229));
-
+//        sp3.setBackground(new Color(229, 229, 229));
+        sp3.setBackground(new Color(248, 248, 251));
     }
 
     public void createWishlistTable() {
@@ -460,7 +464,9 @@ public class GlobeApp {
 
         sp2 = new JScrollPane(table2);
         sp2.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 10, Color.white));
-        sp2.setBackground(new Color(229, 229, 229));
+//        sp2.setBackground(new Color(229, 229, 229));
+        sp2.setBackground(new Color(248, 248, 251));
+
     }
 
     private void createWorldList() {
@@ -481,7 +487,9 @@ public class GlobeApp {
 
         sp1 = new JScrollPane(table1);
         sp1.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 10, Color.white));
-        sp1.setBackground(new Color(229, 229, 229));
+//        sp1.setBackground(new Color(229, 229, 229));
+        sp1.setBackground(new Color(248, 248, 251));
+
     }
 
     public void setTableDisplay(JTable table) {
@@ -490,10 +498,12 @@ public class GlobeApp {
         table.setForeground(new Color(106, 102, 102));
         table.setRowHeight(35);
         table.setBorder(BorderFactory.createEmptyBorder());
-        table.setSelectionBackground(new Color(240, 240, 243));
+//        table.setSelectionBackground(new Color(240, 240, 243));
+        table.setSelectionBackground(new Color(248, 248, 251));
         table.setSelectionForeground(new Color(106, 102, 102));
         table.getTableHeader().setDefaultRenderer(new HeaderRenderer());
         table.setFocusable(false);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setCellAlignment(table);
     }
 
