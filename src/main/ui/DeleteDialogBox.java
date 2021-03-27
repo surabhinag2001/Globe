@@ -10,24 +10,14 @@ public abstract class DeleteDialogBox implements ActionListener {
     private JButton yes;
     private JButton no;
     private JDialog dialog;
+    private JPanel panel;
+    private JLabel text;
+    private JPanel options;
 
     //EFFECTS: constructor for DeleteDialogBox that also sets UI for dialog
     public DeleteDialogBox(Frame parent,GlobeApp gb) {
         Point loc = parent.getLocation();
-        dialog = new JDialog(parent);
-        dialog.setLocation(loc.x + 80, loc.y + 80);
-        JPanel panel = new JPanel();
-        panel.setBackground(new Color(248, 248, 251));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(Box.createVerticalStrut(20));
-        JLabel text = new JLabel("Are you sure you want to delete the selected item?");
-        text.setBorder(BorderFactory.createMatteBorder(0, 15, 0, 15, new Color(248, 248, 251)));
-        text.setFont(new Font("Nunito", Font.PLAIN, 14));
-        text.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(text);
-        panel.add(Box.createVerticalStrut(20));
-        JPanel options = new JPanel();
-        options.setBackground(null);
+        setDeleteDialogUI(parent, loc);
         yes = new JButton("Yes");
         yes.setForeground(new Color(247, 37, 133));
         yes.addActionListener(this);
@@ -53,6 +43,23 @@ public abstract class DeleteDialogBox implements ActionListener {
 
         dialog.getContentPane().add(panel);
         dialog.pack();
+    }
+
+    private void setDeleteDialogUI(Frame parent, Point loc) {
+        dialog = new JDialog(parent);
+        dialog.setLocation(loc.x + 80, loc.y + 80);
+        panel = new JPanel();
+        panel.setBackground(new Color(248, 248, 251));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(Box.createVerticalStrut(20));
+        text = new JLabel("Are you sure you want to delete the selected item?");
+        text.setBorder(BorderFactory.createMatteBorder(0, 15, 0, 15, new Color(248, 248, 251)));
+        text.setFont(new Font("Nunito", Font.PLAIN, 14));
+        text.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(text);
+        panel.add(Box.createVerticalStrut(20));
+        options = new JPanel();
+        options.setBackground(null);
     }
 
     public JButton getYes() {

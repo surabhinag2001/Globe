@@ -3,6 +3,7 @@ package ui;
 
 import exceptions.*;
 import model.AllCountries;
+import model.VisitedCountry;
 import model.VisitedList;
 import model.WishList;
 import persistence.JsonVisitedListReader;
@@ -22,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 import java.lang.*;
 
@@ -50,15 +52,22 @@ public class GlobeApp {
     private DefaultTableModel tableModel2; //wishlist table model
     private JTable table1; //all table
     private DefaultTableModel tableModel1; //all table model
+    private JTable table4; //filtered table
+    private DefaultTableModel tableModel4; //filtered table model
     private JScrollPane sp1;
     private JScrollPane sp2;
     private JScrollPane sp3;
+    private JScrollPane sp4;
     private JFrame frame;
     private JPanel mid;
     private JPanel mainLayout;
     private JPanel topbar;
     private JPanel opts;
     private JTextField searchVisit;
+    private ImageIcon crossIc;
+    private JLabel cross;
+    private List<VisitedCountry> filterList;
+
 
 
     //EFFECTS: runs the globe application
@@ -307,6 +316,12 @@ public class GlobeApp {
         filter.setIcon(filterIc);
         tbOptions.add(Box.createHorizontalStrut(1));
         tbOptions.add(filter);
+
+        cross = new JLabel();
+        setCross("images/crossD.png");
+        tbOptions.add(Box.createHorizontalStrut(1));
+        tbOptions.add(cross);
+
         tbOptions.add(Box.createHorizontalStrut(233));
         tbPanel3.add(tbOptions);
         tbPanel3.add(Box.createVerticalStrut(5));
@@ -338,9 +353,49 @@ public class GlobeApp {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                JOptionPane.showMessageDialog(null, "Filter visit");
+                setCross("images/crossE.png");
+                tbOptions.revalidate();
+                tbOptions.repaint();
+                FilterListDialog fd = new FilterListDialog(frame,gb);
+                fd.display();
             }
         });
+        cross.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                setCross("images/crossD.png");
+                tbOptions.revalidate();
+                tbOptions.repaint();
+
+                tbPanel3.remove(tbPanel3.getComponent(4));
+                createVisitTable();
+                tbPanel3.add(sp3);
+                tbPanel3.revalidate();
+                tbPanel3.repaint();
+            }
+        });
+
+    }
+
+    private void setCross(String source) {
+        crossIc = new ImageIcon(source);
+        Image crossimg = crossIc.getImage(); // transform it
+        Image newcrossimg = crossimg.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        crossIc = new ImageIcon(newcrossimg);
+        cross.setIcon(crossIc);
+    }
+
+    public JPanel getTbPanel3() {
+        return tbPanel3;
+    }
+
+    public JScrollPane getSp4() {
+        return sp4;
+    }
+
+    public JScrollPane getSp3() {
+        return sp3;
     }
 
     public void createtbpanel2() {
@@ -439,7 +494,7 @@ public class GlobeApp {
 
         tbPanel1.add(Box.createVerticalStrut(5));
 //        add table
-        createWorldList();
+        createWorldTable();
         tbPanel1.add(sp1);
     }
 
@@ -463,10 +518,51 @@ public class GlobeApp {
         setTableDisplay(table3);
 
         sp3 = new JScrollPane(table3);
+        sp3.setName("sp3");
         sp3.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 10, Color.white));
 //        sp3.setBackground(new Color(229, 229, 229));
         sp3.setBackground(new Color(248, 248, 251));
     }
+
+    public void createFilterTable(String minDate,String maxDate) throws MaxDateBeforeMinDateException {
+        filterVisits(minDate,maxDate);
+        System.out.println(filterList.size());
+        String[] column = {"Country", "Date", "Notes"};
+        String[][] data = new String[filterList.size()][3];
+        for (int i = 0; i < filterList.size(); i++) {
+            data[i][0] = filterList.get(i).getCountryName();
+            data[i][1] = filterList.get(i).getDateVisited().toString();
+            data[i][2] = filterList.get(i).getNotesCountry();
+        }
+        tableModel4 = new DefaultTableModel(data, column) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table4 = new JTable(tableModel4);
+        setTableDisplay(table4);
+
+        sp4 = new JScrollPane(table4);
+        sp4.setName("sp4");
+        sp4.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 10, Color.white));
+        sp4.setBackground(new Color(248, 248, 251));
+    }
+
+    private void filterVisits(String minDate, String maxDate) throws MaxDateBeforeMinDateException {
+        int y1 = Integer.parseInt(minDate.substring(0, 4));
+        int m1 = Integer.parseInt(minDate.substring(5, 7));
+        int d1 = Integer.parseInt(minDate.substring(8));
+        LocalDate date1 = inputDate(y1, m1, d1);
+
+        int y2 = Integer.parseInt(maxDate.substring(0, 4));
+        int m2 = Integer.parseInt(maxDate.substring(5, 7));
+        int d2 = Integer.parseInt(maxDate.substring(8));
+        LocalDate date2 = inputDate(y2, m2, d2);
+
+        filterList = visitedCountries.filterDateWise(date1, date2);
+    }
+
 
     public void createWishlistTable() {
         loadWishList();
@@ -492,7 +588,7 @@ public class GlobeApp {
 
     }
 
-    private void createWorldList() {
+    private void createWorldTable() {
         String[] column = {"Country"};
         AllCountries obj = new AllCountries();
         String[][] data = new String[obj.getAllCountries().size()][1];
@@ -649,7 +745,7 @@ public class GlobeApp {
     }
 
     //EFFECT: function to input dates
-    private LocalDate inputDate(int y, int m, int d) {
+    public LocalDate inputDate(int y, int m, int d) {
         return LocalDate.of(y, m, d);
     }
 
