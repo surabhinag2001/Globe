@@ -87,6 +87,7 @@ public class GlobeApp {
         setUI();
     }
 
+    //EFFECTS: sets the basic ui and layout for the whole applicatin
     public void setUI() {
         gb = this;
         setParentFrameUI();
@@ -124,6 +125,7 @@ public class GlobeApp {
 
     }
 
+    //EFFECTS: sets layout and ui for parent frame
     private void setParentFrameUI() {
         frame = new JFrame(("World"));
         frame.getContentPane().setBackground(new Color(248, 248, 251));
@@ -131,6 +133,7 @@ public class GlobeApp {
         frame.setResizable(false);
     }
 
+    //EFFECTS: sets layout and ui for buttons displayed on the right of the creen
     private void setOptionsPanel() {
         opts = new JPanel();
         opts.setBackground(null);
@@ -154,12 +157,15 @@ public class GlobeApp {
         opts.add(Box.createRigidArea(new Dimension(0, 80)));
     }
 
+    //EFFECTS: sets layout and ui for mid panel
     private void setMidPanel() {
         mid = new JPanel(new FlowLayout(FlowLayout.LEFT));
         mid.setBackground(null);
         mid.add(Box.createHorizontalStrut(10));
     }
 
+    //MODIFIES: this
+    //EFFECTS: peforms actions related to when bt3 is pressed
     private void performBt3Clicked() {
         bt3.addActionListener(e -> {
             bt3.setForeground(new Color(247, 37, 133));
@@ -184,6 +190,7 @@ public class GlobeApp {
         });
     }
 
+    //EFFECTS: returns integer value depending on what panel
     private int detectPanel() {
         if (mid.getComponent(3).getName().equals("1")) {
             return 1;
@@ -196,6 +203,8 @@ public class GlobeApp {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: peforms actions related to when bt2 is pressed
     private void performBt2Clicked() {
         bt2.addActionListener(e -> {
             bt2.setForeground(new Color(247, 37, 133));
@@ -219,6 +228,8 @@ public class GlobeApp {
         });
     }
 
+    //MODIFIES: this
+    //EFFECTS: peforms actions related to when bt1 is pressed
     private void performBt1Clicked() {
         bt1.addActionListener(e -> {
             bt1.setForeground(new Color(247, 37, 133));
@@ -240,6 +251,7 @@ public class GlobeApp {
         });
     }
 
+    //EFFECTS: sets ui of the buttons
     private void setButton(JButton button) {
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
@@ -248,6 +260,7 @@ public class GlobeApp {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
+    //EFFECTS: sets ui of the top bar
     private void setTopbar() {
         topbar = new JPanel();
         topbar.setBackground(Color.WHITE);
@@ -277,6 +290,7 @@ public class GlobeApp {
         topbar.add(textField);
     }
 
+    //EFFECTS: sets the ui of the search bar and implements functionality related typing in it
     private void setSearchBar() {
         textField = new JTextFieldHintUI("Search");
         textField.setBorder(null);
@@ -307,6 +321,8 @@ public class GlobeApp {
         });
     }
 
+    //MODIFIES: this
+    //EFFECTS: sets the ui and layout of the panel displaying visits
     public void createtbPanel3() {
         setTbPanel3();
 
@@ -358,6 +374,8 @@ public class GlobeApp {
         });
     }
 
+    //MODIFIES: this
+    //EFFECTS: changes the cross icon from grey to pink by changibg the source of the image
     private void filterVisitsMouseListener(JPanel tbOptions) {
         filter.addMouseListener(new MouseAdapter() {
             @Override
@@ -372,6 +390,8 @@ public class GlobeApp {
         });
     }
 
+    //MODIFIES: this
+    //EFFECTS: deletes the selected visit otherwise plays an error sound
     private void subVisitsMouseListener() {
         sub.addMouseListener(new MouseAdapter() {
             @Override
@@ -388,6 +408,8 @@ public class GlobeApp {
         });
     }
 
+    //MODIFIES: this
+    //EFFECTS: adds a visit to the visited list
     private void addVisitsMouseListener() {
         add.addMouseListener(new MouseAdapter() {
             @Override
@@ -399,6 +421,7 @@ public class GlobeApp {
         });
     }
 
+    //EFFECTS: buttons displayed on top of visited list panel
     private void setTbPanel3Buttons(JPanel tbOptions) {
         setTbPanel2Buttons(tbOptions);
 
@@ -413,6 +436,7 @@ public class GlobeApp {
         tbOptions.add(cross);
     }
 
+    //EFFECTS: the layout for ui of tbPanel3
     private void setTbPanel3() {
         tbPanel3 = new JPanel();
         tbPanel3.setName("3");
@@ -420,6 +444,8 @@ public class GlobeApp {
         tbPanel3.setLayout(new BoxLayout(tbPanel3, BoxLayout.Y_AXIS));
     }
 
+    //MODIFIES: addIc
+    //EFFECTS: resized the add icon
     private void setAddIcon() {
         addIc = new ImageIcon("images/addicon.png");
         Image image = addIc.getImage(); // transform it
@@ -428,6 +454,8 @@ public class GlobeApp {
         add.setIcon(addIc);
     }
 
+    //MODIFIES: addIc
+    //EFFECTS: resized the sub icon
     private void setSubIcon() {
         subIc = new ImageIcon("images/removeicon.png");
         Image remimage = subIc.getImage(); // transform it
@@ -436,6 +464,8 @@ public class GlobeApp {
         sub.setIcon(subIc);
     }
 
+    //MODIFIES: addIc
+    //EFFECTS: resized the filter icon
     private void setFilterIcon() {
         filterIc = new ImageIcon("images/filtericon.png");
         Image filimg = filterIc.getImage(); // transform it
@@ -444,6 +474,8 @@ public class GlobeApp {
         filter.setIcon(filterIc);
     }
 
+    //MODIFIES: addIc
+    //EFFECTS: resized the cross icon
     public void setCrossIcon(String source) {
         crossIc = new ImageIcon(source);
         Image crossimg = crossIc.getImage(); // transform it
@@ -464,25 +496,29 @@ public class GlobeApp {
         return sp3;
     }
 
+    //EFFECTS: searches query in table3
     private void searchVisit(String query) {
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(tableModel3);
         table3.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(query));
     }
 
+    //EFFECTS: searches query in table2
     private void searchWish(String query) {
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(tableModel2);
         table2.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(query));
     }
 
+    //EFFECTS: searches query in table1
     private void searchCountry(String query) {
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(tableModel1);
         table1.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(query));
     }
 
-
+    //MODIFIES: this
+    //EFFECTS: sets the ui and layout of the panel displaying visits
     public void createtbpanel2() {
         setTbPanel2();
 
@@ -514,6 +550,8 @@ public class GlobeApp {
         subWishlistMouseListener();
     }
 
+    //MODIFIES: this
+    //EFFECTS: deletes the selected country otherwise plays an error sound
     private void subWishlistMouseListener() {
         sub.addMouseListener(new MouseAdapter() {
             @Override
@@ -530,6 +568,8 @@ public class GlobeApp {
         });
     }
 
+    //MODIFIES: this
+    //EFFECTS: adds a country to the wishlist
     private void addWishlistMouseListener() {
         add.addMouseListener(new MouseAdapter() {
             @Override
@@ -541,6 +581,7 @@ public class GlobeApp {
         });
     }
 
+    //EFFECTS: buttons displayed on top of wishlist panel
     private void setTbPanel2Buttons(JPanel tbOptions) {
         add = new JLabel();
         setAddIcon();
@@ -553,6 +594,7 @@ public class GlobeApp {
         tbOptions.add(sub);
     }
 
+    //EFFECTS: the layout for ui of tbPanel2
     private void setTbPanel2() {
         tbPanel2 = new JPanel();
         tbPanel2.setName("2");
@@ -560,6 +602,8 @@ public class GlobeApp {
         tbPanel2.setLayout(new BoxLayout(tbPanel2, BoxLayout.Y_AXIS));
     }
 
+    //MODIFIES: this
+    //EFFECTS: sets the ui and layout of the panel displaying all countries
     public void createtbpanel1() {
         tbPanel1 = new JPanel();
         tbPanel1.setName("1");
@@ -570,7 +614,6 @@ public class GlobeApp {
         tbOptions.add(Box.createHorizontalStrut(5));
 
         JPanel emptyPanel = new JPanel();
-//        emptyPanel.setBackground(new Color(229, 229, 229));
         emptyPanel.setBackground(new Color(248, 248, 251));
 
         tbPanel1.add(emptyPanel);
@@ -586,12 +629,12 @@ public class GlobeApp {
         tbPanel1.add(tbOptions);
 
         tbPanel1.add(Box.createVerticalStrut(5));
-//        add table
+
         createWorldTable();
         tbPanel1.add(sp1);
     }
 
-
+    //EFFECTS: creates a JTable displaying visited countries
     private void createVisitTable() {
         loadVisitedList();
         String[] column = {"Country", "Date", "Notes"};
@@ -613,10 +656,11 @@ public class GlobeApp {
         sp3 = new JScrollPane(table3);
         sp3.setName("sp3");
         sp3.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 10, Color.white));
-//        sp3.setBackground(new Color(229, 229, 229));
         sp3.setBackground(new Color(248, 248, 251));
     }
 
+    //EFFECTS: creates a JTable displaying visits between min and max dates if min<max else
+    //throws MaxDateBeforeMinDateException, NullFieldsException is thrown when any field is empty
     public void createFilterTable(String minDate, String maxDate) throws MaxDateBeforeMinDateException,
             NullFieldsException {
         checkFilterDateFields(minDate, maxDate);
@@ -644,6 +688,7 @@ public class GlobeApp {
         sp4.setBackground(new Color(248, 248, 251));
     }
 
+    //EFFECTS: throws NullFieldsException exception if minDate or maxDate have not been entered by the user
     private void checkFilterDateFields(String minDate, String maxDate) throws NullFieldsException {
         System.out.println(minDate);
         if (minDate.equals("yyyy-mm-dd") || maxDate.equals("yyyy-mm-dd")) {
@@ -651,6 +696,8 @@ public class GlobeApp {
         }
     }
 
+    //EFFECTS: converts string dates to locale dates and initialises filterList with the countries between min
+    //and max, throws MaxDateBeforeMinDateException if min date is after max date
     private void filterVisits(String minDate, String maxDate) throws MaxDateBeforeMinDateException {
         int y1 = Integer.parseInt(minDate.substring(0, 4));
         int m1 = Integer.parseInt(minDate.substring(5, 7));
@@ -665,6 +712,7 @@ public class GlobeApp {
         filterList = visitedCountries.filterDateWise(date1, date2);
     }
 
+    //EFFECTS: plays error sound throws exception if needed
     private void playSoundWithErrors() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         File f = new File("./sounds/error.wav");
         AudioInputStream audio = AudioSystem.getAudioInputStream(f.toURI().toURL());
@@ -673,6 +721,7 @@ public class GlobeApp {
         clip.start();
     }
 
+    //EFFECTS: plays error sound
     public void playSound() {
         try {
             playSoundWithErrors();
@@ -681,6 +730,7 @@ public class GlobeApp {
         }
     }
 
+    //EFFECTS: creates a JTable displaying the wishlist
     public void createWishlistTable() {
         loadWishList();
         String[] column = {"Country", "Notes"};
@@ -700,11 +750,11 @@ public class GlobeApp {
 
         sp2 = new JScrollPane(table2);
         sp2.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 10, Color.white));
-//        sp2.setBackground(new Color(229, 229, 229));
         sp2.setBackground(new Color(248, 248, 251));
 
     }
 
+    //EFFECTS: creates a JTable displaying all countries
     private void createWorldTable() {
         String[] column = {"Country"};
         AllCountries obj = new AllCountries();
@@ -723,18 +773,16 @@ public class GlobeApp {
 
         sp1 = new JScrollPane(table1);
         sp1.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 10, Color.white));
-//        sp1.setBackground(new Color(229, 229, 229));
         sp1.setBackground(new Color(248, 248, 251));
-
     }
 
+    //EFFECTS: sets the layout and ui of table
     public void setTableDisplay(JTable table) {
         table.setBounds(30, 40, 200, 300);
         table.setFont(new Font("Nunito", Font.PLAIN, 12));
         table.setForeground(new Color(106, 102, 102));
         table.setRowHeight(35);
         table.setBorder(BorderFactory.createEmptyBorder());
-//        table.setSelectionBackground(new Color(240, 240, 243));
         table.setSelectionBackground(new Color(248, 248, 251));
         table.setSelectionForeground(new Color(106, 102, 102));
         table.getTableHeader().setDefaultRenderer(new HeaderRenderer());
@@ -743,6 +791,7 @@ public class GlobeApp {
         setCellAlignment(table);
     }
 
+    //EFFECTS: sets the layout and ui of each cell of table
     private void setCellAlignment(JTable table) {
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -751,7 +800,8 @@ public class GlobeApp {
         }
     }
 
-
+    //MODFIES: this
+    //EFFECTS: deletes the selected row from visit list or wishlist depeding on c
     public void deleteSelectedRow(char c) {
         int index;
         if (c == 'v') {
@@ -774,6 +824,7 @@ public class GlobeApp {
         }
     }
 
+    //EFFECTS: returns the index of the selected row from either visited list or wishlist depending on c
     public int getSeletedRowFromTable(char c) {
         if (c == 'v') {
             return table3.getSelectedRow();
@@ -784,7 +835,9 @@ public class GlobeApp {
         }
     }
 
-    private void checkAddWishlistField(String name,String notes) throws NullFieldsException {
+    //EFFECTS: throws NullFieldsException if user has not entered data in an of the fields while adding a country to
+    //the wishlist
+    private void checkAddWishlistField(String name, String notes) throws NullFieldsException {
         if (name.equals("Enter country") || notes.equals("Enter notes")) {
             throw new NullFieldsException();
         }
@@ -794,7 +847,7 @@ public class GlobeApp {
     //EFFECT : adds a country to the wishlist,saves and loads wishlist
     public void addToWishlist(String name, String notes) throws CountryAlreadyPresentException,
             InvalidCountryException, NullFieldsException {
-        checkAddWishlistField(name,notes);
+        checkAddWishlistField(name, notes);
         wishCountries.addCountry(name, notes);
         saveWishList();
         loadWishList();
@@ -819,6 +872,8 @@ public class GlobeApp {
         }
     }
 
+    //EFFECTS: throws NullFieldsException if user has not entered data in an of the fields while adding a country to
+    //the visited list
     private void checkAddVisitField(String name, String date, String notes) throws NullFieldsException {
         if (name.equals("Enter country") || date.equals("yyyy-mm-dd") || notes.equals("Enter notes")) {
             throw new NullFieldsException();
@@ -831,7 +886,7 @@ public class GlobeApp {
     //EFFECT : adds a country to the visited list
     public void addToVisitedList(String name, String dateString, String notes) throws CountryAlreadyPresentException,
             InvalidCountryException, FutureDateException, NullFieldsException {
-        checkAddVisitField(name,dateString,name);
+        checkAddVisitField(name, dateString, name);
         int y = Integer.parseInt(dateString.substring(0, 4));
         int m = Integer.parseInt(dateString.substring(5, 7));
         int d = Integer.parseInt(dateString.substring(8));
@@ -866,6 +921,19 @@ public class GlobeApp {
         }
     }
 
+    public DefaultTableModel getTableModel2() {
+        return tableModel2;
+    }
+
+    public DefaultTableModel getTableModel3() {
+        return tableModel3;
+    }
+
+    //EFFECT: function to input dates
+    public LocalDate inputDate(int y, int m, int d) {
+        return LocalDate.of(y, m, d);
+    }
+
     //EFFECT: function to input dates
     private LocalDate inputDate() {
         System.out.print("Year: ");
@@ -877,19 +945,7 @@ public class GlobeApp {
         return LocalDate.of(y, m, d);
     }
 
-    //EFFECT: function to input dates
-    public LocalDate inputDate(int y, int m, int d) {
-        return LocalDate.of(y, m, d);
-    }
-
-    public DefaultTableModel getTableModel2() {
-        return tableModel2;
-    }
-
-    public DefaultTableModel getTableModel3() {
-        return tableModel3;
-    }
-
+    //most of the fucntions beyond this point are for console based UI
 
     // MODIFIES: this
     // EFFECTS: processes user input
@@ -1182,6 +1238,7 @@ public class GlobeApp {
         System.out.println("\tq -> Quit main menu");
     }
 
+    // EFFECTS: prints all countries of the world
     private void displayAllCountries() {
         AllCountries obj = new AllCountries();
         for (String country : obj.getAllCountries()) {

@@ -11,6 +11,7 @@ public class DeleteVisitedListDialogBox extends DeleteDialogBox {
     private JButton yes;
     private JDialog dialog;
 
+    //EFFECTS: constructs a dialog box for deleting a country from the visited list
     public DeleteVisitedListDialogBox(Frame parent, GlobeApp gb) {
         super(parent, gb);
         globe = gb;
@@ -18,6 +19,9 @@ public class DeleteVisitedListDialogBox extends DeleteDialogBox {
         dialog = super.getDialog();
     }
 
+    //MODIFIES: globe
+    //EFFECTS: action listeners for the yes button
+    // the selected visit gets deleted
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();

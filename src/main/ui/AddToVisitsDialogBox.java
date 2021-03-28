@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DateTimeException;
 
+//class representing the dialog box to add a visit to the visited list
 public class AddToVisitsDialogBox implements ActionListener {
 
     private JDialog dialog;
@@ -31,6 +32,7 @@ public class AddToVisitsDialogBox implements ActionListener {
     private JLabel date;
     private JLabel name;
 
+    //EFFECTS: constructs a dialog box for adding a visit
     public AddToVisitsDialogBox(Frame parent, GlobeApp gb) {
         this.gb = gb;
         this.parent = parent;
@@ -72,6 +74,7 @@ public class AddToVisitsDialogBox implements ActionListener {
         dialog.pack();
     }
 
+    //EFFECTS: sets up the ui and text field for inputting notes
     private void setNotesUI() {
         notesPanel = new JPanel();
         notes = new JLabel();
@@ -91,6 +94,7 @@ public class AddToVisitsDialogBox implements ActionListener {
         notesPanel.setBackground(null);
     }
 
+    //EFFECTS: sets up the ui and text field for inputting date
     private void setDateUI() {
         datePanel = new JPanel();
         date = new JLabel();
@@ -110,6 +114,7 @@ public class AddToVisitsDialogBox implements ActionListener {
 
     }
 
+    //EFFECTS: sets up the ui and text field for inputting name of the country
     private void setNameUI() {
         namePanel = new JPanel();
         name = new JLabel();
@@ -128,6 +133,7 @@ public class AddToVisitsDialogBox implements ActionListener {
         namePanel.setBackground(null);
     }
 
+    //EFFECTS: sets up the ui for dialog box
     private void setAddVisitDialogUI(Frame parent, Point loc) {
         dialog = new JDialog(parent);
         dialog.setLocation(loc.x + 80, loc.y + 80);
@@ -147,15 +153,17 @@ public class AddToVisitsDialogBox implements ActionListener {
         panel.add(Box.createVerticalStrut(20));
     }
 
+    //MODIFIES: this
+    //EFFECTS: sets up the ui for error messages
     private void setErrorUI() {
         err = new JLabel(" ");
-
         err.setBorder(BorderFactory.createMatteBorder(0, 15, 0, 15, new Color(248, 248, 251)));
         err.setFont(new Font("Nunito", Font.PLAIN, 12));
         err.setForeground(new Color(247, 37, 133));
         err.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
+    //EFFECTS: sets the ui of text fields
     private void setTextFieldUI(JTextField textField) {
         textField.setBorder(null);
         textField.setMargin(new Insets(5, 50, 5, 10));
@@ -163,9 +171,9 @@ public class AddToVisitsDialogBox implements ActionListener {
         textField.setBackground(null);
     }
 
+    //EFFECTS: sets up the ui for add button in dialog box
     private void setAddButtonUI() {
         addButton = new JButton("Add");
-
         addButton.setForeground(new Color(247, 37, 133));
         addButton.addActionListener(this);
         addButton.setContentAreaFilled(false);
@@ -179,6 +187,8 @@ public class AddToVisitsDialogBox implements ActionListener {
         dialog.setVisible(true);
     }
 
+    //MODIFIES: gb
+    //EFFECTS: action listeners for the add button, plays a sound when any error message shows up
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -209,6 +219,7 @@ public class AddToVisitsDialogBox implements ActionListener {
         }
     }
 
+    //EFFECTS: carries out of the operations that take place with add button is pressed
     private void addOnClick() throws CountryAlreadyPresentException, InvalidCountryException, FutureDateException {
         gb.addToVisitedList(nameField.getText().trim().toUpperCase(), dateField.getText().trim(),
                 notesField.getText().trim());

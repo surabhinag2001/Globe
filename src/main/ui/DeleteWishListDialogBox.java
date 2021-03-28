@@ -10,6 +10,7 @@ public class DeleteWishListDialogBox extends DeleteDialogBox {
     private JButton yes;
     private JDialog dialog;
 
+    //EFFECTS: constructs a dialog box for deleting a country from the wishlist
     public DeleteWishListDialogBox(Frame parent, GlobeApp gb) {
         super(parent, gb);
         globe = gb;
@@ -17,6 +18,9 @@ public class DeleteWishListDialogBox extends DeleteDialogBox {
         dialog = super.getDialog();
     }
 
+    //MODIFIES: globe
+    //EFFECTS: action listeners for the yes button
+    // the selected country gets deleted
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();

@@ -27,7 +27,7 @@ public class FilterListDialog implements ActionListener {
     private JPanel message;
     private JLabel text;
 
-
+    //EFFECTS: constructs a dialog box for filtering visits by date
     public FilterListDialog(Frame parent, GlobeApp gb) {
         this.gb = gb;
         this.parent = parent;
@@ -55,6 +55,7 @@ public class FilterListDialog implements ActionListener {
         dialog.pack();
     }
 
+    //EFFECTS: sets up the ui for error messages
     private void setErrorUI() {
         err = new JLabel(" ");
 
@@ -64,6 +65,7 @@ public class FilterListDialog implements ActionListener {
         err.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
+    //EFFECTS: sets up the ui for to JLabel and associated text field
     private void setToUI() {
         toPanel = new JPanel();
         to = new JLabel();
@@ -80,6 +82,7 @@ public class FilterListDialog implements ActionListener {
         toPanel.setBackground(null);
     }
 
+    //EFFECTS: sets up the ui for from JLabel and associated text field
     private void setFromUI() {
         fromPanel = new JPanel();
         from = new JLabel();
@@ -97,9 +100,9 @@ public class FilterListDialog implements ActionListener {
         fromPanel.setBackground(null);
     }
 
+    //EFFECTS: sets up the ui for add button in dialog box
     private void setFilterButtonUI() {
         filterButton = new JButton("Filter");
-
         filterButton.setForeground(new Color(247, 37, 133));
         filterButton.addActionListener(this);
         filterButton.setContentAreaFilled(false);
@@ -108,6 +111,7 @@ public class FilterListDialog implements ActionListener {
         filterButton.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
+    //EFFECTS: sets the ui of text fields
     private void setTextFieldUI(JTextField textField) {
         textField.setBorder(null);
         textField.setMargin(new Insets(5, 50, 5, 10));
@@ -115,6 +119,7 @@ public class FilterListDialog implements ActionListener {
         textField.setBackground(null);
     }
 
+    //EFFECTS: sets the ui for filter list dialog box
     private void setFilterListDialogUI(Frame parent, Point loc) {
         dialog = new JDialog(parent);
         dialog.setLocation(loc.x + 80, loc.y + 80);
@@ -136,39 +141,48 @@ public class FilterListDialog implements ActionListener {
     }
 
 
+    //EFFECTS: makes the cross icon grey when filter window is externally closed
     private void filterDialogWindowListeners() {
         dialog.addWindowListener(new MyWindowListener(gb));
     }
 
+    //MODIFIES: gb
+    //EFFECTS: action listeners for the filter button, plays a sound when any error message shows up
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == filterButton) {
             try {
-                gb.createFilterTable(fromDateField.getText().trim(), toDateField.getText().trim());
-                gb.getTbPanel3().remove(gb.getSp3());
-                gb.getTbPanel3().add(gb.getSp4());
-                gb.getTbPanel3().repaint();
-                gb.getTbPanel3().revalidate();
+                onClick();
                 dialog.dispose();
             } catch (MaxDateBeforeMinDateException maxDateBeforeMinDateException) {
-//                maxDateBeforeMinDateException.printStackTrace();
+                maxDateBeforeMinDateException.printStackTrace();
                 err.setText("Dates not correctly entered");
                 gb.playSound();
             } catch (DateTimeException dateTimeException) {
-//                dateTimeException.printStackTrace();
+                dateTimeException.printStackTrace();
                 err.setText("Invalid date");
                 gb.playSound();
             } catch (NumberFormatException | StringIndexOutOfBoundsException ex) {
-//                ex.printStackTrace();
+                ex.printStackTrace();
                 err.setText("Incorrect date format");
                 gb.playSound();
             } catch (NullFieldsException ne) {
-//                ne.printStackTrace();
+                ne.printStackTrace();
                 err.setText("Fields are empty");
                 gb.playSound();
             }
         }
+    }
+
+    //MODIFIES: gb
+    //EFFECTS: displays the countries within the given given dates
+    private void onClick() throws MaxDateBeforeMinDateException {
+        gb.createFilterTable(fromDateField.getText().trim(), toDateField.getText().trim());
+        gb.getTbPanel3().remove(gb.getSp3());
+        gb.getTbPanel3().add(gb.getSp4());
+        gb.getTbPanel3().repaint();
+        gb.getTbPanel3().revalidate();
     }
 
     //EFFECTS: displays add dialog

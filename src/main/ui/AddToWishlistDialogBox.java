@@ -2,13 +2,12 @@ package ui;
 
 import exceptions.CountryAlreadyPresentException;
 import exceptions.InvalidCountryException;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+//class representing the dialog box to add a visit to the wishlist
 public class AddToWishlistDialogBox implements ActionListener {
 
     private JDialog dialog;
@@ -26,7 +25,7 @@ public class AddToWishlistDialogBox implements ActionListener {
     private JPanel notesPanel;
     private JLabel notes;
 
-
+    //EFFECTS: constructs a dialog box for adding a country to the wishlist
     public AddToWishlistDialogBox(Frame parent,GlobeApp gb) {
         this.gb = gb;
         this.parent = parent;
@@ -61,6 +60,7 @@ public class AddToWishlistDialogBox implements ActionListener {
         dialog.pack();
     }
 
+    //EFFECTS: sets up the ui and text field for inputting notes
     private void setNotesUI() {
         notesPanel = new JPanel();
         notes = new JLabel();
@@ -79,6 +79,7 @@ public class AddToWishlistDialogBox implements ActionListener {
         notesPanel.setBackground(null);
     }
 
+    //EFFECTS: sets up the ui and text field for inputting name of the country
     private void setNameUI() {
         namePanel = new JPanel();
         name = new JLabel();
@@ -97,6 +98,7 @@ public class AddToWishlistDialogBox implements ActionListener {
         namePanel.setBackground(null);
     }
 
+    //EFFECTS: sets up the ui for dialog box
     private void setAddWishListDialogUI(Frame parent, Point loc) {
         dialog = new JDialog(parent);
         dialog.setLocation(loc.x + 80, loc.y + 80);
@@ -107,15 +109,14 @@ public class AddToWishlistDialogBox implements ActionListener {
 
         message = new JPanel();
         text = new JLabel("Add country to wishlist");
-//        text.setBorder(BorderFactory.createMatteBorder(0, 15, 0, 15, new Color(248, 248, 251)));
         text.setFont(new Font("Nunito", Font.PLAIN, 14));
-//        text.setAlignmentX(JPanel.CENTER_ALIGNMENT);
         message.setBackground(null);
         message.add(text);
         panel.add(message);
         panel.add(Box.createVerticalStrut(20));
     }
 
+    //EFFECTS: sets the ui of text fields
     private void setTextFieldUI(JTextField textField) {
         textField.setBorder(null);
         textField.setMargin(new Insets(5, 50, 5, 10));
@@ -123,21 +124,21 @@ public class AddToWishlistDialogBox implements ActionListener {
         textField.setBackground(null);
     }
 
+    //MODIFIES: this
+    //EFFECTS: sets up the ui for error messages
     private void setErrorUI() {
         err = new JLabel(" ");
-
         err.setBorder(BorderFactory.createMatteBorder(0, 15, 0, 15, new Color(248, 248, 251)));
         err.setFont(new Font("Nunito", Font.PLAIN, 12));
         err.setForeground(new Color(247, 37, 133));
         err.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
+    //EFFECTS: sets up the ui for add button in dialog box
     private void setAddButtonUI() {
         addButton = new JButton("Add");
-
         addButton.setForeground(new Color(247, 37, 133));
         addButton.addActionListener(this);
-//        addButton.setBorderPainted(false);
         addButton.setContentAreaFilled(false);
         addButton.setFocusPainted(false);
         addButton.setFont(new Font("Nunito", Font.PLAIN, 14));
@@ -149,6 +150,10 @@ public class AddToWishlistDialogBox implements ActionListener {
         dialog.setVisible(true);
     }
 
+    //MODIFIES: gb
+    //EFFECTS: action listeners for the add button
+    // carries out of the operations that take place with add button is pressed,
+    // plays a sound when any error message shows up
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();

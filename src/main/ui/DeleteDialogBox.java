@@ -25,12 +25,10 @@ public abstract class DeleteDialogBox implements ActionListener {
         no = new JButton("No");
         no.addActionListener(this);
 
-//        yes.setBorderPainted(false);
         yes.setContentAreaFilled(false);
         yes.setFocusPainted(false);
         yes.setFont(new Font("Nunito", Font.PLAIN, 14));
 
-//        no.setBorderPainted(false);
         no.setContentAreaFilled(false);
         no.setFocusPainted(false);
         no.setFont(new Font("Nunito", Font.PLAIN, 14));
@@ -45,6 +43,7 @@ public abstract class DeleteDialogBox implements ActionListener {
         dialog.pack();
     }
 
+    //EFFECTS: sets up the ui for this dialog box
     private void setDeleteDialogUI(Frame parent, Point loc) {
         dialog = new JDialog(parent);
         dialog.setLocation(loc.x + 80, loc.y + 80);

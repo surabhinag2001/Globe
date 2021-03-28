@@ -3,6 +3,7 @@ package ui;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+//class for representing window listener
 public class MyWindowListener implements WindowListener {
     GlobeApp gb;
 
@@ -15,6 +16,8 @@ public class MyWindowListener implements WindowListener {
 
     }
 
+    //MODIFIES: gb
+    //EFFECTS: changes the cross icon from pink to grey
     @Override
     public void windowClosing(WindowEvent e) {
         gb.setCrossIcon("images/crossD.png");

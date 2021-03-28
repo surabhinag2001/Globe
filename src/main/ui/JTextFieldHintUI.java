@@ -6,17 +6,19 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+//class for customising the input hints displayed in the text fields
 public class JTextFieldHintUI extends JTextField {
 
     Font gainFont = new Font("Nunito", Font.PLAIN, 16);
     Font lostFont = new Font("Nunito", Font.PLAIN, 16);
 
+    //EFFECTS: constructor for JTextFieldHintUI
     public JTextFieldHintUI(final String hint) {
 
-        setText(hint);
-        setFont(lostFont);
-        setForeground(Color.GRAY);
+        setLost(hint, lostFont, Color.GRAY);
 
+        //MODIFIES: this
+        //EFFECTS: changes the text,font and color of the hint depending on thr focus
         this.addFocusListener(new FocusAdapter() {
 
             @Override
@@ -33,16 +35,20 @@ public class JTextFieldHintUI extends JTextField {
             @Override
             public void focusLost(FocusEvent e) {
                 if (getText().equals(hint) || getText().length() == 0) {
-                    setText(hint);
-                    setFont(lostFont);
-                    setForeground(Color.GRAY);
+                    setLost(hint, lostFont, Color.GRAY);
                 } else {
-                    setText(getText());
-                    setFont(gainFont);
-                    setForeground(Color.BLACK);
+                    setLost(getText(), gainFont, Color.BLACK);
                 }
             }
         });
 
+    }
+
+    //MODIFIES: this
+    //EFFECTS: changes the text,font and color of the hint when focs is lost
+    private void setLost(String hint, Font lostFont, Color gray) {
+        setText(hint);
+        setFont(lostFont);
+        setForeground(gray);
     }
 }
