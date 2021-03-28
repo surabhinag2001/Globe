@@ -176,5 +176,11 @@ class WishListTest {
         assertEquals(2,myWishList.getMyWishList().size());
         myWishList.removeCountryByIndex(1);
         assertEquals(1,myWishList.getMyWishList().size());
+        myWishList.removeCountryByIndex(-10);
+        assertEquals(1,myWishList.getMyWishList().size());
+        myWishList.removeCountryByIndex(10);
+        assertEquals(1,myWishList.getMyWishList().size());
+        myWishList.removeCountryByIndex(0);
+        assertEquals(0,myWishList.getMyWishList().size());
     }
 }

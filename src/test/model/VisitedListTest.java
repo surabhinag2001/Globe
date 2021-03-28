@@ -309,6 +309,12 @@ public class VisitedListTest {
         assertEquals(2,myVisitedList.getMyVisitedList().size());
         myVisitedList.removeVisitByIndex(1);
         assertEquals(1,myVisitedList.getMyVisitedList().size());
+        myVisitedList.removeVisitByIndex(-1);
+        assertEquals(1,myVisitedList.getMyVisitedList().size());
+        myVisitedList.removeVisitByIndex(100);
+        assertEquals(1,myVisitedList.getMyVisitedList().size());
+        myVisitedList.removeVisitByIndex(0);
+        assertEquals(0,myVisitedList.getMyVisitedList().size());
     }
 
 }
