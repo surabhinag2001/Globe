@@ -17,8 +17,8 @@ public class AddToVisitsDialogBox implements ActionListener {
     private JTextField dateField;
     private JTextField notesField;
     private JButton addButton;
-    private GlobeApp gb;
-    private Frame parent;
+    private final GlobeApp gb;
+    private final Frame parent;
     private JLabel err;
     private JPanel panel;
     private JPanel message;
@@ -187,20 +187,24 @@ public class AddToVisitsDialogBox implements ActionListener {
                 addOnClick();
                 dialog.dispose();
             } catch (CountryAlreadyPresentException countryAlreadyPresentException) {
-                countryAlreadyPresentException.printStackTrace();
+//                countryAlreadyPresentException.printStackTrace();
                 err.setText("Country already present");
+                gb.playSound();
             } catch (InvalidCountryException invalidCountryException) {
-                invalidCountryException.printStackTrace();
+//                invalidCountryException.printStackTrace();
                 err.setText("Invalid country");
-            } catch (FutureDateException futureDateException) {
-                futureDateException.printStackTrace();
+                gb.playSound();
+            } catch (FutureDateException | DateTimeException er) {
+//                er.printStackTrace();
                 err.setText("Date in future");
+                gb.playSound();
             } catch (NumberFormatException | StringIndexOutOfBoundsException ex) {
-                ex.printStackTrace();
+//                ex.printStackTrace();
                 err.setText("Incorrect date format");
-            } catch (DateTimeException dateTimeException) {
-                dateTimeException.printStackTrace();
-                err.setText("Invalid date");
+                gb.playSound();
+            } catch (NullFieldsException ne) {
+                err.setText("Fields are empty");
+                gb.playSound();
             }
         }
     }

@@ -161,4 +161,20 @@ class WishListTest {
         assertEquals("India",myWishList.getMyWishList().get(0).getCountryName());
         assertEquals("forts",myWishList.getMyWishList().get(0).getNotesCountry());
     }
+
+    @Test
+    public void testRemoveCountryByIndex() {
+        WishList myWishList = new WishList();
+        try {
+            myWishList.addCountry("India","forts");
+            myWishList.addCountry("Japan","temple");
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not been thrown");
+        }
+        assertEquals(2,myWishList.getMyWishList().size());
+        myWishList.removeCountryByIndex(1);
+        assertEquals(1,myWishList.getMyWishList().size());
+    }
 }

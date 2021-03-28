@@ -291,4 +291,24 @@ public class VisitedListTest {
         }
     }
 
+    @Test
+    public void testRemoveVisitByIndex() {
+        VisitedList myVisitedList = new VisitedList();
+        try {
+            myVisitedList.addCountry("India","visit forts",LocalDate.of(2020,3,2));
+            myVisitedList.addCountry("Japan","visit temple",LocalDate.of(2015,3,2));
+        } catch (InvalidCountryException e) {
+            fail("Country is not invalid");
+        } catch (FutureDateException e) {
+            fail("Visit date is not in future");
+
+        } catch (CountryAlreadyPresentException e) {
+            fail("CountryAlreadyPresentException should not have been thrown");
+
+        }
+        assertEquals(2,myVisitedList.getMyVisitedList().size());
+        myVisitedList.removeVisitByIndex(1);
+        assertEquals(1,myVisitedList.getMyVisitedList().size());
+    }
+
 }

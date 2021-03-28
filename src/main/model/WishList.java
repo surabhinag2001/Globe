@@ -50,7 +50,7 @@ public class WishList {
         myWishList.remove(searchCountry(countryToRemove));
     }
 
-    //TODO: add test for this method
+    //REQUIRED: n is within bounds
     //MODIFIES: this
     //EFFECTS: removes a country from the collection of wishlist countries at index n if present
     public void removeCountryByIndex(int n) {

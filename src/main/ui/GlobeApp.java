@@ -11,14 +11,14 @@ import persistence.JsonVisitedListWriter;
 import persistence.JsonWishListReader;
 import persistence.JsonWishListWriter;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.DateTimeException;
@@ -63,11 +63,18 @@ public class GlobeApp {
     private JPanel mainLayout;
     private JPanel topbar;
     private JPanel opts;
-    private JTextField searchVisit;
+    private JTextField textField;
     private ImageIcon crossIc;
     private JLabel cross;
     private List<VisitedCountry> filterList;
-
+    private JLabel filter;
+    private ImageIcon filterIc;
+    private JLabel sub;
+    private ImageIcon subIc;
+    private JLabel add;
+    private ImageIcon addIc;
+    private GlobeApp gb;
+    private String query;
 
 
     //EFFECTS: runs the globe application
@@ -81,10 +88,8 @@ public class GlobeApp {
     }
 
     public void setUI() {
-        frame = new JFrame(("World"));
-//        frame.getContentPane().setBackground(new Color(229, 229, 229));
-        frame.getContentPane().setBackground(new Color(248, 248, 251));
-        frame.setLayout(new BorderLayout());
+        gb = this;
+        setParentFrameUI();
 
         mainLayout = new JPanel();
         mainLayout.setLayout(new BoxLayout(mainLayout, BoxLayout.Y_AXIS));
@@ -106,6 +111,7 @@ public class GlobeApp {
 
 
         mainLayout.add(mid);
+        mainLayout.add(Box.createVerticalStrut(25));
 
 
         frame.add(mainLayout, BorderLayout.NORTH);
@@ -116,6 +122,13 @@ public class GlobeApp {
         frame.setVisible(true);
         frame.requestFocusInWindow();
 
+    }
+
+    private void setParentFrameUI() {
+        frame = new JFrame(("World"));
+        frame.getContentPane().setBackground(new Color(248, 248, 251));
+        frame.setLayout(new BorderLayout());
+        frame.setResizable(false);
     }
 
     private void setOptionsPanel() {
@@ -148,79 +161,82 @@ public class GlobeApp {
     }
 
     private void performBt3Clicked() {
-        bt3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                bt3.setForeground(new Color(247, 37, 133));
-                bt2.setForeground(Color.BLACK);
-                bt1.setForeground(Color.BLACK);
+        bt3.addActionListener(e -> {
+            bt3.setForeground(new Color(247, 37, 133));
+            bt2.setForeground(Color.BLACK);
+            bt1.setForeground(Color.BLACK);
 
-                if (mid.getComponent(3).getName().equals("2")) {
-                    mid.remove(tbPanel2);
-                    createtbPanel3();
-                    mid.add(tbPanel3);
-                }
-
-                if (mid.getComponent(3).getName().equals("1")) {
-                    mid.remove(tbPanel1);
-                    createtbPanel3();
-                    mid.add(tbPanel3);
-                }
-
-
-                mid.revalidate();
-                mid.repaint();
+            if (mid.getComponent(3).getName().equals("2")) {
+                mid.remove(tbPanel2);
+                createtbPanel3();
+                mid.add(tbPanel3);
             }
+
+            if (mid.getComponent(3).getName().equals("1")) {
+                mid.remove(tbPanel1);
+                createtbPanel3();
+                mid.add(tbPanel3);
+            }
+
+
+            mid.revalidate();
+            mid.repaint();
         });
     }
 
+    private int detectPanel() {
+        if (mid.getComponent(3).getName().equals("1")) {
+            return 1;
+        } else if (mid.getComponent(3).getName().equals("2")) {
+            return 2;
+        } else if (mid.getComponent(3).getName().equals("3")) {
+            return 3;
+        } else {
+            return 3;
+        }
+    }
+
     private void performBt2Clicked() {
-        bt2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                bt2.setForeground(new Color(247, 37, 133));
-                bt1.setForeground(Color.BLACK);
-                bt3.setForeground(Color.BLACK);
+        bt2.addActionListener(e -> {
+            bt2.setForeground(new Color(247, 37, 133));
+            bt1.setForeground(Color.BLACK);
+            bt3.setForeground(Color.BLACK);
 
-                if (mid.getComponent(3).getName().equals("1")) {
-                    mid.remove(tbPanel1);
-                    createtbpanel2();
-                    mid.add(tbPanel2);
-                }
-
-                if (mid.getComponent(3).getName().equals("3")) {
-                    mid.remove(tbPanel3);
-                    createtbpanel2();
-                    mid.add(tbPanel2);
-                }
-
-                mid.revalidate();
-                mid.repaint();
+            if (mid.getComponent(3).getName().equals("1")) {
+                mid.remove(tbPanel1);
+                createtbpanel2();
+                mid.add(tbPanel2);
             }
+
+            if (mid.getComponent(3).getName().equals("3")) {
+                mid.remove(tbPanel3);
+                createtbpanel2();
+                mid.add(tbPanel2);
+            }
+
+            mid.revalidate();
+            mid.repaint();
         });
     }
 
     private void performBt1Clicked() {
-        bt1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                bt1.setForeground(new Color(247, 37, 133));
-                bt2.setForeground(Color.BLACK);
-                bt3.setForeground(Color.BLACK);
-                if (mid.getComponent(3).getName().equals("2")) {
-                    mid.remove(tbPanel2);
-                    createtbpanel1();
-                    mid.add(tbPanel1);
-                }
-
-                if (mid.getComponent(3).getName().equals("3")) {
-                    mid.remove(tbPanel3);
-                    createtbpanel1();
-                    mid.add(tbPanel1);
-                }
-                mid.revalidate();
-                mid.repaint();
+        bt1.addActionListener(e -> {
+            bt1.setForeground(new Color(247, 37, 133));
+            bt2.setForeground(Color.BLACK);
+            bt3.setForeground(Color.BLACK);
+            if (mid.getComponent(3).getName().equals("2")) {
+                mid.remove(tbPanel2);
+                createtbpanel1();
+                mid.add(tbPanel1);
             }
+
+            if (mid.getComponent(3).getName().equals("3")) {
+                mid.remove(tbPanel3);
+                createtbpanel1();
+                mid.add(tbPanel1);
+            }
+            mid.revalidate();
+            mid.repaint();
         });
     }
 
@@ -258,28 +274,47 @@ public class GlobeApp {
         topbar.add(Box.createHorizontalStrut(10));
 
         setSearchBar();
-        topbar.add(searchVisit);
+        topbar.add(textField);
     }
 
     private void setSearchBar() {
-        searchVisit = new JTextFieldHintUI("Search");
-        searchVisit.setBorder(null);
-        searchVisit.setMargin(new Insets(5, 50, 5, 10));
-        searchVisit.setPreferredSize(new Dimension(500, 30));
+        textField = new JTextFieldHintUI("Search");
+        textField.setBorder(null);
+        textField.setMargin(new Insets(5, 50, 5, 10));
+        textField.setPreferredSize(new Dimension(500, 30));
+        textField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                query = textField.getText().toUpperCase();
+                if (detectPanel() == 1) {
+                    searchCountry(query);
+                } else if (detectPanel() == 2) {
+                    searchWish(query);
+                } else if (detectPanel() == 3) {
+                    searchVisit(query);
+                }
+            }
+        });
     }
 
     public void createtbPanel3() {
-        tbPanel3 = new JPanel();
-        tbPanel3.setName("3");
-        tbPanel3.setBackground(Color.WHITE);
-        tbPanel3.setLayout(new BoxLayout(tbPanel3, BoxLayout.Y_AXIS));
+        setTbPanel3();
 
         JPanel tbOptions = new JPanel();
         tbOptions.setBackground(null);
         tbOptions.add(Box.createHorizontalStrut(5));
 
         JPanel emptyPanel = new JPanel();
-//        emptyPanel.setBackground(new Color(229, 229, 229));
         emptyPanel.setBackground(new Color(248, 248, 251));
         tbPanel3.add(emptyPanel);
         tbPanel3.add(Box.createVerticalStrut(5));
@@ -290,81 +325,27 @@ public class GlobeApp {
         visitList.setForeground(new Color(247, 37, 133));
         tbOptions.add(visitList);
 
-        JLabel add = new JLabel();
-        ImageIcon addIc = new ImageIcon("images/addicon.png");
-        Image image = addIc.getImage(); // transform it
-        Image newimg = image.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        addIc = new ImageIcon(newimg);
-        add.setIcon(addIc);
-        tbOptions.add(Box.createHorizontalStrut(10));
-        tbOptions.add(add);
+        setTbPanel3Buttons(tbOptions);
 
-        JLabel sub = new JLabel();
-        ImageIcon subIc = new ImageIcon("images/removeicon.png");
-        Image remimage = subIc.getImage(); // transform it
-        Image newimgRem = remimage.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        subIc = new ImageIcon(newimgRem);
-        sub.setIcon(subIc);
-        tbOptions.add(Box.createHorizontalStrut(1));
-        tbOptions.add(sub);
-
-        JLabel filter = new JLabel();
-        ImageIcon filterIc = new ImageIcon("images/filtericon.png");
-        Image filimg = filterIc.getImage(); // transform it
-        Image newfilimg = filimg.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        filterIc = new ImageIcon(newfilimg);
-        filter.setIcon(filterIc);
-        tbOptions.add(Box.createHorizontalStrut(1));
-        tbOptions.add(filter);
-
-        cross = new JLabel();
-        setCross("images/crossD.png");
-        tbOptions.add(Box.createHorizontalStrut(1));
-        tbOptions.add(cross);
-
-        tbOptions.add(Box.createHorizontalStrut(233));
+        tbOptions.add(Box.createHorizontalStrut(160));
         tbPanel3.add(tbOptions);
         tbPanel3.add(Box.createVerticalStrut(5));
         //add table
         createVisitTable();
         tbPanel3.add(sp3);
 
-        GlobeApp gb = this;
-        add.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                AddToVisitsDialogBox av = new AddToVisitsDialogBox(frame, gb);
-                av.display();
-            }
-        });
-        sub.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                int index = getSeletedRowFromTable('v');
-                if (index != -1) {
-                    DeleteVisitedListDialogBox db = new DeleteVisitedListDialogBox(frame, gb);
-                    db.display();
-                }
-            }
-        });
-        filter.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                setCross("images/crossE.png");
-                tbOptions.revalidate();
-                tbOptions.repaint();
-                FilterListDialog fd = new FilterListDialog(frame,gb);
-                fd.display();
-            }
-        });
+        addVisitsMouseListener();
+        subVisitsMouseListener();
+        filterVisitsMouseListener(tbOptions);
+        crossMouseListener(tbOptions);
+    }
+
+    private void crossMouseListener(JPanel tbOptions) {
         cross.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                setCross("images/crossD.png");
+                setCrossIcon("images/crossD.png");
                 tbOptions.revalidate();
                 tbOptions.repaint();
 
@@ -375,10 +356,95 @@ public class GlobeApp {
                 tbPanel3.repaint();
             }
         });
-
     }
 
-    private void setCross(String source) {
+    private void filterVisitsMouseListener(JPanel tbOptions) {
+        filter.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                setCrossIcon("images/crossE.png");
+                tbOptions.revalidate();
+                tbOptions.repaint();
+                FilterListDialog fd = new FilterListDialog(frame, gb);
+                fd.display();
+            }
+        });
+    }
+
+    private void subVisitsMouseListener() {
+        sub.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int index = getSeletedRowFromTable('v');
+                if (index != -1) {
+                    DeleteVisitedListDialogBox db = new DeleteVisitedListDialogBox(frame, gb);
+                    db.display();
+                } else {
+                    playSound();
+                }
+            }
+        });
+    }
+
+    private void addVisitsMouseListener() {
+        add.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                AddToVisitsDialogBox av = new AddToVisitsDialogBox(frame, gb);
+                av.display();
+            }
+        });
+    }
+
+    private void setTbPanel3Buttons(JPanel tbOptions) {
+        setTbPanel2Buttons(tbOptions);
+
+        filter = new JLabel();
+        setFilterIcon();
+        tbOptions.add(Box.createHorizontalStrut(1));
+        tbOptions.add(filter);
+
+        cross = new JLabel();
+        setCrossIcon("images/crossD.png");
+        tbOptions.add(Box.createHorizontalStrut(1));
+        tbOptions.add(cross);
+    }
+
+    private void setTbPanel3() {
+        tbPanel3 = new JPanel();
+        tbPanel3.setName("3");
+        tbPanel3.setBackground(Color.WHITE);
+        tbPanel3.setLayout(new BoxLayout(tbPanel3, BoxLayout.Y_AXIS));
+    }
+
+    private void setAddIcon() {
+        addIc = new ImageIcon("images/addicon.png");
+        Image image = addIc.getImage(); // transform it
+        Image newimg = image.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        addIc = new ImageIcon(newimg);
+        add.setIcon(addIc);
+    }
+
+    private void setSubIcon() {
+        subIc = new ImageIcon("images/removeicon.png");
+        Image remimage = subIc.getImage(); // transform it
+        Image newimgRem = remimage.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        subIc = new ImageIcon(newimgRem);
+        sub.setIcon(subIc);
+    }
+
+    private void setFilterIcon() {
+        filterIc = new ImageIcon("images/filtericon.png");
+        Image filimg = filterIc.getImage(); // transform it
+        Image newfilimg = filimg.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        filterIc = new ImageIcon(newfilimg);
+        filter.setIcon(filterIc);
+    }
+
+    public void setCrossIcon(String source) {
         crossIc = new ImageIcon(source);
         Image crossimg = crossIc.getImage(); // transform it
         Image newcrossimg = crossimg.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
@@ -398,18 +464,34 @@ public class GlobeApp {
         return sp3;
     }
 
+    private void searchVisit(String query) {
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(tableModel3);
+        table3.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(query));
+    }
+
+    private void searchWish(String query) {
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(tableModel2);
+        table2.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(query));
+    }
+
+    private void searchCountry(String query) {
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(tableModel1);
+        table1.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(query));
+    }
+
+
     public void createtbpanel2() {
-        tbPanel2 = new JPanel();
-        tbPanel2.setName("2");
-        tbPanel2.setBackground(Color.WHITE);
-        tbPanel2.setLayout(new BoxLayout(tbPanel2, BoxLayout.Y_AXIS));
+        setTbPanel2();
+
         JPanel tbOptions = new JPanel();
         tbOptions.setBackground(null);
         tbOptions.add(Box.createHorizontalStrut(5));
 
 
         JPanel emptyPanel = new JPanel();
-//        emptyPanel.setBackground(new Color(229, 229, 229));
         emptyPanel.setBackground(new Color(248, 248, 251));
         tbPanel2.add(emptyPanel);
         tbPanel2.add(Box.createVerticalStrut(5));
@@ -420,40 +502,19 @@ public class GlobeApp {
         wishList.setForeground(new Color(247, 37, 133));
         tbOptions.add(wishList);
 
-        JLabel add = new JLabel();
-        ImageIcon addIc = new ImageIcon("images/addicon.png");
-        Image image = addIc.getImage(); // transform it
-        Image newimg = image.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        addIc = new ImageIcon(newimg);
-        add.setIcon(addIc);
-        tbOptions.add(Box.createHorizontalStrut(10));
-        tbOptions.add(add);
+        setTbPanel2Buttons(tbOptions);
 
-        JLabel sub = new JLabel();
-        ImageIcon subIc = new ImageIcon("images/removeicon.png");
-        Image remimage = subIc.getImage(); // transform it
-        Image newimgRem = remimage.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        subIc = new ImageIcon(newimgRem);
-        sub.setIcon(subIc);
-        tbOptions.add(Box.createHorizontalStrut(1));
-        tbOptions.add(sub);
-
-        tbOptions.add(Box.createHorizontalStrut(295));
+        tbOptions.add(Box.createHorizontalStrut(305));
 
         tbPanel2.add(tbOptions);
         //add table
         createWishlistTable();
         tbPanel2.add(sp2);
+        addWishlistMouseListener();
+        subWishlistMouseListener();
+    }
 
-        GlobeApp gb = this;
-        add.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                AddToWishlistDialogBox wl = new AddToWishlistDialogBox(frame, gb);
-                wl.display();
-            }
-        });
+    private void subWishlistMouseListener() {
         sub.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -462,9 +523,41 @@ public class GlobeApp {
                 if (index != -1) {
                     DeleteWishListDialogBox db = new DeleteWishListDialogBox(frame, gb);
                     db.display();
+                } else {
+                    playSound();
                 }
             }
         });
+    }
+
+    private void addWishlistMouseListener() {
+        add.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                AddToWishlistDialogBox wl = new AddToWishlistDialogBox(frame, gb);
+                wl.display();
+            }
+        });
+    }
+
+    private void setTbPanel2Buttons(JPanel tbOptions) {
+        add = new JLabel();
+        setAddIcon();
+        tbOptions.add(Box.createHorizontalStrut(10));
+        tbOptions.add(add);
+
+        sub = new JLabel();
+        setSubIcon();
+        tbOptions.add(Box.createHorizontalStrut(1));
+        tbOptions.add(sub);
+    }
+
+    private void setTbPanel2() {
+        tbPanel2 = new JPanel();
+        tbPanel2.setName("2");
+        tbPanel2.setBackground(Color.WHITE);
+        tbPanel2.setLayout(new BoxLayout(tbPanel2, BoxLayout.Y_AXIS));
     }
 
     public void createtbpanel1() {
@@ -489,7 +582,7 @@ public class GlobeApp {
         allCountries.setForeground(new Color(247, 37, 133));
         tbOptions.add(allCountries);
 
-        tbOptions.add(Box.createHorizontalStrut(320));
+        tbOptions.add(Box.createHorizontalStrut(323));
         tbPanel1.add(tbOptions);
 
         tbPanel1.add(Box.createVerticalStrut(5));
@@ -524,8 +617,10 @@ public class GlobeApp {
         sp3.setBackground(new Color(248, 248, 251));
     }
 
-    public void createFilterTable(String minDate,String maxDate) throws MaxDateBeforeMinDateException {
-        filterVisits(minDate,maxDate);
+    public void createFilterTable(String minDate, String maxDate) throws MaxDateBeforeMinDateException,
+            NullFieldsException {
+        checkFilterDateFields(minDate, maxDate);
+        filterVisits(minDate, maxDate);
         System.out.println(filterList.size());
         String[] column = {"Country", "Date", "Notes"};
         String[][] data = new String[filterList.size()][3];
@@ -549,6 +644,13 @@ public class GlobeApp {
         sp4.setBackground(new Color(248, 248, 251));
     }
 
+    private void checkFilterDateFields(String minDate, String maxDate) throws NullFieldsException {
+        System.out.println(minDate);
+        if (minDate.equals("yyyy-mm-dd") || maxDate.equals("yyyy-mm-dd")) {
+            throw new NullFieldsException();
+        }
+    }
+
     private void filterVisits(String minDate, String maxDate) throws MaxDateBeforeMinDateException {
         int y1 = Integer.parseInt(minDate.substring(0, 4));
         int m1 = Integer.parseInt(minDate.substring(5, 7));
@@ -563,6 +665,21 @@ public class GlobeApp {
         filterList = visitedCountries.filterDateWise(date1, date2);
     }
 
+    private void playSoundWithErrors() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        File f = new File("./sounds/error.wav");
+        AudioInputStream audio = AudioSystem.getAudioInputStream(f.toURI().toURL());
+        Clip clip = AudioSystem.getClip();
+        clip.open(audio);
+        clip.start();
+    }
+
+    public void playSound() {
+        try {
+            playSoundWithErrors();
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void createWishlistTable() {
         loadWishList();
@@ -667,10 +784,17 @@ public class GlobeApp {
         }
     }
 
+    private void checkAddWishlistField(String name,String notes) throws NullFieldsException {
+        if (name.equals("Enter country") || notes.equals("Enter notes")) {
+            throw new NullFieldsException();
+        }
+    }
+
     //MODIFIES: this
     //EFFECT : adds a country to the wishlist,saves and loads wishlist
     public void addToWishlist(String name, String notes) throws CountryAlreadyPresentException,
-            InvalidCountryException {
+            InvalidCountryException, NullFieldsException {
+        checkAddWishlistField(name,notes);
         wishCountries.addCountry(name, notes);
         saveWishList();
         loadWishList();
@@ -695,11 +819,19 @@ public class GlobeApp {
         }
     }
 
+    private void checkAddVisitField(String name, String date, String notes) throws NullFieldsException {
+        if (name.equals("Enter country") || date.equals("yyyy-mm-dd") || notes.equals("Enter notes")) {
+            throw new NullFieldsException();
+        }
+    }
+
+
     //REQUIRES : date is entered in yyyy-mm-dd format, is valid and is not in future
     //MODIFIES: this
     //EFFECT : adds a country to the visited list
     public void addToVisitedList(String name, String dateString, String notes) throws CountryAlreadyPresentException,
-            InvalidCountryException, FutureDateException {
+            InvalidCountryException, FutureDateException, NullFieldsException {
+        checkAddVisitField(name,dateString,name);
         int y = Integer.parseInt(dateString.substring(0, 4));
         int m = Integer.parseInt(dateString.substring(5, 7));
         int d = Integer.parseInt(dateString.substring(8));
@@ -708,6 +840,7 @@ public class GlobeApp {
         saveVisitedList();
         loadVisitedList();
     }
+
 
     //REQUIRES : date is entered in yyyy-mm-dd format, is valid and is not in future
     //MODIFIES: this
@@ -747,18 +880,6 @@ public class GlobeApp {
     //EFFECT: function to input dates
     public LocalDate inputDate(int y, int m, int d) {
         return LocalDate.of(y, m, d);
-    }
-
-    public JPanel getMid() {
-        return mid;
-    }
-
-    public JPanel getTbPanel2() {
-        return tbPanel2;
-    }
-
-    public JTable getTable2() {
-        return table2;
     }
 
     public DefaultTableModel getTableModel2() {

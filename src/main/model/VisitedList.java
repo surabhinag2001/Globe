@@ -53,7 +53,7 @@ public class VisitedList {
         myVisitedList.remove(n);
     }
 
-    //TODO: add test for this method
+    //REQUIRES: n is within bounds
     //MODIFIES: this
     //EFFECTS: removes a country from the collection of visited countries at index n if within bounds
     public void removeVisitByIndex(int n) {

@@ -1,26 +1,22 @@
 package ui;
 
 import exceptions.MaxDateBeforeMinDateException;
-import model.VisitedCountry;
-import model.VisitedList;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DateTimeException;
-import java.util.List;
+
 
 // class representing dialog box to display filtered list
 public class FilterListDialog implements ActionListener {
 
-    private  Frame parent;
-    private  JLabel err;
+    private final Frame parent;
+    private JLabel err;
     private JDialog dialog;
-    private GlobeApp gb;
+    private final GlobeApp gb;
     private JPanel panel;
-    private JPanel topPanel;
     private JLabel to;
     private JLabel from;
     private JTextField fromDateField;
@@ -36,8 +32,8 @@ public class FilterListDialog implements ActionListener {
         this.gb = gb;
         this.parent = parent;
         Point loc = parent.getLocation();
-        
-        setFilterListDialogUI(parent,loc);
+
+        setFilterListDialogUI(parent, loc);
 
         setFromUI();
         panel.add(fromPanel);
@@ -122,6 +118,7 @@ public class FilterListDialog implements ActionListener {
     private void setFilterListDialogUI(Frame parent, Point loc) {
         dialog = new JDialog(parent);
         dialog.setLocation(loc.x + 80, loc.y + 80);
+        filterDialogWindowListeners();
         panel = new JPanel();
         panel.setBackground(new Color(248, 248, 251));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -138,26 +135,38 @@ public class FilterListDialog implements ActionListener {
         panel.add(Box.createVerticalStrut(20));
     }
 
+
+    private void filterDialogWindowListeners() {
+        dialog.addWindowListener(new MyWindowListener(gb));
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == filterButton) {
             try {
-                gb.createFilterTable(fromDateField.getText().trim(),toDateField.getText().trim());
+                gb.createFilterTable(fromDateField.getText().trim(), toDateField.getText().trim());
                 gb.getTbPanel3().remove(gb.getSp3());
                 gb.getTbPanel3().add(gb.getSp4());
                 gb.getTbPanel3().repaint();
                 gb.getTbPanel3().revalidate();
                 dialog.dispose();
             } catch (MaxDateBeforeMinDateException maxDateBeforeMinDateException) {
-                maxDateBeforeMinDateException.printStackTrace();
+//                maxDateBeforeMinDateException.printStackTrace();
                 err.setText("Dates not correctly entered");
+                gb.playSound();
             } catch (DateTimeException dateTimeException) {
-                dateTimeException.printStackTrace();
+//                dateTimeException.printStackTrace();
                 err.setText("Invalid date");
+                gb.playSound();
             } catch (NumberFormatException | StringIndexOutOfBoundsException ex) {
-                ex.printStackTrace();
+//                ex.printStackTrace();
                 err.setText("Incorrect date format");
+                gb.playSound();
+            } catch (NullFieldsException ne) {
+//                ne.printStackTrace();
+                err.setText("Fields are empty");
+                gb.playSound();
             }
         }
     }
@@ -166,4 +175,5 @@ public class FilterListDialog implements ActionListener {
     public void display() {
         dialog.setVisible(true);
     }
+
 }

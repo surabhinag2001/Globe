@@ -8,14 +8,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 public class AddToWishlistDialogBox implements ActionListener {
 
     private JDialog dialog;
     private JTextField nameField;
     private JTextField notesField;
     private JButton addButton;
-    private GlobeApp gb;
-    private Frame parent;
+    private final GlobeApp gb;
+    private final Frame parent;
     private JLabel err;
     private JPanel panel;
     private JPanel message;
@@ -160,10 +161,14 @@ public class AddToWishlistDialogBox implements ActionListener {
             } catch (CountryAlreadyPresentException countryAlreadyPresentException) {
                 countryAlreadyPresentException.printStackTrace();
                 err.setText("Country already present");
+                gb.playSound();
             } catch (InvalidCountryException invalidCountryException) {
                 invalidCountryException.printStackTrace();
                 err.setText("Invalid country");
-
+                gb.playSound();
+            } catch (NullFieldsException ne) {
+                err.setText("Fields are empty");
+                gb.playSound();
             }
         }
     }
