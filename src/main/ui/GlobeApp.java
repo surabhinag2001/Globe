@@ -165,7 +165,7 @@ public class GlobeApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: peforms actions related to when bt3 is pressed
+    //EFFECTS: changes color of bt3 to pink and removes panel other than tbPanel3 and shows tbPanel3
     private void performBt3Clicked() {
         bt3.addActionListener(e -> {
             bt3.setForeground(new Color(247, 37, 133));
@@ -204,7 +204,7 @@ public class GlobeApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: peforms actions related to when bt2 is pressed
+    //EFFECTS: changes color of bt2 to pink and removes panel other than tbPanel2 and shows tbPanel2
     private void performBt2Clicked() {
         bt2.addActionListener(e -> {
             bt2.setForeground(new Color(247, 37, 133));
@@ -229,7 +229,7 @@ public class GlobeApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: peforms actions related to when bt1 is pressed
+    //EFFECTS: changes color of bt1 to pink and removes panel other than tbPanel1 and shows tbPanel1
     private void performBt1Clicked() {
         bt1.addActionListener(e -> {
             bt1.setForeground(new Color(247, 37, 133));

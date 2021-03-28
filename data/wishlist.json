@@ -1,15 +1,7 @@
 [
     {
-        "notes": "french",
-        "name": "FRANCE"
-    },
-    {
         "notes": "cherry blossoms",
         "name": "JAPAN"
-    },
-    {
-        "notes": "cricket",
-        "name": "PAKISTAN"
     },
     {
         "notes": "visit",
@@ -18,9 +10,5 @@
     {
         "notes": "island",
         "name": "FIJI"
-    },
-    {
-        "notes": "temples",
-        "name": "INDIA"
     }
 ]
