@@ -87,7 +87,7 @@ public class GlobeApp {
         setUI();
     }
 
-    //EFFECTS: sets the basic ui and layout for the whole applicatin
+    //EFFECTS: sets the UI for the entire application
     public void setUI() {
         gb = this;
         setParentFrameUI();
@@ -125,7 +125,7 @@ public class GlobeApp {
 
     }
 
-    //EFFECTS: sets layout and ui for parent frame
+    //EFFECTS: sets UI for parent frame
     private void setParentFrameUI() {
         frame = new JFrame(("World"));
         frame.getContentPane().setBackground(new Color(248, 248, 251));
@@ -133,7 +133,7 @@ public class GlobeApp {
         frame.setResizable(false);
     }
 
-    //EFFECTS: sets layout and ui for buttons displayed on the right of the creen
+    //EFFECTS: adds buttons on the left of the screen and sets their UI
     private void setOptionsPanel() {
         opts = new JPanel();
         opts.setBackground(null);
@@ -157,7 +157,7 @@ public class GlobeApp {
         opts.add(Box.createRigidArea(new Dimension(0, 80)));
     }
 
-    //EFFECTS: sets layout and ui for mid panel
+    //EFFECTS: sets UI if the mid panel
     private void setMidPanel() {
         mid = new JPanel(new FlowLayout(FlowLayout.LEFT));
         mid.setBackground(null);
@@ -251,7 +251,7 @@ public class GlobeApp {
         });
     }
 
-    //EFFECTS: sets ui of the buttons
+    //EFFECTS: sets UI of the buttons
     private void setButton(JButton button) {
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
@@ -260,7 +260,7 @@ public class GlobeApp {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
-    //EFFECTS: sets ui of the top bar
+    //EFFECTS: sets UI of the top bar
     private void setTopbar() {
         topbar = new JPanel();
         topbar.setBackground(Color.WHITE);
@@ -290,7 +290,7 @@ public class GlobeApp {
         topbar.add(textField);
     }
 
-    //EFFECTS: sets the ui of the search bar and implements functionality related typing in it
+    //EFFECTS: sets the UI of the search bar and implements functionality related typing in it
     private void setSearchBar() {
         textField = new JTextFieldHintUI("Search");
         textField.setBorder(null);
@@ -322,7 +322,7 @@ public class GlobeApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: sets the ui and layout of the panel displaying visits
+    //EFFECTS: sets the UI and layout of the panel displaying visits table
     public void createtbPanel3() {
         setTbPanel3();
 
@@ -375,7 +375,7 @@ public class GlobeApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: changes the cross icon from grey to pink by changibg the source of the image
+    //EFFECTS: changes the cross icon from grey to pink by changing the source of the image
     private void filterVisitsMouseListener(JPanel tbOptions) {
         filter.addMouseListener(new MouseAdapter() {
             @Override
@@ -421,7 +421,7 @@ public class GlobeApp {
         });
     }
 
-    //EFFECTS: buttons displayed on top of visited list panel
+    //EFFECTS: adds buttons to the top of visited list panel
     private void setTbPanel3Buttons(JPanel tbOptions) {
         setTbPanel2Buttons(tbOptions);
 
@@ -436,7 +436,7 @@ public class GlobeApp {
         tbOptions.add(cross);
     }
 
-    //EFFECTS: the layout for ui of tbPanel3
+    //EFFECTS: the layout for UI of tbPanel3
     private void setTbPanel3() {
         tbPanel3 = new JPanel();
         tbPanel3.setName("3");
@@ -484,14 +484,17 @@ public class GlobeApp {
         cross.setIcon(crossIc);
     }
 
+    //getter method
     public JPanel getTbPanel3() {
         return tbPanel3;
     }
 
+    //getter method
     public JScrollPane getSp4() {
         return sp4;
     }
 
+    //getter method
     public JScrollPane getSp3() {
         return sp3;
     }
@@ -518,7 +521,7 @@ public class GlobeApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: sets the ui and layout of the panel displaying visits
+    //EFFECTS: sets the UI and layout of the panel displaying visits
     public void createtbpanel2() {
         setTbPanel2();
 
@@ -581,7 +584,7 @@ public class GlobeApp {
         });
     }
 
-    //EFFECTS: buttons displayed on top of wishlist panel
+    //EFFECTS: adds buttons to the top of wishlist panel
     private void setTbPanel2Buttons(JPanel tbOptions) {
         add = new JLabel();
         setAddIcon();
@@ -594,7 +597,7 @@ public class GlobeApp {
         tbOptions.add(sub);
     }
 
-    //EFFECTS: the layout for ui of tbPanel2
+    //EFFECTS: the layout for UI of tbPanel2
     private void setTbPanel2() {
         tbPanel2 = new JPanel();
         tbPanel2.setName("2");
@@ -603,7 +606,7 @@ public class GlobeApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: sets the ui and layout of the panel displaying all countries
+    //EFFECTS: sets the UI of the panel displaying all countries
     public void createtbpanel1() {
         tbPanel1 = new JPanel();
         tbPanel1.setName("1");
@@ -776,7 +779,7 @@ public class GlobeApp {
         sp1.setBackground(new Color(248, 248, 251));
     }
 
-    //EFFECTS: sets the layout and ui of table
+    //EFFECTS: sets the layout and UI of table
     public void setTableDisplay(JTable table) {
         table.setBounds(30, 40, 200, 300);
         table.setFont(new Font("Nunito", Font.PLAIN, 12));
@@ -791,7 +794,7 @@ public class GlobeApp {
         setCellAlignment(table);
     }
 
-    //EFFECTS: sets the layout and ui of each cell of table
+    //EFFECTS: sets the layout and UI of each cell of table
     private void setCellAlignment(JTable table) {
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -800,8 +803,8 @@ public class GlobeApp {
         }
     }
 
-    //MODFIES: this
-    //EFFECTS: deletes the selected row from visit list or wishlist depeding on c
+    //MODIFIES: this
+    //EFFECTS: deletes the selected row from visit list or wishlist depending on c
     public void deleteSelectedRow(char c) {
         int index;
         if (c == 'v') {
@@ -921,10 +924,12 @@ public class GlobeApp {
         }
     }
 
+    //getter method
     public DefaultTableModel getTableModel2() {
         return tableModel2;
     }
 
+    //getter method
     public DefaultTableModel getTableModel3() {
         return tableModel3;
     }
