@@ -28,3 +28,13 @@ in this course.
 - As a user, I want to be able to automatically save my wishlist list to file.
 - As a user, I want to be able to automatically load my 'visited' list from the file.
 - As a user, I want to be able to automatically load my wishlist list from the file.
+
+
+#### Phase 4 : Task 2
+##### Robust class
+VisitedList.addCountry throws three checked exceptions :
+- InvalidCountryException
+- FutureDateException
+- CountryAlreadyPresentException
+<br />
+The tests checking these exceptions are present in VisitedListTest class.
