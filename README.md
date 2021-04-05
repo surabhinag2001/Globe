@@ -38,3 +38,11 @@ VisitedList.addCountry throws three checked exceptions :
 - CountryAlreadyPresentException
 <br />
 The tests checking these exceptions are present in VisitedListTest class.
+
+
+#### Phase 4 : Task 3
+Based on the UML diagram, no refactoring is necessary.
+<br />
+However, GlobeApp.createTbPanel1, GlobeApp.createTbPanel2 and GlobeApp.createTbPanel3 have similar
+functionality and have duplicated lines of code, so an abstract method could have been created to
+avoid duplication.

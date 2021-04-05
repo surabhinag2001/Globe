@@ -608,10 +608,8 @@ public class GlobeApp {
     //MODIFIES: this
     //EFFECTS: sets the UI of the panel displaying all countries
     public void createtbpanel1() {
-        tbPanel1 = new JPanel();
-        tbPanel1.setName("1");
-        tbPanel1.setBackground(Color.WHITE);
-        tbPanel1.setLayout(new BoxLayout(tbPanel1, BoxLayout.Y_AXIS));
+        setTbPanel1();
+
         JPanel tbOptions = new JPanel();
         tbOptions.setBackground(null);
         tbOptions.add(Box.createHorizontalStrut(5));
@@ -635,6 +633,14 @@ public class GlobeApp {
 
         createWorldTable();
         tbPanel1.add(sp1);
+    }
+
+    //EFFECTS: the layout for UI of tbPanel1
+    private void setTbPanel1() {
+        tbPanel1 = new JPanel();
+        tbPanel1.setName("1");
+        tbPanel1.setBackground(Color.WHITE);
+        tbPanel1.setLayout(new BoxLayout(tbPanel1, BoxLayout.Y_AXIS));
     }
 
     //EFFECTS: creates a JTable displaying visited countries
@@ -1149,7 +1155,6 @@ public class GlobeApp {
                 keepGoing = false;
             }
         }
-
     }
 
     // MODIFIES: this
