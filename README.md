@@ -41,8 +41,13 @@ The tests checking these exceptions are present in VisitedListTest class.
 
 
 #### Phase 4 : Task 3
-Based on the UML diagram, no refactoring is necessary.
-<br />
-However, GlobeApp.createTbPanel1, GlobeApp.createTbPanel2 and GlobeApp.createTbPanel3 have similar
-functionality and have duplicated lines of code, so an abstract method could have been created to
-avoid duplication.
+##### Design refactoring
+- Based on the UML diagram, an abstract class called AddDialogBox could be created.
+- AddToVisitedDialogBox and AddToWishlistDialogBox would extend AddDialogBox.
+- The methods common to AddToVisitedDialogBox and AddToWishlistDialogBox like setNotesUI, 
+setNameUI, setErrorUI, setTextFieldUI, setAddButtonUI and display would have been declared in AddDialogBox
+ to avoid duplication.
+##### Non-Design refactoring
+- GlobeApp.createTbPanel1, GlobeApp.createTbPanel2 and GlobeApp.createTbPanel3 have similar
+  functionality and have duplicated lines of code, so an abstract method could have been created to
+  avoid duplication.
